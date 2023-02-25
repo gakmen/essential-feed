@@ -146,11 +146,7 @@ class RemoteFeedLoaderTests: XCTestCase {
             "description": description,
             "location": location,
             "image": imageURL.absoluteString
-        ].reduce(into: [String: Any]()) { array, element in
-            if let e = element.value {
-                return array[element.key] = e
-            }
-        }
+        ].compactMapValues { $0 }
         
         return (item, json)
     }

@@ -38,9 +38,9 @@ public final class LocalFeedLoader {
 }
 
 private extension Array where Element == FeedItem {
-    func toLocal() -> [LocalFeedItem] {
+    func toLocal() -> [LocalFeedImage] {
         return map {
-            LocalFeedItem (
+            LocalFeedImage (
                 id: $0.id,
                 description: $0.description,
                 location: $0.location,

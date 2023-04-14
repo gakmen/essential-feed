@@ -34,7 +34,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
             switch result {
             case .failure(let error):
                 receivedError = error
-            case .success(_):
+            default:
                 XCTFail("Ожидали ошибку, вместо этого получили \(result)")
             }
             exp.fulfill()
@@ -43,6 +43,26 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         store.completeRetrieval(with: retrievalError)
         wait(for: [exp], timeout: 1.0)
         XCTAssertEqual(receivedError as NSError?, retrievalError)
+    }
+    
+    func test_load_deliversNoImagesOnEmptyCache() {
+        let (store, sut) = makeSUT()
+
+        let exp = expectation(description: "Ожидаем окончания загрузки контента из кэша")
+        var receivedImages: [FeedImage]?
+        sut.load() { result in
+            switch result {
+            case .success(let images):
+                receivedImages = images
+            default:
+                XCTFail("Ожидали результат, вместо этого получили \(result)")
+            }
+            exp.fulfill()
+        }
+
+        store.completeRetrievalWithEmptyCache()
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(receivedImages, [])
     }
     
     //MARK: Helpers

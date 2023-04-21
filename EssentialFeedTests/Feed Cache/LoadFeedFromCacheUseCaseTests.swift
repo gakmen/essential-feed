@@ -104,7 +104,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         
         store.completeRetrieval(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
         
-        XCTAssertFalse(store.receivedMessages.contains(.deleteCachedFeed))
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
     func test_load_deletesCacheOnSevenDaysOldCache() {
@@ -117,7 +117,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         
         store.completeRetrieval(with: feed.local, timestamp: sevenDaysOldTimestamp)
 
-        XCTAssertTrue(store.receivedMessages.contains(.deleteCachedFeed))
+        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
     }
     
     func test_load_deletesCacheOnMoreThanSevenDaysOldCache() {
@@ -130,7 +130,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         
         store.completeRetrieval(with: feed.local, timestamp: moreThanSevenDaysOldTimestamp)
 
-        XCTAssertTrue(store.receivedMessages.contains(.deleteCachedFeed))
+        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
     }
     
     func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {

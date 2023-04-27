@@ -89,7 +89,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_retrieve_deliversEmptyOnEmptyCache() {
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         let exp = expectation(description: "Ждём выгрузки кэша")
         
         sut.retrieve() { result in
@@ -106,7 +106,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_retrieve_hasNoSideEffectsOnEmptyCache() {
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         let exp = expectation(description: "Ждём выгрузки кэша")
         
         sut.retrieve() { firstResult in
@@ -125,7 +125,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_retrieveAfterInseringCache_deliversInsertedValues() {
-        let sut = CodableFeedStore()
+        let sut = makeSUT()
         let feed = uniqueImageFeed()
         let timestamp = Date()
         let exp = expectation(description: "Ждём выгрузки кэша")
@@ -148,4 +148,9 @@ final class CodableFeedStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
+    //MARK: Вспомогательные методы
+    
+    private func makeSUT() -> CodableFeedStore {
+        return CodableFeedStore()
+    }
 }

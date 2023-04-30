@@ -135,6 +135,35 @@ final class CodableFeedStoreTests: XCTestCase {
         
         wait(for: [exp], timeout: 1.0)
     }
+    
+    func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
+        let sut = makeSUT()
+        let feed = uniqueImageFeed()
+        let timestamp = Date()
+        let exp = expectation(description: "Ждём выгрузки кэша")
+        
+        sut.insert(feed.local, timestamp) { insertionError in
+            XCTAssertNil(insertionError, "Ожидали успешную вставку картинок")
+            
+            sut.retrieve() { firstResult in
+                sut.retrieve() { secondResult in
+                    switch (firstResult, secondResult) {
+                    case let (.found(firstFeed, firstTimestamp), .found(secondFeed, secondTimestamp)):
+                        XCTAssertEqual(firstFeed, feed.local)
+                        XCTAssertEqual(firstTimestamp, timestamp)
+                        
+                        XCTAssertEqual(secondFeed, feed.local)
+                        XCTAssertEqual(secondTimestamp, timestamp)
+                    default:
+                        XCTFail("Ожидали дважды результат .found с картинками \(feed) и временем \(timestamp), вместо этого получили \(firstResult) и \(secondResult)")
+                    }
+                    exp.fulfill()
+                }
+            }
+        }
+        
+        wait(for: [exp], timeout: 1.0)
+    }
 
     //MARK: Вспомогательные методы
     

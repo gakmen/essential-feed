@@ -78,19 +78,8 @@ final class CodableFeedStoreTests: XCTestCase {
     
     func test_retrieve_deliversEmptyOnEmptyCache() {
         let sut = makeSUT()
-        let exp = expectation(description: "Ждём выгрузки кэша")
         
-        sut.retrieve() { result in
-            switch result {
-            case .empty:
-                break
-            default:
-                XCTFail("Ожидали пустой результат, вместо этого получили \(result)")
-            }
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1.0)
+        expect(sut: sut, toRetreive: .empty)
     }
     
     func test_retrieve_hasNoSideEffectsOnEmptyCache() {
@@ -114,26 +103,17 @@ final class CodableFeedStoreTests: XCTestCase {
     
     func test_retrieveAfterInseringCache_deliversInsertedValues() {
         let sut = makeSUT()
-        let feed = uniqueImageFeed()
+        let feed = uniqueImageFeed().local
         let timestamp = Date()
-        let exp = expectation(description: "Ждём выгрузки кэша")
         
-        sut.insert(feed.local, timestamp) { insertionError in
+        let exp = expectation(description: "Ждём загрузки кэша")
+        sut.insert(feed, timestamp) { insertionError in
             XCTAssertNil(insertionError, "Ожидали успешную вставку картинок")
-            
-            sut.retrieve() { retrieveResult in
-                switch retrieveResult {
-                case let .found(retrievedFeed, retrievedTimestamp):
-                    XCTAssertEqual(retrievedFeed, feed.local)
-                    XCTAssertEqual(retrievedTimestamp, timestamp)
-                default:
-                    XCTFail("Ожидали результат .found с картинками \(feed) и временем \(timestamp), вместо этого получили \(retrieveResult)")
-                }
-                exp.fulfill()
-            }
+            exp.fulfill()
         }
-        
         wait(for: [exp], timeout: 1.0)
+        
+        expect(sut: sut, toRetreive: .found(feed: feed, timestamp: timestamp))
     }
     
     func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
@@ -171,6 +151,29 @@ final class CodableFeedStoreTests: XCTestCase {
         let sut = CodableFeedStore(storeURL: testSpecificStoreURL())
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
+    }
+    
+    private func expect (
+        sut: CodableFeedStore,
+        toRetreive expectedResult: RetrieveCachedFeedResult,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let exp = expectation(description: "Ждём выгрузки кэша")
+        
+        sut.retrieve() { retrievedResult in
+            switch (expectedResult, retrievedResult) {
+            case (.empty, .empty):
+                break
+            case let (.found(expectedFeed, expectedTimestamp), .found(retrievedFeed, retrievedTimestamp)):
+                XCTAssertEqual(expectedFeed, retrievedFeed, file: file, line: line)
+                XCTAssertEqual(expectedTimestamp, retrievedTimestamp, file: file, line: line)
+            default:
+                XCTFail("Ожидали результат \(expectedResult), вместо этого получили \(retrievedResult)", file: file, line: line)
+            }
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
     }
     
     private func setupEmptyStoreState() {

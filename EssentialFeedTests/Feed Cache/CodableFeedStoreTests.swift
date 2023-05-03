@@ -129,6 +129,20 @@ final class CodableFeedStoreTests: XCTestCase {
         
         expect(sut: sut, toRetrieveTwice: .failure(anyNSError()))
     }
+    
+    func test_insert_overridesPreviouslyInsertedCacheValues() {
+        let sut = makeSUT()
+        
+        let firstInsertionError = insert((uniqueImageFeed().local, Date()), to: sut)
+        XCTAssertNil(firstInsertionError, "Ожидали успешную загрузку в кэш")
+        
+        let latestFeed = uniqueImageFeed().local
+        let latestTimestamp = Date()
+        let latestInsertionError = insert((latestFeed, latestTimestamp), to: sut)
+        XCTAssertNil(latestInsertionError, "Ожидали успешную перезапись кэша")
+        
+        expect(sut: sut, toRetrieve: .found(feed: latestFeed, timestamp: latestTimestamp))
+    }
 
     //MARK: Вспомогательные методы
     
@@ -138,13 +152,19 @@ final class CodableFeedStoreTests: XCTestCase {
         return sut
     }
     
-    private func insert(_ cache: (feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore) {
+    @discardableResult
+    private func insert(_ cache: (feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore) -> Error? {
         let exp = expectation(description: "Ждём загрузки кэша")
+        var error: Error?
+        
         sut.insert(cache.feed, cache.timestamp) { insertionError in
             XCTAssertNil(insertionError, "Ожидали успешную вставку картинок")
+            error = insertionError
             exp.fulfill()
         }
         wait(for: [exp], timeout: 1.0)
+        
+        return error
     }
     
     private func expect (

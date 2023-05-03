@@ -93,12 +93,7 @@ final class CodableFeedStoreTests: XCTestCase {
         let feed = uniqueImageFeed().local
         let timestamp = Date()
         
-        let exp = expectation(description: "Ждём загрузки кэша")
-        sut.insert(feed, timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Ожидали успешную вставку картинок")
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        insert((feed, timestamp), to: sut)
         
         expect(sut: sut, toRetreive: .found(feed: feed, timestamp: timestamp))
     }
@@ -108,12 +103,7 @@ final class CodableFeedStoreTests: XCTestCase {
         let feed = uniqueImageFeed().local
         let timestamp = Date()
         
-        let exp = expectation(description: "Ждём загрузки кэша")
-        sut.insert(feed, timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Ожидали успешную вставку картинок")
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        insert((feed, timestamp), to: sut)
         
         expect(sut: sut, toRetreiveTwice: .found(feed: feed, timestamp: timestamp))
     }
@@ -124,6 +114,15 @@ final class CodableFeedStoreTests: XCTestCase {
         let sut = CodableFeedStore(storeURL: testSpecificStoreURL())
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
+    }
+    
+    private func insert(_ cache: (feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore) {
+        let exp = expectation(description: "Ждём загрузки кэша")
+        sut.insert(cache.feed, cache.timestamp) { insertionError in
+            XCTAssertNil(insertionError, "Ожидали успешную вставку картинок")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
     }
     
     private func expect (

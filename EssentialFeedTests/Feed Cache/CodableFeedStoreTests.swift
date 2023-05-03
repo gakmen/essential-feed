@@ -66,7 +66,19 @@ class CodableFeedStore {
         } catch {
             completion(error)
         }
-       
+    }
+    
+    func deleteCachedFeed(completion: @escaping FeedStore.DeletionCompletion) {
+        guard FileManager.default.fileExists(atPath: storeURL.path()) else {
+            return completion(nil)
+        }
+        
+        do {
+            try FileManager.default.removeItem(at: storeURL)
+            completion(nil)
+        } catch {
+            completion(error)
+        }
     }
 }
 
@@ -159,6 +171,39 @@ final class CodableFeedStoreTests: XCTestCase {
         
         XCTAssertNotNil(insertionError, "Ожидали падение с ошибкой при загрузке в кэш")
     }
+    
+    func test_delete_hasNoSideEffectsOnEmptyCache() {
+        let sut = makeSUT()
+        
+        let deletionError = deleteCache(from: sut)
+        
+        XCTAssertNil(deletionError, "Ожидаем успешное удаление при пустом кэше")
+        expect(sut: sut, toRetrieve: .empty)
+    }
+    
+    func test_delete_emptiesPreviouslyInsertedCache() {
+        let sut = makeSUT()
+        let insertionError = insert((uniqueImageFeed().local, Date()), to: sut)
+        XCTAssertNil(insertionError, "Ожидаем успешную вгрузку кэша")
+        
+        let deletionError = deleteCache(from: sut)
+        
+        XCTAssertNil(deletionError, "Ожидаем успешное удаление кэша")
+        expect(sut: sut, toRetrieve: .empty)
+    }
+    
+    func test_delete_deliversErrorOnDeletionError() {
+        let noDeletePermissionURL = FileManager
+            .default
+            .urls(for: .cachesDirectory, in: .systemDomainMask)
+            .first!
+            .appending(path: "")
+        let sut = makeSUT(storeURL: noDeletePermissionURL)
+        
+        let deletionError = deleteCache(from: sut)
+        
+        XCTAssertNotNil(deletionError, "Ожидаем ошибку при ошибке удаления")
+    }
 
     //MARK: Вспомогательные методы
     
@@ -216,6 +261,19 @@ final class CodableFeedStoreTests: XCTestCase {
     ) {
         expect(sut: sut, toRetrieve: expectedResult, file: file, line: line)
         expect(sut: sut, toRetrieve: expectedResult, file: file, line: line)
+    }
+    
+    private func deleteCache(from sut: CodableFeedStore) -> Error? {
+        let exp = expectation(description: "Ждём окончания удаления")
+        var error: Error?
+        
+        sut.deleteCachedFeed { deletionError in
+            error = deletionError
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1.0)
+        return error
     }
     
     private func setupEmptyStoreState() {

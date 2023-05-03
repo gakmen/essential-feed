@@ -207,14 +207,14 @@ final class CodableFeedStoreTests: XCTestCase {
 
     //MARK: Вспомогательные методы
     
-    private func makeSUT(storeURL: URL? = nil, file: StaticString = #filePath, line: UInt = #line) -> CodableFeedStore {
+    private func makeSUT(storeURL: URL? = nil, file: StaticString = #filePath, line: UInt = #line) -> FeedStore {
         let sut = CodableFeedStore(storeURL: storeURL ?? testSpecificStoreURL())
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
     
     @discardableResult
-    private func insert(_ cache: (feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore) -> Error? {
+    private func insert(_ cache: (feed: [LocalFeedImage], timestamp: Date), to sut: FeedStore) -> Error? {
         let exp = expectation(description: "Ждём загрузки кэша")
         var error: Error?
         
@@ -228,7 +228,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     private func expect (
-        sut: CodableFeedStore,
+        sut: FeedStore,
         toRetrieve expectedResult: RetrieveCachedFeedResult,
         file: StaticString = #filePath,
         line: UInt = #line
@@ -254,7 +254,7 @@ final class CodableFeedStoreTests: XCTestCase {
     }
     
     private func expect (
-        sut: CodableFeedStore,
+        sut: FeedStore,
         toRetrieveTwice expectedResult: RetrieveCachedFeedResult,
         file: StaticString = #filePath,
         line: UInt = #line
@@ -263,7 +263,7 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut: sut, toRetrieve: expectedResult, file: file, line: line)
     }
     
-    private func deleteCache(from sut: CodableFeedStore) -> Error? {
+    private func deleteCache(from sut: FeedStore) -> Error? {
         let exp = expectation(description: "Ждём окончания удаления")
         var error: Error?
         

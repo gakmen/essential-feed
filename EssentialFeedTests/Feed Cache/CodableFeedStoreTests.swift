@@ -89,7 +89,7 @@ final class CodableFeedStoreTests: XCTestCase {
     func test_retrieve_hasNoSideEffectsOnEmptyCache() {
         let sut = makeSUT()
         
-        expect(sut: sut, toRetreiveTwice: .empty)
+        expect(sut: sut, toRetrieveTwice: .empty)
     }
     
     func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
@@ -109,7 +109,7 @@ final class CodableFeedStoreTests: XCTestCase {
         
         insert((feed, timestamp), to: sut)
         
-        expect(sut: sut, toRetreiveTwice: .found(feed: feed, timestamp: timestamp))
+        expect(sut: sut, toRetrieveTwice: .found(feed: feed, timestamp: timestamp))
     }
     
     func test_retrieve_deliversFailureOnRetrievalError() {
@@ -119,6 +119,15 @@ final class CodableFeedStoreTests: XCTestCase {
         try! "invalid data".write(to: storeURL, atomically: false, encoding: .utf8)
         
         expect(sut: sut, toRetrieve: .failure(anyNSError()))
+    }
+    
+    func test_retrieve_hasNoSideEffectsOnFailure() {
+        let storeURL = testSpecificStoreURL()
+        let sut = makeSUT(storeURL: storeURL)
+        
+        try! "invalid data".write(to: storeURL, atomically: false, encoding: .utf8)
+        
+        expect(sut: sut, toRetrieveTwice: .failure(anyNSError()))
     }
 
     //MARK: Вспомогательные методы
@@ -166,7 +175,7 @@ final class CodableFeedStoreTests: XCTestCase {
     
     private func expect (
         sut: CodableFeedStore,
-        toRetreiveTwice expectedResult: RetrieveCachedFeedResult,
+        toRetrieveTwice expectedResult: RetrieveCachedFeedResult,
         file: StaticString = #filePath,
         line: UInt = #line
     ) {

@@ -74,6 +74,20 @@ extension FeedStoreSpecs where Self: XCTestCase {
         XCTAssertNil(insertionError, file: file, line: line)
     }
     
+    func assertThatInsertOverridesPreviouslyInsertedCacheValues(
+        on sut: FeedStore,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ){
+        insert((uniqueImageFeed().local, Date()), to: sut)
+        
+        let latestFeed = uniqueImageFeed().local
+        let latestTimestamp = Date()
+        insert((latestFeed, latestTimestamp), to: sut)
+        
+        expect(sut: sut, toRetrieve: .found(feed: latestFeed, timestamp: latestTimestamp), file: file, line: line)
+    }
+    
     func assertThatDeleteDeliversNoErrorOnEmptyCache (
         on sut: FeedStore,
         file: StaticString = #filePath,

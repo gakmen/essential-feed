@@ -131,9 +131,7 @@ final class CodableFeedStoreTests: XCTestCase, FailableFeedStore {
             .appending(path: "")
         let sut = makeSUT(storeURL: noDeletePermissionURL)
         
-        let deletionError = deleteCache(from: sut)
-        
-        XCTAssertNotNil(deletionError, "Ожидаем ошибку при ошибке удаления")
+        assertThatDeleteDeliversErrorOnDeletionError(on: sut)
     }
     
     func test_delete_hasNoSideEffectsOnDeletionError() {
@@ -144,9 +142,7 @@ final class CodableFeedStoreTests: XCTestCase, FailableFeedStore {
             .appending(path: "")
         let sut = makeSUT(storeURL: noDeletePermissionURL)
         
-        let _ = deleteCache(from: sut)
-        
-        expect(sut: sut, toRetrieve: .empty)
+        assertThatDeleteHasNoSideEffectsOnDeletionError(on: sut)
     }
     
     func test_storeSideEffects_runSerially() {

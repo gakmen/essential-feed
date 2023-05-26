@@ -98,6 +98,16 @@ extension FeedStoreSpecs where Self: XCTestCase {
         XCTAssertNil(deletionError, "Ожидаем успешное удаление при пустом кэше", file: file, line: line)
     }
     
+    func assertThatDeleteHasNoSideEffectsOnEmptyCache (
+        on sut: FeedStore,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ){
+        deleteCache(from: sut)
+        
+        expect(sut: sut, toRetrieve: .empty, file: file, line: line)
+    }
+    
     func assertThatDeleteDeliversNoErrorOnNonEmptyCache (
         on sut: FeedStore,
         file: StaticString = #filePath,

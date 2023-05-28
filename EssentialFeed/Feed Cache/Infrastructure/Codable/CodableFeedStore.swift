@@ -8,7 +8,7 @@
 import Foundation
 
 @available(macOS 13.0, *)
-public class CodableFeedStore: FeedStore {
+public final class CodableFeedStore: FeedStore {
     private struct Cache: Codable {
         let feed: [CodableFeedImage]
         let timestamp: Date

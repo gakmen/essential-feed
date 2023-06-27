@@ -26,7 +26,7 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="560" id="wMj-oZ-vaH">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="560" id="wMj-oZ-vaH" customClass="FeedImageCell" customModule="Prototype" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="66" width="393" height="560"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wMj-oZ-vaH" id="NIA-7u-JVE">
@@ -106,6 +106,12 @@
                                         <constraint firstItem="9UX-RE-Lgw" firstAttribute="leading" secondItem="NIA-7u-JVE" secondAttribute="leadingMargin" id="e0m-ZH-Kxn"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="IU1-Wu-UBF" id="Vh4-YO-uuf"/>
+                                    <outlet property="feedImageView" destination="oDG-LF-5Pk" id="LoA-5r-by6"/>
+                                    <outlet property="locationContainer" destination="aLB-vl-LMA" id="uXY-Wb-eTc"/>
+                                    <outlet property="locationLabel" destination="BU3-Hc-MlM" id="qeU-wT-vhE"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>

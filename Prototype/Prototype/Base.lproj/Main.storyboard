@@ -109,6 +109,7 @@
                                 <connections>
                                     <outlet property="descriptionLabel" destination="IU1-Wu-UBF" id="Vh4-YO-uuf"/>
                                     <outlet property="feedImageView" destination="oDG-LF-5Pk" id="LoA-5r-by6"/>
+                                    <outlet property="imageContainer" destination="jCg-ud-0cl" id="3DZ-H2-M9Y"/>
                                     <outlet property="locationContainer" destination="aLB-vl-LMA" id="uXY-Wb-eTc"/>
                                     <outlet property="locationLabel" destination="BU3-Hc-MlM" id="qeU-wT-vhE"/>
                                 </connections>

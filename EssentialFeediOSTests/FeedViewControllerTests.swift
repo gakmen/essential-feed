@@ -12,7 +12,7 @@ import EssentialFeediOS
 
 final class FeedViewControllerTests: XCTestCase {
     
-    func test_init_doesNotLoadFeed() {
+    func test_loadFeedActions_requestFeedFromLoader() {
         let (loader, sut) = makeSUT()
         
         XCTAssertEqual(loader.loadCallCount, 0, "Expected no loading request before view is loaded")
@@ -27,7 +27,7 @@ final class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadCallCount, 3, "Expected yet another loading request when user initiates a reload")
     }
     
-    func test_viewDidLoad_showsLoadingIndicator() {
+    func test_loadingIndicator_isVisibleWhileLoadingFeed() {
         let (loader, sut) = makeSUT()
         
         sut.loadViewIfNeeded()

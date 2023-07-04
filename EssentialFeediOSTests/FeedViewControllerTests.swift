@@ -78,8 +78,8 @@ final class FeedViewControllerTests: XCTestCase {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (loader, sut) = makeSUT()
-        
         sut.loadViewIfNeeded()
+        
         loader.completeFeedLoading(with: [image0, image1])
         
         XCTAssertEqual(loader.loadedImageURLs, [], "Expected no image url request until views become visible")
@@ -94,6 +94,30 @@ final class FeedViewControllerTests: XCTestCase {
         sut.simulateImageViewVisible(at: 1)
         XCTAssertEqual (
             loader.loadedImageURLs,
+            [image0.url, image1.url],
+            "Expected second image URL request once second view becomes visible"
+        )
+    }
+        
+    func test_feedImageView_cancelsImageLoadingWhenNotVisibleAnymore() {
+        let image0 = makeImage(url: URL(string: "http://url-0.com")!)
+        let image1 = makeImage(url: URL(string: "http://url-1.com")!)
+        let (loader, sut) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        loader.completeFeedLoading(with: [image0, image1])
+        XCTAssertEqual(loader.loadedImageURLs, [], "Expected no cancelled image URL request until image is not visible")
+        
+        sut.simulateImageViewNotVisible(at: 0)
+        XCTAssertEqual (
+            loader.cancelledImageURLs,
+            [image0.url],
+            "Expected first image URL request once first view becomes visible"
+        )
+        
+        sut.simulateImageViewNotVisible(at: 1)
+        XCTAssertEqual (
+            loader.cancelledImageURLs,
             [image0.url, image1.url],
             "Expected second image URL request once second view becomes visible"
         )
@@ -205,10 +229,15 @@ final class FeedViewControllerTests: XCTestCase {
         
         //MARK: FeedImageDataLoader
         
-        var loadedImageURLs = [URL]()
+        private(set) var loadedImageURLs = [URL]()
+        private(set) var cancelledImageURLs = [URL]()
         
         func loadImageData(from url: URL) {
             loadedImageURLs.append(url)
+        }
+        
+        func cancelLoadingImageURL(from url: URL) {
+            cancelledImageURLs.append(url)
         }
     }
 }
@@ -222,8 +251,17 @@ private extension FeedViewController {
         refreshControl?.simulatePullToRefresh()
     }
     
-    func simulateImageViewVisible(at index: Int) {
-        _ = feedImageView(at: index)
+    @discardableResult
+    func simulateImageViewVisible(at index: Int) -> FeedImageCell? {
+        feedImageView(at: index) as? FeedImageCell
+    }
+    
+    func simulateImageViewNotVisible(at index: Int) {
+        let view = simulateImageViewVisible(at: index)
+        let delegate = tableView.delegate
+        guard let cell = view else { return }
+        let path = IndexPath(row: index, section: feedImagesSection)
+        delegate?.tableView?(tableView, didEndDisplaying: cell, forRowAt: path)
     }
     
     

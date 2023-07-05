@@ -207,9 +207,11 @@ final class FeedViewControllerTests: XCTestCase {
         )
     }
     
+    //MARK: -
+    
     class LoaderSpy: FeedLoader, FeedImageDataLoader {
         
-        //MARK: - FeedLoader
+        //MARK: FeedLoader
         private var feedRequests = [(FeedLoader.Result) -> Void]()
         var loadFeedCallCount: Int { feedRequests.count }
         
@@ -232,16 +234,22 @@ final class FeedViewControllerTests: XCTestCase {
         private(set) var loadedImageURLs = [URL]()
         private(set) var cancelledImageURLs = [URL]()
         
-        func loadImageData(from url: URL) {
-            loadedImageURLs.append(url)
+        private struct TaskSpy: FeedImageDataLoaderTask {
+            var cancelCallback: () -> Void
+            func cancel() {
+                cancelCallback()
+            }
         }
         
-        func cancelLoadingImageURL(from url: URL) {
-            cancelledImageURLs.append(url)
+        func loadImageData(from url: URL) -> FeedImageDataLoaderTask {
+            loadedImageURLs.append(url)
+            return TaskSpy {[weak self] in self?.cancelledImageURLs.append(url) }
         }
     }
 }
 
+
+//MARK: -
 private extension FeedViewController {
     var isShowingLoadingIndicator: Bool {
         refreshControl?.isRefreshing == true

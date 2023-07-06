@@ -9,6 +9,7 @@ import UIKit
 import EssentialFeed
 
 public protocol FeedImageDataLoaderTask {
+    func start()
     func cancel()
 }
 
@@ -49,18 +50,27 @@ public final class FeedViewController: UITableViewController {
         }
     }
     
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public override func tableView (
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return tableModel.count
     }
     
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public override func tableView (
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         let cellModel = tableModel[indexPath.row]
         let cell = FeedImageCell()
         cell.locationContainer.isHidden = (cellModel.location == nil)
         cell.locationLabel.text = cellModel.location
         cell.descriptionLabel.text = cellModel.description
+        cell.feedImageView.image = nil
         cell.feedImageContainer.startShimmering()
         tasks[indexPath] = imageLoader?.loadImageData(from: cellModel.url) { [weak cell] result in
+            let data = try? result.get()
+            cell?.feedImageView.image = data.map(UIImage.init) ?? nil
             cell?.feedImageContainer.stopShimmering()
         }
         return cell
@@ -73,5 +83,13 @@ public final class FeedViewController: UITableViewController {
     ){
         tasks[indexPath]?.cancel()
         tasks[indexPath] = nil
+    }
+    
+    public override func tableView (
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ){
+        tasks[indexPath]?.start()
     }
 }

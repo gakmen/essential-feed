@@ -1,5 +1,5 @@
 //
-//  FeedItem.swift
+//  FeedImage.swift
 //  EssentialFeed
 //
 //  Created by  Gosha Akmen on 17.02.2023.

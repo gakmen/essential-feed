@@ -454,9 +454,6 @@ final class FeedViewControllerTests: XCTestCase {
             func cancel() {
                 cancelCallback()
             }
-            func start() {
-                
-            }
         }
         
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {

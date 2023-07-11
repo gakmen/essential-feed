@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		720B77022A5D1D4900BE89C8 /* FeedUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720B77012A5D1D4900BE89C8 /* FeedUIComposer.swift */; };
 		7211DB1D29F2B9A0004A031D /* FeedCacheTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7211DB1C29F2B9A0004A031D /* FeedCacheTestHelpers.swift */; };
 		7211DB1F29F2BB00004A031D /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7211DB1E29F2BB00004A031D /* SharedTestHelpers.swift */; };
 		7217D0E629E17DBC00E6D75D /* RemoteFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7217D0E529E17DBC00E6D75D /* RemoteFeedItem.swift */; };
@@ -116,6 +117,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		720B77012A5D1D4900BE89C8 /* FeedUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIComposer.swift; sourceTree = "<group>"; };
 		7211DB1C29F2B9A0004A031D /* FeedCacheTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCacheTestHelpers.swift; sourceTree = "<group>"; };
 		7211DB1E29F2BB00004A031D /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		7217D0E529E17DBC00E6D75D /* RemoteFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedItem.swift; sourceTree = "<group>"; };
@@ -222,6 +224,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		720B77002A5D1D2900BE89C8 /* Composers */ = {
+			isa = PBXGroup;
+			children = (
+				720B77012A5D1D4900BE89C8 /* FeedUIComposer.swift */,
+			);
+			path = Composers;
+			sourceTree = "<group>";
+		};
 		7238498E29D9A31400E50D8F /* Feed Cache */ = {
 			isa = PBXGroup;
 			children = (
@@ -295,6 +305,7 @@
 		72672CCC2A5982790057940D /* Feed UI */ = {
 			isa = PBXGroup;
 			children = (
+				720B77002A5D1D2900BE89C8 /* Composers */,
 				72672CCD2A5982870057940D /* Controllers */,
 				72672CCE2A5982910057940D /* Views */,
 			);
@@ -696,6 +707,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72672CCB2A597F3C0057940D /* FeedImageDataLoader.swift in Sources */,
+				720B77022A5D1D4900BE89C8 /* FeedUIComposer.swift in Sources */,
 				7269829E2A50A65A00CB9C75 /* FeedViewController.swift in Sources */,
 				7258E9092A5AE0A2002A8282 /* FeedRefreshViewController.swift in Sources */,
 				7258E90B2A5B0769002A8282 /* FeedImageCellController.swift in Sources */,

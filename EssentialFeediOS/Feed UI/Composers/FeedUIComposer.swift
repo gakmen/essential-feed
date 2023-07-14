@@ -23,7 +23,7 @@ public struct FeedUIComposer {
     ) -> ([FeedImage]) -> Void {
         return { [weak controller] feed in
             controller?.tableModel = feed.map { model in
-                let feedImageViewModel = FeedImageViewModel(loader, model)
+                let feedImageViewModel = FeedImageViewModel(loader, model, UIImage.init)
                 return FeedImageCellController(viewModel: feedImageViewModel)
             }
         }

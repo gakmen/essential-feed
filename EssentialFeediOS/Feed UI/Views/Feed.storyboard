@@ -124,6 +124,7 @@
                         <connections>
                             <outlet property="dataSource" destination="vOm-w8-a4a" id="ds6-cw-G2s"/>
                             <outlet property="delegate" destination="vOm-w8-a4a" id="dRx-uU-n2D"/>
+                            <outlet property="prefetchDataSource" destination="vOm-w8-a4a" id="3eK-ZV-S0b"/>
                         </connections>
                     </tableView>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="JLP-iT-Sld">

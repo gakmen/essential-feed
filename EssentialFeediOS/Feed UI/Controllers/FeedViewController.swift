@@ -49,7 +49,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         let cellController = getCellController(forRowAt: indexPath)
-        return cellController.view()
+        return cellController.view(in: tableView)
     }
     
     public override func tableView (

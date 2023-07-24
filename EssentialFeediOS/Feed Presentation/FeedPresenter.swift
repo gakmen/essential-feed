@@ -24,6 +24,8 @@ final class FeedPresenter {
         self.loadingView = loadingView
     }
     
+    static var title = "My Feed"
+    
     func didStartLoadingFeed() {
         loadingView.display(FeedLoadingViewModel(isLoading: true))
     }

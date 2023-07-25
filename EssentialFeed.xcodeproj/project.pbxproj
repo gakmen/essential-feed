@@ -371,18 +371,10 @@
 		7277A9622A6F841A00E3FA8D /* FeedUI */ = {
 			isa = PBXGroup;
 			children = (
-				7277A9632A6F842D00E3FA8D /* Controllers */,
-			);
-			path = FeedUI;
-			sourceTree = "<group>";
-		};
-		7277A9632A6F842D00E3FA8D /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
 				7277A9642A6F844300E3FA8D /* Helpers */,
 				729D51E32A4F3349009CB3F9 /* FeedViewControllerTests.swift */,
 			);
-			path = Controllers;
+			path = FeedUI;
 			sourceTree = "<group>";
 		};
 		7277A9642A6F844300E3FA8D /* Helpers */ = {

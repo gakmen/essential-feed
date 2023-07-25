@@ -42,7 +42,7 @@
 		7269829E2A50A65A00CB9C75 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269829D2A50A65A00CB9C75 /* FeedViewController.swift */; };
 		726982A02A52974700CB9C75 /* FeedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7269829F2A52974700CB9C75 /* FeedImageCell.swift */; };
 		7277A95D2A6E484800E3FA8D /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7277A95C2A6E484800E3FA8D /* Feed.strings */; };
-		7277A9662A6F85BC00E3FA8D /* FeedViewControllerTests+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277A9652A6F85BC00E3FA8D /* FeedViewControllerTests+Localization.swift */; };
+		7277A9662A6F85BC00E3FA8D /* FeedUIIntegrationTests +Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277A9652A6F85BC00E3FA8D /* FeedUIIntegrationTests +Localization.swift */; };
 		7277A9682A6F88B600E3FA8D /* FeedViewController+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277A9672A6F88B600E3FA8D /* FeedViewController+TestHelpers.swift */; };
 		7277A96A2A6F894600E3FA8D /* UIRefreshControl+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277A9692A6F894600E3FA8D /* UIRefreshControl+TestHelpers.swift */; };
 		7277A96C2A6F89B600E3FA8D /* UIButton+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7277A96B2A6F89B600E3FA8D /* UIButton+TestHelpers.swift */; };
@@ -167,7 +167,7 @@
 		7269829D2A50A65A00CB9C75 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		7269829F2A52974700CB9C75 /* FeedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCell.swift; sourceTree = "<group>"; };
 		7277A95C2A6E484800E3FA8D /* Feed.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Feed.strings; sourceTree = "<group>"; };
-		7277A9652A6F85BC00E3FA8D /* FeedViewControllerTests+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedViewControllerTests+Localization.swift"; sourceTree = "<group>"; };
+		7277A9652A6F85BC00E3FA8D /* FeedUIIntegrationTests +Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedUIIntegrationTests +Localization.swift"; sourceTree = "<group>"; };
 		7277A9672A6F88B600E3FA8D /* FeedViewController+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedViewController+TestHelpers.swift"; sourceTree = "<group>"; };
 		7277A9692A6F894600E3FA8D /* UIRefreshControl+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+TestHelpers.swift"; sourceTree = "<group>"; };
 		7277A96B2A6F89B600E3FA8D /* UIButton+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+TestHelpers.swift"; sourceTree = "<group>"; };
@@ -392,7 +392,7 @@
 		7277A9642A6F844300E3FA8D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				7277A9652A6F85BC00E3FA8D /* FeedViewControllerTests+Localization.swift */,
+				7277A9652A6F85BC00E3FA8D /* FeedUIIntegrationTests +Localization.swift */,
 				7277A9672A6F88B600E3FA8D /* FeedViewController+TestHelpers.swift */,
 				7277A9692A6F894600E3FA8D /* UIRefreshControl+TestHelpers.swift */,
 				7277A96B2A6F89B600E3FA8D /* UIButton+TestHelpers.swift */,
@@ -804,7 +804,7 @@
 			files = (
 				7277A9682A6F88B600E3FA8D /* FeedViewController+TestHelpers.swift in Sources */,
 				7277A96A2A6F894600E3FA8D /* UIRefreshControl+TestHelpers.swift in Sources */,
-				7277A9662A6F85BC00E3FA8D /* FeedViewControllerTests+Localization.swift in Sources */,
+				7277A9662A6F85BC00E3FA8D /* FeedUIIntegrationTests +Localization.swift in Sources */,
 				7277A9722A6F8D4300E3FA8D /* FeedUIIntegrationTests+LoaderSpy.swift in Sources */,
 				7277A96E2A6F8C3E00E3FA8D /* UIImage+TestHelpers.swift in Sources */,
 				729D51EB2A506506009CB3F9 /* XCTTestCase+MemoryLeakTrcaking.swift in Sources */,

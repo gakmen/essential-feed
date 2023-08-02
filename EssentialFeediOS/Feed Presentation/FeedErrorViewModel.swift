@@ -7,5 +7,13 @@
 
 struct FeedErrorViewModel {
     var message: String?
+    
+    static var noError: FeedErrorViewModel {
+        FeedErrorViewModel(message: .none)
+    }
+    
+    static func error(_ message: String) -> FeedErrorViewModel {
+        FeedErrorViewModel(message: message)
+    }
 }
 

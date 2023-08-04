@@ -63,7 +63,7 @@ class FeedPresenterTests: XCTestCase {
             case display(errorMessage: String?)
         }
         
-        var messages = [Message]()
+        private(set) var messages = [Message]()
         
         func display(_ viewModel: FeedErrorViewModel) {
             messages.append(.display(errorMessage: viewModel.message))

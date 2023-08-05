@@ -1,0 +1,10 @@
+/* 
+  Feed.strings
+  EssentialFeed
+
+  Created by  Gosha Akmen on 05.08.2023.
+  
+*/
+
+"FEED_VIEW_TITLE" = "Моя лента";
+"FEED_VIEW_CONNECTION_ERROR" = "Нет связи с свервером";

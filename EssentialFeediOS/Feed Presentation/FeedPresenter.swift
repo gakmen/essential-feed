@@ -39,7 +39,7 @@ final class FeedPresenter {
         )
     }
     
-    var feedLoadingErrorMessage: String {
+    private var feedLoadingErrorMessage: String {
         return NSLocalizedString (
             "FEED_VIEW_CONNECTION_ERROR",
             tableName: "Feed",
@@ -58,7 +58,7 @@ final class FeedPresenter {
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
     
-    func didFinishLoadingFeed(with eror: Error) {
+    func didFinishLoadingFeed(with error: Error) {
         loadingView.display(FeedLoadingViewModel(isLoading: false))
         errorView.display(.error(feedLoadingErrorMessage))
     }

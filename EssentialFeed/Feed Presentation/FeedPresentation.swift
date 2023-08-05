@@ -7,31 +7,15 @@
 
 import Foundation
 
-public struct FeedErrorViewModel {
-    public var message: String?
-    
-    static var noError: FeedErrorViewModel {
-        FeedErrorViewModel(message: .none)
-    }
-    
-    static func error(_ message: String) -> FeedErrorViewModel {
-        FeedErrorViewModel(message: message)
-    }
-}
+
 public protocol FeedErrorView {
     func display(_ viewModel: FeedErrorViewModel)
 }
 
-public struct FeedLoadingViewModel {
-    public let isLoading: Bool
-}
 public protocol FeedLoadingView {
     func display(_ viewModel: FeedLoadingViewModel)
 }
 
-public struct FeedViewModel {
-    public let feed: [FeedImage]
-}
 public protocol FeedView {
     func display(_ viewModel: FeedViewModel)
 }

@@ -26,9 +26,11 @@ protocol FeedImageView {
 class FeedImagePresenter<View: FeedImageView, Image> where View.Image == Image {
     
     var view: View
+    private let imageTransformer: (Data) -> Image?
     
-    init(view: View) {
+    init(view: View, imageTransformer: @escaping (Data) -> Image?) {
         self.view = view
+        self.imageTransformer = imageTransformer
     }
     
     func didStartLoadingImageData(for model: FeedImage) {
@@ -42,6 +44,27 @@ class FeedImagePresenter<View: FeedImageView, Image> where View.Image == Image {
             )
         )
     }
+    
+    private struct InvalidImageDataError: Error {}
+    
+    func didFinishLoadingImageData(with data: Data, for model: FeedImage) {
+        guard let image = imageTransformer(data)
+        else { return didFinishLoadingImageData(with: InvalidImageDataError(), for: model) }
+        
+        view.display (
+            FeedImageViewModel (
+                description: model.description,
+                location: model.location,
+                image: image,
+                isLoading: false,
+                shouldRetry: false
+            )
+        )
+    }
+    
+    func didFinishLoadingImageData(with error: Error, for model: FeedImage) {
+        
+    }
 }
 
 import XCTest
@@ -52,7 +75,7 @@ class FeedImagePresenterTests: XCTestCase {
     func test_init_sendsNoMessagesToView() {
         let (_, view) = makeSUT()
         
-        XCTAssertTrue(view.messages.isEmpty)
+        XCTAssertTrue(view.message.isEmpty)
     }
     
     func test_didStartLoadingImageData_showsLoadingAnimationAndHidesImageAndRetryControl() {
@@ -61,16 +84,30 @@ class FeedImagePresenterTests: XCTestCase {
         
         sut.didStartLoadingImageData(for: feedImage)
         
-        XCTAssertEqual(view.messages[0].image, nil)
-        XCTAssertEqual(view.messages[0].isLoading, true)
-        XCTAssertEqual(view.messages[0].shouldRetry, false)
+        XCTAssertEqual(view.message[0].image, nil)
+        XCTAssertEqual(view.message[0].isLoading, true)
+        XCTAssertEqual(view.message[0].shouldRetry, false)
+    }
+    
+    func test_didFinishLoadingImageData_showsImageHidesLoadingAndRetryControl() {
+        let (sut, view) = makeSUT()
+        let feedImage = uniqueImage()
+        let image = NSImage(systemSymbolName: "circle", accessibilityDescription: nil)!
+        let imageData = image.tiffRepresentation!
+        
+        sut.didFinishLoadingImageData(with: imageData, for: feedImage)
+        
+        XCTAssertNotNil(view.message[0].image)
+        XCTAssertEqual(view.message[0].isLoading, false)
+        XCTAssertEqual(view.message[0].shouldRetry, false)
     }
     
     //MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedImagePresenter<ViewSpy, NSImage>, view: ViewSpy) {
         let view = ViewSpy()
-        let sut = FeedImagePresenter<FeedImagePresenterTests.ViewSpy, NSImage>(view: view)
+        let imageTransformer = { NSImage.init(data: $0) }
+        let sut = FeedImagePresenter<FeedImagePresenterTests.ViewSpy, NSImage>(view: view, imageTransformer: imageTransformer)
         trackForMemoryLeaks(view, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, view)
@@ -79,10 +116,10 @@ class FeedImagePresenterTests: XCTestCase {
     private class ViewSpy: FeedImageView {
         typealias Image = NSImage
         
-        var messages = [FeedImageViewModel<NSImage>]()
+        var message = [FeedImageViewModel<NSImage>]()
         
         func display(_ viewModel: FeedImageViewModel<NSImage>) {
-            messages.append(viewModel)
+            message.append(viewModel)
         }
         
     }

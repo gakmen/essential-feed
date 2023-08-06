@@ -30,9 +30,22 @@ class FeedImagePresenter<View: FeedImageView, Image> where View.Image == Image {
     init(view: View) {
         self.view = view
     }
+    
+    func didStartLoadingImageData(for model: FeedImage) {
+        view.display (
+            FeedImageViewModel (
+                description: model.description,
+                location: model.location,
+                image: nil,
+                isLoading: true,
+                shouldRetry: false
+            )
+        )
+    }
 }
 
 import XCTest
+import EssentialFeed
 
 class FeedImagePresenterTests: XCTestCase {
     
@@ -42,23 +55,34 @@ class FeedImagePresenterTests: XCTestCase {
         XCTAssertTrue(view.messages.isEmpty)
     }
     
+    func test_didStartLoadingImageData_showsLoadingAnimationAndHidesImageAndRetryControl() {
+        let (sut, view) = makeSUT()
+        let feedImage = uniqueImage()
+        
+        sut.didStartLoadingImageData(for: feedImage)
+        
+        XCTAssertEqual(view.messages[0].image, nil)
+        XCTAssertEqual(view.messages[0].isLoading, true)
+        XCTAssertEqual(view.messages[0].shouldRetry, false)
+    }
+    
     //MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedImagePresenter<ViewSpy, Any>, view: ViewSpy) {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedImagePresenter<ViewSpy, NSImage>, view: ViewSpy) {
         let view = ViewSpy()
-        let sut = FeedImagePresenter<FeedImagePresenterTests.ViewSpy, Any>(view: view)
+        let sut = FeedImagePresenter<FeedImagePresenterTests.ViewSpy, NSImage>(view: view)
         trackForMemoryLeaks(view, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, view)
     }
     
     private class ViewSpy: FeedImageView {
-        typealias Image = Any
+        typealias Image = NSImage
         
-        var messages = [Any]()
+        var messages = [FeedImageViewModel<NSImage>]()
         
-        func display(_ viewModel: FeedImageViewModel<Any>) {
-            
+        func display(_ viewModel: FeedImageViewModel<NSImage>) {
+            messages.append(viewModel)
         }
         
     }

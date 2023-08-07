@@ -13,7 +13,7 @@ class FeedImagePresenterTests: XCTestCase {
     func test_init_sendsNoMessagesToView() {
         let (_, view) = makeSUT()
         
-        XCTAssertTrue(view.message.isEmpty)
+        XCTAssertTrue(view.message.isEmpty, "Expected no view messages")
     }
     
     func test_didStartLoadingImageData_showsLoadingAnimationAndHidesImageAndRetryControl() {

@@ -28,14 +28,13 @@ class FeedImagePresenterTests: XCTestCase {
     }
     
     func test_didFinishLoadingImageData_showsImageHidesLoadingAndRetryControl() {
-        let (sut, view) = makeSUT()
         let feedImage = uniqueImage()
-        let image = NSImage(systemSymbolName: "circle", accessibilityDescription: nil)!
-        let imageData = image.tiffRepresentation!
+        let transformedImage = AnyImage()
+        let (sut, view) = makeSUT(imageTransformer: {_ in transformedImage})
         
-        sut.didFinishLoadingImageData(with: imageData, for: feedImage)
+        sut.didFinishLoadingImageData(with: Data(), for: feedImage)
         
-        XCTAssertNotNil(view.message[0].image)
+        XCTAssertEqual(view.message[0].image, transformedImage)
         XCTAssertEqual(view.message[0].isLoading, false)
         XCTAssertEqual(view.message[0].shouldRetry, false)
     }
@@ -53,21 +52,26 @@ class FeedImagePresenterTests: XCTestCase {
     
     //MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedImagePresenter<ViewSpy, NSImage>, view: ViewSpy) {
+    private func makeSUT (
+        imageTransformer: @escaping (Data) -> AnyImage? = {_ in nil},
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> (sut: FeedImagePresenter<ViewSpy, AnyImage>, view: ViewSpy) {
+        
         let view = ViewSpy()
-        let imageTransformer = { NSImage.init(data: $0) }
-        let sut = FeedImagePresenter<FeedImagePresenterTests.ViewSpy, NSImage>(view: view, imageTransformer: imageTransformer)
+        let sut = FeedImagePresenter(view: view, imageTransformer: imageTransformer)
         trackForMemoryLeaks(view, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, view)
     }
     
+    private struct AnyImage: Equatable {}
+    
     private class ViewSpy: FeedImageView {
-        typealias Image = NSImage
         
-        var message = [FeedImageViewModel<NSImage>]()
+        private(set) var message = [FeedImageViewModel<AnyImage>]()
         
-        func display(_ viewModel: FeedImageViewModel<NSImage>) {
+        func display(_ viewModel: FeedImageViewModel<AnyImage>) {
             message.append(viewModel)
         }
         

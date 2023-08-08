@@ -91,7 +91,7 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
     }
     
     private func testSpecificStoreURL() -> URL {
-        return cachesDirectory().appending(path: "\(type(of: self)).store")
+        return cachesDirectory().appendingPathExtension("\(type(of: self)).store")
     }
     
     private func cachesDirectory() -> URL {

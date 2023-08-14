@@ -1,5 +1,5 @@
 //
-//  FeedImageDataLoaderTests.swift
+//  RemoteFeedImageDataLoaderTests.swift
 //  EssentialFeedTests
 //
 //  Created by Георгий Акмен on 08.08.2023.
@@ -8,64 +8,7 @@
 import XCTest
 import EssentialFeed
 
-class RemoteFeedImageDataLoader {
-    typealias Result = FeedImageDataLoader.Result
-    
-    let client: HTTPClient
-    
-    init(client: HTTPClient) {
-        self.client = client
-    }
-    
-    public enum Error: Swift.Error {
-        case invalidData
-    }
-    
-    private final class HTTPTaskWrapper: FeedImageDataLoaderTask {
-        private var completion: ((FeedImageDataLoader.Result) -> Void)?
-        
-        var wrapped: HTTPClientTask?
-        
-        init(completion: (@escaping (FeedImageDataLoader.Result) -> Void)) {
-            self.completion = completion
-        }
-        
-        func complete(with result: FeedImageDataLoader.Result) {
-            completion?(result)
-        }
-        
-        func preventFurtherCompletions() {
-            completion = nil
-        }
-        
-        func cancel() {
-            preventFurtherCompletions()
-            wrapped?.cancel()
-        }
-    }
-    
-    @discardableResult
-    func loadImageData(from url: URL, completion: @escaping (Result) -> Void) -> FeedImageDataLoaderTask {
-        let task = HTTPTaskWrapper(completion: completion)
-        task.wrapped = client.get(from: url) { [weak self] result in
-            guard self != nil else { return }
-            
-            switch result {
-            case let .success((data, response)):
-                if response.statusCode == 200, !data.isEmpty {
-                    task.complete(with: .success(data))
-                } else {
-                    task.complete(with: .failure(Error.invalidData))
-                }
-            case let .failure(error):
-                task.complete(with: .failure(error))
-            }
-        }
-        return task
-    }
-}
-
-class FeedImageDataLoaderTests: XCTestCase {
+class RemoteFeedImageDataLoaderTests: XCTestCase {
     
     func test_init_doesNotRequestDataFromURL() {
         let (_, client) = makeSUT()

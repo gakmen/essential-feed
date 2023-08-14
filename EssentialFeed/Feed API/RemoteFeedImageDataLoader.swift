@@ -5,7 +5,7 @@
 //  Created by Георгий Акмен on 14.08.2023.
 //
 
-public class RemoteFeedImageDataLoader {
+public class RemoteFeedImageDataLoader: FeedImageDataLoader {
     public typealias Result = FeedImageDataLoader.Result
     
     let client: HTTPClient

@@ -221,10 +221,6 @@ class FeedImageDataLoaderTests: XCTestCase {
         
     }
     
-    private func anyData() -> Data {
-        return Data("any data".utf8)
-    }
-    
     private func failure(_ error: RemoteFeedImageDataLoader.Error) -> FeedImageDataLoader.Result {
         .failure(error)
     }

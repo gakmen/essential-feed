@@ -103,7 +103,7 @@ class FeedPresenterTests: XCTestCase {
     private func makeImage (
         description: String? = nil,
         location: String? = nil,
-        url: URL = URL(filePath: "http://any-url.com")
+        url: URL = URL(string: "http://any-url.com")!
     ) -> FeedImage {
         return FeedImage(id: UUID(), description: description, location: location, url: url)
     }

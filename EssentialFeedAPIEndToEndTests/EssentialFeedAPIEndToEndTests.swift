@@ -41,8 +41,7 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
     
     private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> FeedLoader.Result? {
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let testServerUrl = URL (string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
-        let loader = RemoteFeedLoader(client: client, url: testServerUrl)
+        let loader = RemoteFeedLoader(client: client, url: feedTestServerURL)
         var receivedResult: FeedLoader.Result?
         
         trackForMemoryLeaks(client, file: file, line: line)
@@ -60,7 +59,7 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
     
     private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> FeedImageDataLoader.Result? {
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let testServerURL = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed/73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")!
+        let url = feedTestServerURL.appendingPathExtension("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
         let loader = RemoteFeedImageDataLoader(client: client)
         var receivedResult: FeedImageDataLoader.Result?
         
@@ -68,13 +67,17 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
         trackForMemoryLeaks(loader, file: file, line: line)
         
         let exp = expectation(description: "Wait for result to load")
-        _ = loader.loadImageData(from: testServerURL) { result in
+        _ = loader.loadImageData(from: url) { result in
             receivedResult = result
             exp.fulfill()
         }
         wait(for: [exp], timeout: 5.0)
         
         return receivedResult
+    }
+    
+    private var feedTestServerURL: URL {
+        URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
     }
     
     private func expectedImage(at index: Int) -> FeedImage {

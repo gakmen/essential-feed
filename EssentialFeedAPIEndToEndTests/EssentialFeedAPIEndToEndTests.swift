@@ -40,11 +40,8 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
     // MARK: - Helpers
     
     private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> FeedLoader.Result? {
-        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let loader = RemoteFeedLoader(client: client, url: feedTestServerURL)
+        let loader = RemoteFeedLoader(client: ephemeralClient(), url: feedTestServerURL)
         var receivedResult: FeedLoader.Result?
-        
-        trackForMemoryLeaks(client, file: file, line: line)
         trackForMemoryLeaks(loader, file: file, line: line)
         
         let exp = expectation(description: "Wait for result to load")
@@ -58,12 +55,9 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
     }
     
     private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> FeedImageDataLoader.Result? {
-        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let url = feedTestServerURL.appendingPathExtension("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
-        let loader = RemoteFeedImageDataLoader(client: client)
+        let loader = RemoteFeedImageDataLoader(client: ephemeralClient())
         var receivedResult: FeedImageDataLoader.Result?
-        
-        trackForMemoryLeaks(client, file: file, line: line)
         trackForMemoryLeaks(loader, file: file, line: line)
         
         let exp = expectation(description: "Wait for result to load")
@@ -78,6 +72,12 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
     
     private var feedTestServerURL: URL {
         URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
+    }
+    
+    private func ephemeralClient(file: StaticString = #file, line: UInt = #line) -> HTTPClient {
+        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+        trackForMemoryLeaks(client, file: file, line: line)
+        return client
     }
     
     private func expectedImage(at index: Int) -> FeedImage {

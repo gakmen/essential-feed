@@ -6,20 +6,34 @@
 //
 
 import XCTest
+import EssentialFeed
 
 protocol FeedImageDataStore {
-    func retrieve(from url: URL, completion: (Data) -> Void)
+    func retrieve(dataFor url: URL, completion: (Data) -> Void)
 }
 
-final class LocalFeedImageDataLoader {
+final class LocalFeedImageDataLoader: FeedImageDataLoader {
+    
+    private struct Task: FeedImageDataLoaderTask {
+        func cancel() {
+        
+        }
+    }
+    
     private let store: FeedImageDataStore
     
     init(store: FeedImageDataStore) {
         self.store = store
     }
     
-    func loadImageData(from url: URL) {
-        store.retrieve(from: url) { _ in }
+    func loadImageData (
+        from url: URL,
+        completion: @escaping (FeedImageDataLoader.Result) -> Void
+        
+    ) -> FeedImageDataLoaderTask {
+        
+        store.retrieve(dataFor: url) { _ in }
+        return Task()
     }
 }
 
@@ -28,43 +42,36 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
-        XCTAssertTrue(store.messages.isEmpty)
+        XCTAssertTrue(store.receivedMessages.isEmpty)
     }
     
     func test_loadImageData_requestsStoredDataForURL() {
         let url = anyURL()
         let (sut, store) = makeSUT()
         
-        sut.loadImageData(from: url)
+        _ = sut.loadImageData(from: url) { _ in }
         
-        XCTAssertEqual(store.requestedURL, url)
+        XCTAssertEqual(store.receivedMessages, [.retrieve(dataFor: url)])
     }
     
     //MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedStoreSpy) {
-        let store = FeedStoreSpy()
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: StoreSpy) {
+        let store = StoreSpy()
         let sut = LocalFeedImageDataLoader(store: store)
         return (sut, store)
     }
     
-    private class FeedStoreSpy: FeedImageDataStore {
+    private class StoreSpy: FeedImageDataStore {
         
-        enum ReceivedMessages {
-            case retrieve(URL)
+        enum Message: Equatable {
+            case retrieve(dataFor: URL)
         }
         
-        var requestedURL: URL? {
-            switch messages[0] {
-            case let .retrieve(url):
-                return url
-            }
-        }
+        private(set) var receivedMessages = [Message]()
         
-        var messages = [ReceivedMessages]()
-        
-        func retrieve(from url: URL, completion: (Data) -> Void) {
-            messages.append(.retrieve(url))
+        func retrieve(dataFor url: URL, completion: (Data) -> Void) {
+            receivedMessages.append(.retrieve(dataFor: url))
         }
     }
 }

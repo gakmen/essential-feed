@@ -24,6 +24,7 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
     
     public enum Error: Swift.Error {
         case failed
+        case notFound
     }
     
     private let store: FeedImageDataStore
@@ -39,12 +40,11 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
     ) -> FeedImageDataLoaderTask {
         
         store.retrieve(dataFor: url) { result in
-            switch result {
-            case .failure:
-                completion(.failure(Error.failed))
-            default:
-                break
-            }
+            completion (
+                result
+                .mapError { _ in Error.failed }
+                .flatMap { _ in .failure(Error.notFound) }
+            )
         }
         return Task()
     }
@@ -77,6 +77,15 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         })
     }
     
+    func test_loadImageData_deliversNotFoundErrorOnEmptyStore() {
+        let (sut, store) = makeSUT()
+        let notFound = FeedImageDataLoader.Result.failure(LocalFeedImageDataLoader.Error.notFound)
+        
+        expect(sut, toCompleteWith: notFound, when: {
+            store.complete(with: nil)
+        })
+    }
+    
     //MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: StoreSpy) {
@@ -99,6 +108,8 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
             switch (receivedResult, expectedResult) {
             case let (.failure(receivedError as LocalFeedImageDataLoader.Error), .failure(expectedError as LocalFeedImageDataLoader.Error)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
+            case let (.success(receivedData), .success(expectedData)):
+                XCTAssertEqual(receivedData, expectedData, file: file, line: line)
             default:
                 XCTFail("Expexcted \(expectedResult), got \(receivedResult) instead", file: file, line: line)
             }
@@ -126,6 +137,10 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         
         func complete(with error: Error, at index: Int = 0) {
             retrievalCompletions[index](.failure(error))
+        }
+        
+        func complete(with data: Data?, at index: Int = 0) {
+            retrievalCompletions[index](.success(data))
         }
     }
 }

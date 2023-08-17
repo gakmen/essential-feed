@@ -16,9 +16,15 @@ protocol FeedImageDataStore {
 
 final class LocalFeedImageDataLoader: FeedImageDataLoader {
     
-    private struct Task: FeedImageDataLoaderTask {
-        func cancel() {
+    private class Task: FeedImageDataLoaderTask {
+        var cancelled: Bool
         
+        init(cancelled: Bool) {
+            self.cancelled = cancelled
+        }
+        
+        func cancel() {
+            cancelled = true
         }
     }
     
@@ -39,14 +45,17 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
         
     ) -> FeedImageDataLoaderTask {
         
+        let task = Task(cancelled: false)
         store.retrieve(dataFor: url) { result in
-            completion (
-                result
-                .mapError { _ in Error.failed }
-                .flatMap { data in data.map{ .success($0) } ?? .failure(Error.notFound) }
-            )
+            if !task.cancelled {
+                completion (
+                    result
+                    .mapError { _ in Error.failed }
+                    .flatMap { data in data.map{ .success($0) } ?? .failure(Error.notFound) }
+                )
+            }
         }
-        return Task()
+        return task
     }
 }
 
@@ -93,6 +102,20 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         expect(sut, toCompleteWith: .success(foundData), when: {
             store.complete(with: foundData)
         })
+    }
+    
+    func test_loadImageData_doesNotDeliverResultAfterCancellingTask() {
+        let (sut, store) = makeSUT()
+        
+        var received = [FeedImageDataLoader.Result]()
+        let task = sut.loadImageData(from: anyURL()) { received.append($0) }
+        task.cancel()
+        
+        store.complete(with: anyNSError())
+        store.complete(with: nil)
+        store.complete(with: anyData())
+        
+        XCTAssertTrue(received.isEmpty, "Expected no received results after cancelling task")
     }
     
     //MARK: - Helpers

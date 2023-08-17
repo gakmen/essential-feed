@@ -17,14 +17,23 @@ protocol FeedImageDataStore {
 final class LocalFeedImageDataLoader: FeedImageDataLoader {
     
     private class Task: FeedImageDataLoaderTask {
-        var cancelled: Bool
         
-        init(cancelled: Bool) {
-            self.cancelled = cancelled
+        var completion: ((FeedImageDataLoader.Result) -> Void)?
+        
+        init(_ completion: @escaping (FeedImageDataLoader.Result) -> Void) {
+            self.completion = completion
+        }
+        
+        func complete(with result: FeedImageDataStore.Result) {
+            completion? (
+                result
+                .mapError { _ in Error.failed }
+                .flatMap { data in data.map{ .success($0) } ?? .failure(Error.notFound) }
+            )
         }
         
         func cancel() {
-            cancelled = true
+            completion = nil
         }
     }
     
@@ -45,15 +54,9 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
         
     ) -> FeedImageDataLoaderTask {
         
-        let task = Task(cancelled: false)
+        let task = Task(completion)
         store.retrieve(dataFor: url) { result in
-            if !task.cancelled {
-                completion (
-                    result
-                    .mapError { _ in Error.failed }
-                    .flatMap { data in data.map{ .success($0) } ?? .failure(Error.notFound) }
-                )
-            }
+            task.complete(with: result)
         }
         return task
     }

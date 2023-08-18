@@ -52,4 +52,8 @@ public final class LocalFeedImageDataLoader: FeedImageDataLoader {
         }
         return task
     }
+    
+    public func save(image data: Data, for url: URL) {
+        store.insert(image: data, for: url)
+    }
 }

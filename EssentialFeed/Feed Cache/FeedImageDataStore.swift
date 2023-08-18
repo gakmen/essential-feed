@@ -9,4 +9,5 @@ public protocol FeedImageDataStore {
     typealias Result = Swift.Result<Data?, Error>
     
     func retrieve(dataFor url: URL, completion: @escaping (Result) -> Void)
+    func insert(image data: Data, for url: URL)
 }

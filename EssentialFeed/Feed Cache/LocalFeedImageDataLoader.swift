@@ -5,32 +5,45 @@
 //  Created by Георгий Акмен on 18.08.2023.
 //
 
-public final class LocalFeedImageDataLoader: FeedImageDataLoader {
+public final class LocalFeedImageDataLoader {
     
     private let store: FeedImageDataStore
     
     public init(store: FeedImageDataStore) {
         self.store = store
     }
+}
+
+extension LocalFeedImageDataLoader {
+    public typealias SaveResult = Result<Void, LoadError>
     
-    public enum Error: Swift.Error {
+    public func save(image data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {
+        store.insert(image: data, for: url) { _ in }
+    }
+}
+
+extension LocalFeedImageDataLoader: FeedImageDataLoader {
+    
+    typealias LoadResult = FeedImageDataLoader.Result
+    
+    public enum LoadError: Swift.Error {
         case failed
         case notFound
     }
     
-    private class Task: FeedImageDataLoaderTask {
+    private class LoadImageDataTask: FeedImageDataLoaderTask {
         
-        var completion: ((FeedImageDataLoader.Result) -> Void)?
+        var completion: ((LoadResult) -> Void)?
         
-        init(_ completion: @escaping (FeedImageDataLoader.Result) -> Void) {
+        init(_ completion: @escaping (LoadResult) -> Void) {
             self.completion = completion
         }
         
-        func complete(with result: FeedImageDataStore.Result) {
+        func complete(with result: LoadResult) {
             completion? (
                 result
-                .mapError { _ in Error.failed }
-                .flatMap { data in data.map{ .success($0) } ?? .failure(Error.notFound) }
+                .mapError { _ in LoadError.failed }
+                .flatMap { data in data.map{ .success($0) } ?? .failure(LoadError.notFound) }
             )
         }
         
@@ -45,15 +58,11 @@ public final class LocalFeedImageDataLoader: FeedImageDataLoader {
         
     ) -> FeedImageDataLoaderTask {
         
-        let task = Task(completion)
+        let task = LoadImageDataTask(completion)
         store.retrieve(dataFor: url) { [weak self] result in
             guard self != nil else { return }
             task.complete(with: result)
         }
         return task
-    }
-    
-    public func save(image data: Data, for url: URL) {
-        store.insert(image: data, for: url)
     }
 }

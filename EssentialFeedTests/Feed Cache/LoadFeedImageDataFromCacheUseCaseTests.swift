@@ -16,16 +16,6 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         XCTAssertTrue(store.receivedMessages.isEmpty)
     }
     
-    func test_saveImageData_requestsImageDataInsertionForURL() {
-        let (sut, store) = makeSUT()
-        let url = anyURL()
-        let data = anyData()
-        
-        sut.save(image: data, for: url) { _ in }
-        
-        XCTAssertEqual(store.receivedMessages, [.insert(data: data, for: url)])
-    }
-    
     func test_loadImageData_requestsStoredDataForURL() {
         let url = anyURL()
         let (sut, store) = makeSUT()
@@ -92,7 +82,9 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
     
     //MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line)
+    -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
+        
         let store = FeedImageDataStoreSpy()
         let sut = LocalFeedImageDataLoader(store: store)
         return (sut, store)

@@ -23,7 +23,7 @@ extension LocalFeedImageDataLoader {
     
     public func save(image data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {
         store.insert(image: data, for: url) { result in
-            completion(.failure(.failed))
+            completion(result.mapError { _ in SaveError.failed })
         }
     }
 }

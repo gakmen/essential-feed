@@ -74,21 +74,27 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
     
     private func insert(_ data: Data, for url: URL, into sut: CoreDataFeedStore, file: StaticString = #file, line: UInt = #line) {
         let image = makeLocalImage(for: url)
+        let exp = expectation(description: "Wait for insertion completion")
         
         sut.insert([image], Date()) { result in
             switch result {
+                
             case let .failure(error):
-                XCTFail("Expected successful feed item insertion, got error: \(error) instead", file: file, line: line)
-            case .success(()):
+                XCTFail("Expected successful \(image) insertion, got error: \(error) instead", file: file, line: line)
+            
+            case .success:
                 sut.insert(image: data, for: url) { result in
+                    
                     switch result {
                     case let .failure(error):
-                        XCTFail("Expected successful image data insertion, got error: \(error) instead", file: file, line: line)
+                        XCTFail("Expected successful \(data) insertion, got error: \(error) instead", file: file, line: line)
                     default:
                         return
                     }
                 }
             }
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 1.0)
     }
 }

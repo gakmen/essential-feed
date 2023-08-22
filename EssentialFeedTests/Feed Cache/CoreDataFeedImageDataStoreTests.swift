@@ -47,6 +47,22 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
         expect(sut, toCompleteRetrievalWith: .success(lastStoredData), for: anyURL())
     }
     
+    func test_sideEffects_runSerially() {
+        let sut = makeSUT()
+        let url = anyURL()
+        
+        let op1 = expectation(description: "Operation1")
+        sut.insert([makeLocalImage(for: url)], Date(), completion: { _ in op1.fulfill() })
+        
+        let op2 = expectation(description: "Operation2")
+        sut.insert(image: anyData(), for: url, completion: { _ in op2.fulfill() })
+        
+        let op3 = expectation(description: "Operation3")
+        sut.insert(image: anyData(), for: url, completion: { _ in op3.fulfill() })
+        
+        wait(for: [op1, op2, op3], timeout: 1.0, enforceOrder: true)
+    }
+    
     //MARK: - Helpers
     
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> CoreDataFeedStore {
@@ -91,19 +107,15 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
                 
             case let .failure(error):
                 XCTFail("Expected successful \(image) insertion, got error: \(error) instead", file: file, line: line)
-            
+                exp.fulfill()
             case .success:
                 sut.insert(image: data, for: url) { result in
-                    
-                    switch result {
-                    case let .failure(error):
-                        XCTFail("Expected successful \(data) insertion, got error: \(error) instead", file: file, line: line)
-                    default:
-                        return
+                    if case let Result.failure(error) = result {
+                        XCTFail("Failed to insert \(data) with error \(error)", file: file, line: line)
                     }
+                    exp.fulfill()
                 }
             }
-            exp.fulfill()
         }
         wait(for: [exp], timeout: 1.0)
     }

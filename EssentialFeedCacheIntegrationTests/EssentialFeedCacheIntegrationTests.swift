@@ -49,6 +49,17 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
         expect(feedLoaderToPerformLoad, toLoad: lastSavedFeed)
     }
     
+    func test_validateFeedCache_doesNotDeleteRecentlySavedFeed() {
+        let feedLoaderToPerformSave = makeFeedLoader()
+        let feedLoaderToValidate = makeFeedLoader()
+        let savedFeed = uniqueImageFeed().models
+        
+        save(savedFeed, with: feedLoaderToPerformSave)
+        feedLoaderToValidate.validateCache()
+        
+        expect(feedLoaderToPerformSave, toLoad: savedFeed)
+    }
+    
     //MARK: - LocalFeedImageDataLoaderTests
     
     func test_loadImageData_deliversSavedDataOnASeparateInstance() {

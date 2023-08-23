@@ -55,9 +55,20 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
         let savedFeed = uniqueImageFeed().models
         
         save(savedFeed, with: feedLoaderToPerformSave)
-        feedLoaderToValidate.validateCache()
+        validateCache(with: feedLoaderToValidate)
         
         expect(feedLoaderToPerformSave, toLoad: savedFeed)
+    }
+    
+    func test_validateFeedCache_deletesInvalidCache() {
+        let feedLoaderToPerformSave = makeFeedLoader(currentDate: .distantPast)
+        let feedLoaderToValidate = makeFeedLoader(currentDate: Date())
+        let savedFeed = uniqueImageFeed().models
+        
+        save(savedFeed, with: feedLoaderToPerformSave)
+        validateCache(with: feedLoaderToValidate)
+        
+        expect(feedLoaderToPerformSave, toLoad: [])
     }
     
     //MARK: - LocalFeedImageDataLoaderTests
@@ -94,10 +105,10 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
     
     //MARK: - Helpers
     
-    private func makeFeedLoader(file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
+    private func makeFeedLoader(currentDate: Date = Date(), file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
         let storeURL = testSpecificStoreURL()
         let store = try! CoreDataFeedStore(storeURL: storeURL)
-        let sut = LocalFeedLoader(store: store, currentDate: Date.init)
+        let sut = LocalFeedLoader(store: store, currentDate: { currentDate })
         trackForMemoryLeaks(store, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
@@ -112,6 +123,18 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
             expSave.fulfill()
         }
         wait(for: [expSave], timeout: 1.0)
+    }
+    
+    private func validateCache(with loader: LocalFeedLoader, file: StaticString = #file, line: UInt = #line) {
+        let exp = expectation(description: "Wait for validation completion")
+        
+        loader.validateCache() { result in
+            if case let Result.failure(error) = result {
+                XCTFail("Expected successful validation, got error: \(error) instead", file: file, line: line)
+            }
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
     }
     
     private func expect(_ sut: LocalFeedLoader, toLoad savedFeed: [FeedImage], file: StaticString = #file, line: UInt = #line) {

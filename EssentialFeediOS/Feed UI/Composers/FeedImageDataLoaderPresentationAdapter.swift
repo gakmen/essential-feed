@@ -29,7 +29,9 @@ final class FeedImageDataLoaderPresentationAdapter <View: FeedImageView, Image>:
             guard let self else {return}
             switch result {
             case let .success(data):
-                self.presenter?.didFinishLoadingImageData(with: data, for: self.model)
+                if let data {
+                    self.presenter?.didFinishLoadingImageData(with: data, for: self.model)
+                }
             case let .failure(error):
                 self.presenter?.didFinishLoadingImageData(with: error, for: self.model)
             }

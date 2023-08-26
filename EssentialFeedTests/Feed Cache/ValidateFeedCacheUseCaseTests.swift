@@ -130,7 +130,6 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         let feed = uniqueImageFeed().local
         let fixedCurrentDate = Date()
         let expiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: -1)
-        let deletionError = anyNSError()
         let (store, sut) = makeSUT(currentDate: { fixedCurrentDate })
         
         expect(sut, toCompleteWith: .success(()), when: {

@@ -14,16 +14,25 @@ struct ImageDataLoaderTask: FeedImageDataLoaderTask {
 
 class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
     let primary: FeedImageDataLoader
+    let fallback: FeedImageDataLoader
     
     init(primary: FeedImageDataLoader, fallback: FeedImageDataLoader) {
         self.primary = primary
+        self.fallback = fallback
     }
     
     func loadImageData (
         from url: URL,
         completion: @escaping (FeedImageDataLoader.Result) -> Void
     ) -> FeedImageDataLoaderTask {
-        return primary.loadImageData(from: url, completion: completion)
+        return primary.loadImageData(from: url) { [weak self] result in
+            switch result {
+            case let .success(imageData):
+                completion(.success(imageData))
+            case .failure:
+                _ = self?.fallback.loadImageData(from: url, completion: completion)
+            }
+        }
     }
 }
 
@@ -32,21 +41,35 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     func test_loadImageData_deliversPrimaryImageDataOnPrimarySuccess() {
         let primaryImageData = anyData()
         let fallbackImageData = anyData()
-        let sut = makeSUT(primary: primaryImageData, fallback: fallbackImageData)
+        let sut = makeSUT(primaryResult: .success(primaryImageData), fallbackResult: .success(fallbackImageData))
         
         expect(sut, toCompleteWith: .success(primaryImageData))
+    }
+    
+    func test_loadImageData_deliversFallbackImageDataOnPrimaryFailure() {
+        let fallbackImageData = anyData()
+        let sut = makeSUT(primaryResult: .failure(anyNSError()), fallbackResult: .success(fallbackImageData))
+        
+        expect(sut, toCompleteWith: .success(fallbackImageData))
+    }
+    
+    func test_loadImageData_failsOnBothPrimaryAndFallbackFailure() {
+        let sut = makeSUT(primaryResult: .failure(anyNSError()), fallbackResult: .failure(anyNSError()))
+        
+        expect(sut, toCompleteWith: .failure(anyNSError()))
     }
     
     //MARK: - Helpers
     
     private func makeSUT (
-        primary: Data,
-        fallback: Data,
+        primaryResult: FeedImageDataLoader.Result,
+        fallbackResult: FeedImageDataLoader.Result,
         file: StaticString = #file,
         line: UInt = #line
     ) -> FeedImageDataLoaderWithFallbackComposite {
-        let primaryImageLoader = ImageLoaderStub(result: .success(primary))
-        let fallbackImageLoader = ImageLoaderStub(result: .success(fallback))
+        
+        let primaryImageLoader = ImageLoaderStub(result: primaryResult)
+        let fallbackImageLoader = ImageLoaderStub(result: fallbackResult)
         let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryImageLoader, fallback: fallbackImageLoader)
         trackForMemoryLeaks(primaryImageLoader, file: file, line: line)
         trackForMemoryLeaks(fallbackImageLoader, file: file, line: line)
@@ -103,5 +126,9 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     
     private func anyData() -> Data {
         return Data("any data".utf8)
+    }
+    
+    private func anyNSError() -> NSError {
+        return NSError(domain: "any error", code: 0)
     }
 }

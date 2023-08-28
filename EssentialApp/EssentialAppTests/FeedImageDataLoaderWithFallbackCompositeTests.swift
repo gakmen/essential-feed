@@ -32,14 +32,33 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     func test_loadImageData_deliversPrimaryImageDataOnPrimarySuccess() {
         let primaryImageData = anyData()
         let fallbackImageData = anyData()
-        let primaryImageLoader = ImageLoaderStub(result: .success(primaryImageData))
-        let fallbackImageLoader = ImageLoaderStub(result: .success(fallbackImageData))
-        let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryImageLoader, fallback: fallbackImageLoader)
+        let sut = makeSUT(primary: primaryImageData, fallback: fallbackImageData)
         
         expect(sut, toCompleteWith: .success(primaryImageData))
     }
     
     //MARK: - Helpers
+    
+    private func makeSUT (
+        primary: Data,
+        fallback: Data,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> FeedImageDataLoaderWithFallbackComposite {
+        let primaryImageLoader = ImageLoaderStub(result: .success(primary))
+        let fallbackImageLoader = ImageLoaderStub(result: .success(fallback))
+        let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryImageLoader, fallback: fallbackImageLoader)
+        trackForMemoryLeaks(primaryImageLoader, file: file, line: line)
+        trackForMemoryLeaks(fallbackImageLoader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
+    }
+    
+    private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
+        addTeardownBlock { [weak instance] in
+            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+        }
+    }
     
     private func expect (
         _ sut: FeedImageDataLoaderWithFallbackComposite,

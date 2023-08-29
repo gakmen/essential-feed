@@ -48,27 +48,29 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     func test_init_doesNotLoadImageData() {
         let (_, primary, fallback) = makeSUT()
         
-        XCTAssertTrue(primary.messages.isEmpty, "Expected no loading with primary loader")
-        XCTAssertTrue(fallback.messages.isEmpty, "Expected no loading with fallback loader")
+        XCTAssertTrue(primary.loadedURLs.isEmpty, "Expected no loading with primary loader")
+        XCTAssertTrue(fallback.loadedURLs.isEmpty, "Expected no loading with fallback loader")
     }
     
     func test_loadImageData_loadsFromPrimaryLoaderFirst() {
         let (sut, primary, fallback) = makeSUT()
+        let url = anyURL()
         
-        _ = sut.loadImageData(from: anyURL()) { _ in }
+        _ = sut.loadImageData(from: url) { _ in }
         
-        XCTAssertFalse(primary.messages.isEmpty, "Expected to start loading with primary loader")
-        XCTAssertTrue(fallback.messages.isEmpty, "Expected no loading with fallback loader")
+        XCTAssertEqual(primary.loadedURLs, [url], "Expected to load URL with primary loader")
+        XCTAssertTrue(fallback.loadedURLs.isEmpty, "Expected no loaded URLs with fallback loader")
     }
     
     func test_loadImageData_loadsFromFallbackLoaderOnPrimaryFailure() {
         let (sut, primary, fallback) = makeSUT()
+        let url = anyURL()
         
-        let task = sut.loadImageData(from: anyURL()) { _ in }
+        let task = sut.loadImageData(from: url) { _ in }
         primary.complete(with: .failure(anyNSError()))
         
-        XCTAssertFalse(primary.messages.isEmpty, "Expected to start loading with primary loader")
-        XCTAssertFalse(fallback.messages.isEmpty, "Expected to start loading with fallback loader")
+        XCTAssertEqual(primary.loadedURLs, [url], "Expected to load URL with primary loader")
+        XCTAssertEqual(fallback.loadedURLs, [url], "Expected to load URL with fallback loader")
     }
     
     func test_loadImageData_cancelsPrimaryLoaderTaskOnCancel() {
@@ -107,8 +109,11 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     private class imageLoaderSpy: FeedImageDataLoader {
         typealias ImageLoaderSignature = (url: URL, completion: (FeedImageDataLoader.Result) -> Void)
         
-        var messages = [ImageLoaderSignature]()
+        private var messages = [ImageLoaderSignature]()
         private(set) var cancelledURLs = [URL]()
+        var loadedURLs: [URL] {
+            messages.map { $0.url }
+        }
         
         init() {
             
@@ -130,7 +135,9 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
             
             messages.append((url, completion))
             
-            let task = Task(callback: { self.cancelledURLs.append(url) })
+            let task = Task { [weak self] in
+                self?.cancelledURLs.append(url)
+            }
             return task
         }
     }

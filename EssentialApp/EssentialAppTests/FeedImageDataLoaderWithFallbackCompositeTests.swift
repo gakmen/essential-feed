@@ -8,11 +8,12 @@
 import XCTest
 import EssentialFeed
 
-struct ImageDataLoaderTask: FeedImageDataLoaderTask {
-    func cancel() {}
-}
-
 class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
+    
+    private struct Task: FeedImageDataLoaderTask {
+        func cancel() {}
+    }
+    
     let primary: FeedImageDataLoader
     let fallback: FeedImageDataLoader
     
@@ -25,7 +26,7 @@ class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
         from url: URL,
         completion: @escaping (FeedImageDataLoader.Result) -> Void
     ) -> FeedImageDataLoaderTask {
-        return primary.loadImageData(from: url) { [weak self] result in
+        _ = primary.loadImageData(from: url) { [weak self] result in
             switch result {
             case let .success(imageData):
                 completion(.success(imageData))
@@ -33,6 +34,7 @@ class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
                 _ = self?.fallback.loadImageData(from: url, completion: completion)
             }
         }
+        return Task()
     }
 }
 
@@ -111,12 +113,16 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
             self.result = result
         }
         
+        private struct Task: FeedImageDataLoaderTask {
+            func cancel() {}
+        }
+        
         func loadImageData (
             from url: URL,
             completion: @escaping (FeedImageDataLoader.Result) -> Void
         ) -> FeedImageDataLoaderTask {
             completion(result)
-            return ImageDataLoaderTask()
+            return Task()
         }
     }
     

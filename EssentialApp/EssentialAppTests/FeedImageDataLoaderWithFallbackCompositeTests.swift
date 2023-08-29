@@ -64,8 +64,8 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     func test_init_doesNotLoadImageData() {
         let (_, primary, fallback) = makeSUT()
         
-        XCTAssertTrue(primary.messages.isEmpty)
-        XCTAssertTrue(fallback.messages.isEmpty)
+        XCTAssertTrue(primary.messages.isEmpty, "Expected no loading with primary loader")
+        XCTAssertTrue(fallback.messages.isEmpty, "Expected no loading with fallback loader")
     }
     
     func test_loadImageData_loadsFromPrimaryLoaderFirst() {
@@ -73,8 +73,8 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         
         _ = sut.loadImageData(from: anyURL()) { _ in }
         
-        XCTAssertFalse(primary.messages.isEmpty)
-        XCTAssertTrue(fallback.messages.isEmpty)
+        XCTAssertFalse(primary.messages.isEmpty, "Expected to start loading with primary loader")
+        XCTAssertTrue(fallback.messages.isEmpty, "Expected no loading with fallback loader")
     }
     
     func test_loadImageData_loadsFromFallbackLoaderOnPrimaryFailure() {
@@ -83,8 +83,8 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         _ = sut.loadImageData(from: anyURL()) { _ in }
         primary.complete(with: .failure(anyNSError()))
         
-        XCTAssertFalse(primary.messages.isEmpty)
-        XCTAssertFalse(fallback.messages.isEmpty)
+        XCTAssertFalse(primary.messages.isEmpty, "Expected to start loading with primary loader")
+        XCTAssertFalse(fallback.messages.isEmpty, "Expected to start loading with fallback loader")
     }
     
     func test_loadImageData_cancelsPrimaryLoaderTaskOnCancel() {

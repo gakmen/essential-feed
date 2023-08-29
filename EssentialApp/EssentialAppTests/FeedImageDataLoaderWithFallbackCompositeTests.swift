@@ -62,12 +62,14 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     }
     
     func test_init_doesNotLoadImageData() {
-        let primaryLoader = imageLoaderSpy()
-        let fallbackLoader = imageLoaderSpy()
-        let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryLoader, fallback: fallbackLoader)
+        let (_, primary, fallback) = makeSUT()
         
-        XCTAssertTrue(primaryLoader.messages.isEmpty)
-        XCTAssertTrue(fallbackLoader.messages.isEmpty)
+        XCTAssertTrue(primary.messages.isEmpty)
+        XCTAssertTrue(fallback.messages.isEmpty)
+    }
+    
+    func test_loadImageData_loadsFromPrimaryLoaderFirst() {
+        
     }
     
     func test_loadImageData_cancelsPrimaryLoaderTaskOnCancel() {
@@ -75,6 +77,20 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     }
     
     //MARK: - Helpers
+    
+    private func makeSUT (
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> (FeedImageDataLoaderWithFallbackComposite, imageLoaderSpy, imageLoaderSpy) {
+        
+        let primaryLoader = imageLoaderSpy()
+        let fallbackLoader = imageLoaderSpy()
+        let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryLoader, fallback: fallbackLoader)
+        trackForMemoryLeaks(primaryLoader, file: file, line: line)
+        trackForMemoryLeaks(fallbackLoader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return (sut, primaryLoader, fallbackLoader)
+    }
     
     private func makeSUT (
         primaryResult: FeedImageDataLoader.Result,

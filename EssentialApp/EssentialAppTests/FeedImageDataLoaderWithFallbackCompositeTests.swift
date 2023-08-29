@@ -61,6 +61,19 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         expect(sut, toCompleteWith: .failure(anyNSError()))
     }
     
+    func test_init_doesNotLoadImageData() {
+        let primaryLoader = imageLoaderSpy()
+        let fallbackLoader = imageLoaderSpy()
+        let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryLoader, fallback: fallbackLoader)
+        
+        XCTAssertTrue(primaryLoader.messages.isEmpty)
+        XCTAssertTrue(fallbackLoader.messages.isEmpty)
+    }
+    
+    func test_loadImageData_cancelsPrimaryLoaderTaskOnCancel() {
+        
+    }
+    
     //MARK: - Helpers
     
     private func makeSUT (
@@ -104,6 +117,26 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
             exp.fulfill()
         }
         wait(for: [exp], timeout: 1)
+    }
+    
+    private class imageLoaderSpy: FeedImageDataLoader {
+        
+        var messages = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
+        
+        init() {
+            
+        }
+        
+        private struct Task: FeedImageDataLoaderTask {
+            func cancel() {}
+        }
+        
+        func loadImageData (
+            from url: URL,
+            completion: @escaping (FeedImageDataLoader.Result) -> Void
+        ) -> FeedImageDataLoaderTask {
+            return Task()
+        }
     }
     
     private class ImageLoaderStub: FeedImageDataLoader {

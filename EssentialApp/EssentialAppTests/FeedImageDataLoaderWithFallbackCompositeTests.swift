@@ -96,6 +96,15 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         XCTAssertEqual(fallback.cancelledURLs, [url], "Expected to cancel URLs loading from fallback loader")
     }
     
+    func test_loadImageData_deliversPrimaryDataOnPrimaryLoaderSuccess() {
+        let (sut, primary, _) = makeSUT()
+        let primaryData = Data("primary data".utf8)
+        
+        expect(sut, toCompleteWith: .success(primaryData), when: {
+            primary.complete(with: .success(primaryData))
+        })
+    }
+    
     //MARK: - Helpers
     
     private func makeSUT (
@@ -112,10 +121,39 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         return (sut, primaryLoader, fallbackLoader)
     }
     
-    private func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
+    private func trackForMemoryLeaks (
+        _ instance: AnyObject,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ){
         addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Instance should have been deallocated. Potential memory leak.", file: file, line: line)
+            XCTAssertNil (
+                instance,
+                "Instance should have been deallocated. Potential memory leak.",
+                file: file,
+                line: line
+            )
         }
+    }
+    
+    private func expect (
+        _ sut: FeedImageDataLoaderWithFallbackComposite,
+        toCompleteWith expectedResult: FeedImageDataLoader.Result,
+        when action: () -> Void,
+        file: StaticString = #file,
+        line: UInt = #line
+    ){
+        _ = sut.loadImageData(from: anyURL()) { receivedResult in
+            switch (expectedResult, receivedResult) {
+            case let (.success(expectedData), .success(receivedData)):
+                XCTAssertEqual(expectedData, receivedData, file: file, line: line)
+            case (.failure, .failure):
+                break
+            default:
+                XCTFail("Expected \(expectedResult), got \(receivedResult) instead")
+            }
+        }
+        action()
     }
     
     private class imageLoaderSpy: FeedImageDataLoader {

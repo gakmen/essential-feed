@@ -33,8 +33,8 @@ class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
         let task = TaskWrapper()
         task.wrapped = primary.loadImageData(from: url) { [weak self] result in
             switch result {
-            case let .success(imageData):
-                completion(.success(imageData))
+            case .success:
+                completion(result)
             case .failure:
                 task.wrapped = self?.fallback.loadImageData(from: url, completion: completion)
             }
@@ -105,6 +105,26 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         })
     }
     
+    func test_loadImageData_deliversFallbackDataOnFallbackLoaderSuccess() {
+        let (sut, primary, fallback) = makeSUT()
+        let fallbackData = Data("fallback data".utf8)
+        
+        expect(sut, toCompleteWith: .success(fallbackData), when: {
+            primary.complete(with: .failure(anyNSError()))
+            fallback.complete(with: .success(fallbackData))
+        })
+    }
+    
+    func test_loadImageData_deliversErrorOnBothPrimaryAndFallbackFailure() {
+        let (sut, primary, fallback) = makeSUT()
+        let error = NSError(domain: "error", code: 0)
+        
+        expect(sut, toCompleteWith: .failure(error), when: {
+            primary.complete(with: .failure(anyNSError()))
+            fallback.complete(with: .failure(anyNSError()))
+        })
+    }
+    
     //MARK: - Helpers
     
     private func makeSUT (
@@ -143,6 +163,8 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ){
+        let exp = expectation(description: "Wait for image data load completion")
+        
         _ = sut.loadImageData(from: anyURL()) { receivedResult in
             switch (expectedResult, receivedResult) {
             case let (.success(expectedData), .success(receivedData)):
@@ -152,8 +174,12 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
             default:
                 XCTFail("Expected \(expectedResult), got \(receivedResult) instead")
             }
+            exp.fulfill()
         }
+        
         action()
+        
+        wait(for: [exp], timeout: 1)
     }
     
     private class imageLoaderSpy: FeedImageDataLoader {

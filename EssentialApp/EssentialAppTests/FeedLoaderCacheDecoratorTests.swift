@@ -8,7 +8,7 @@
 import XCTest
 import EssentialFeed
 
-class FeedLoaderCacheDecorator {
+class FeedLoaderCacheDecorator: FeedLoader {
     let decoratee: FeedLoader
     
     init(decoratee: FeedLoader) {
@@ -20,7 +20,7 @@ class FeedLoaderCacheDecorator {
     }
 }
 
-class FeedLoaderCacheDecoratorTests: XCTestCase {
+class FeedLoaderCacheDecoratorTests: XCTestCase, FeedLoaderTestCase {
     
     func test_load_deliversFeedOnLoaderSuccess() {
         let feed = uniqueFeed()
@@ -35,28 +35,5 @@ class FeedLoaderCacheDecoratorTests: XCTestCase {
         let sut = FeedLoaderCacheDecorator(decoratee: loader)
         
         expect(sut, toCompleteWith: .failure(anyNSError() ))
-    }
-    
-    //MARK: - Helpers
-    
-    private func expect (
-        _ sut: FeedLoaderCacheDecorator,
-        toCompleteWith expectedResult: FeedLoader.Result,
-        file: StaticString = #file,
-        line: UInt = #line
-    ){
-        let exp = expectation(description: "Wait for load completion")
-        sut.load { receivedResult in
-            switch (receivedResult, expectedResult) {
-            case let (.success(receivedFeed), .success(expectedFeed)):
-                XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
-            case (.failure, .failure):
-                break
-            default:
-                XCTFail("Expected successful load feed result, got \(receivedResult) instead")
-            }
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1)
     }
 }

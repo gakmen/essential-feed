@@ -39,10 +39,6 @@ class FeedLoaderCacheDecoratorTests: XCTestCase {
     
     //MARK: - Helpers
     
-    private func uniqueFeed() -> [FeedImage] {
-        [FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())]
-    }
-    
     private func expect (
         _ sut: FeedLoaderCacheDecorator,
         toCompleteWith expectedResult: FeedLoader.Result,

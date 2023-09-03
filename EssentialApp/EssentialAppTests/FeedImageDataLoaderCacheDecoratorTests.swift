@@ -17,17 +17,20 @@ class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
         self.decoratee = decoratee
     }
     
-    private struct Task: FeedImageDataLoaderTask {
+    private class TaskWrapper: FeedImageDataLoaderTask {
+        var wrapped: FeedImageDataLoaderTask?
+        
         func cancel() {
-            
+            wrapped?.cancel()
         }
     }
     
     func loadImageData(from url: URL, completion: @escaping (Result) -> Void) -> FeedImageDataLoaderTask {
-        _ = decoratee.loadImageData(from: url) { result in
+        let task = TaskWrapper()
+        task.wrapped = decoratee.loadImageData(from: url) { result in
             completion(result)
         }
-        return Task()
+        return task
     }
 }
 
@@ -35,19 +38,25 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     
     func test_loadImageData_deliversDataOnLoaderSuccess() {
         let imageData = anyData()
-        let sut = makeSUT(result: .success(imageData))
+        let (sut, _) = makeSUT(result: .success(imageData))
         
         expect(sut, toCompleteWith: .success(imageData))
     }
     
     func test_loadImageData_deliversErrorOnLoaderFailure() {
-        let sut = makeSUT(result: .failure(anyNSError()))
+        let (sut, _) = makeSUT(result: .failure(anyNSError()))
         
         expect(sut, toCompleteWith: .failure(anyNSError()))
     }
     
     func test_loadImageData_doesNotDeliverResultAfterCancellingTask() {
+        let (sut, loader) = makeSUT(result: .failure(anyNSError()))
+        let url = anyURL()
         
+        let task = sut.loadImageData(from: url) { _ in }
+        task.cancel()
+        
+        XCTAssertEqual(loader.cancelledURLs, [url], "Expected to stop the task after cancel")
     }
     
     //MARK: - Helpers
@@ -56,13 +65,13 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         result: FeedImageDataLoader.Result,
         file: StaticString = #file,
         line: UInt = #line
-    ) -> FeedImageDataLoader {
+    ) -> (FeedImageDataLoader, ImageLoaderStub) {
         
         let loader = ImageLoaderStub(result: result)
         let sut = FeedImageDataLoaderCacheDecorator(decoratee: loader)
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
-        return sut
+        return (sut, loader)
     }
     
     private func expect (
@@ -90,21 +99,24 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     private class ImageLoaderStub: FeedImageDataLoader {
         typealias Result = FeedImageDataLoader.Result
         
-        let result: Result
+        private(set) var cancelledURLs = [URL]()
+        private let result: Result
         
         init(result: Result) {
             self.result = result
         }
         
         private struct Task: FeedImageDataLoaderTask {
+            var callback: () -> Void
+            
             func cancel() {
-                
+                callback()
             }
         }
         
         func loadImageData(from url: URL, completion: @escaping (Result) -> Void) -> FeedImageDataLoaderTask {
             completion(result)
-            return Task()
+            return Task(callback: { [weak self] in self?.cancelledURLs.append(url) })
         }
     }
 }

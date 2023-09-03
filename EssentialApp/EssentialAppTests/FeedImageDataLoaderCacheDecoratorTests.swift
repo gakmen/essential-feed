@@ -35,13 +35,35 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     
     func test_loadImageData_deliversDataOnLoaderSuccess() {
         let imageData = anyData()
-        let loader = ImageLoaderStub(result: .success(imageData))
-        let sut = FeedImageDataLoaderCacheDecorator(decoratee: loader)
+        let sut = makeSUT(result: .success(imageData))
         
-        expect(sut, toCompleteWith: .success(anyData()))
+        expect(sut, toCompleteWith: .success(imageData))
+    }
+    
+    func test_loadImageData_deliversErrorOnLoaderFailure() {
+        let sut = makeSUT(result: .failure(anyNSError()))
+        
+        expect(sut, toCompleteWith: .failure(anyNSError()))
+    }
+    
+    func test_loadImageData_doesNotDeliverResultAfterCancellingTask() {
+        
     }
     
     //MARK: - Helpers
+    
+    private func makeSUT (
+        result: FeedImageDataLoader.Result,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> FeedImageDataLoader {
+        
+        let loader = ImageLoaderStub(result: result)
+        let sut = FeedImageDataLoaderCacheDecorator(decoratee: loader)
+        trackForMemoryLeaks(loader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
+    }
     
     private func expect (
         _ sut: FeedImageDataLoader,

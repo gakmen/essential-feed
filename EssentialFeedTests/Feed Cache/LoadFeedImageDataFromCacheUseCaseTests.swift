@@ -92,7 +92,7 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
     
     private func expect (
         _ sut: LocalFeedImageDataLoader,
-        toCompleteWith expectedResult: LocalFeedImageDataLoader.Result,
+        toCompleteWith expectedResult: LocalFeedImageDataLoader.LoadResult,
         when action: () -> Void,
         file: StaticString = #file,
         line: UInt = #line

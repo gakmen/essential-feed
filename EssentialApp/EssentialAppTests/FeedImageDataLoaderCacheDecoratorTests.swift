@@ -53,27 +53,41 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         XCTAssertTrue(loader.loadedURLs.isEmpty)
     }
     
-    func test_loadImageData_deliversDataOnLoaderSuccess() {
-        let imageData = anyData()
-        let (sut, _) = makeSUT(result: .success(imageData))
-        
-        expect(sut, toCompleteWith: .success(imageData))
-    }
-    
-    func test_loadImageData_deliversErrorOnLoaderFailure() {
-        let (sut, _) = makeSUT(result: .failure(anyNSError()))
-        
-        expect(sut, toCompleteWith: .failure(anyNSError()))
-    }
-    
-    func test_loadImageData_doesNotDeliverResultAfterCancellingTask() {
-        let (sut, loader) = makeSUT(result: .success(anyData()))
+    func test_loadImageData_loadsImageFromLoader() {
         let url = anyURL()
+        let (sut, loader) = makeSUT()
+        
+        _ = sut.loadImageData(from: url) { _ in }
+        
+        XCTAssertEqual(loader.loadedURLs, [url])
+    }
+    
+    func test_cancelLoadImageData_cancelsLoaderTask() {
+        let url = anyURL()
+        let (sut, loader) = makeSUT()
         
         let task = sut.loadImageData(from: url) { _ in }
         task.cancel()
         
-        XCTAssertEqual(loader.cancelledURLs, [url], "Expected to stop the task after cancel")
+        XCTAssertEqual(loader.cancelledURLs, [url])
+    }
+    
+    func test_loadImageData_deliversDataOnLoaderSuccess() {
+        let data = anyData()
+        let (sut, loader) = makeSUT()
+        
+        expect(sut, toCompleteWith: .success(data), when: {
+            loader.complete(with: .success(data))
+        })
+    }
+    
+    func test_loadImageData_deliversErrorOnLoaderFailure() {
+        let error = anyNSError()
+        let (sut, loader) = makeSUT()
+        
+        expect(sut, toCompleteWith: .failure(error), when: {
+            loader.complete(with: .failure(error))
+        })
     }
     
     func test_loadImageData_cachesImageDataOnLoaderSuccess() {
@@ -127,6 +141,7 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     private func expect (
         _ sut: FeedImageDataLoader,
         toCompleteWith expectedResult: FeedImageDataLoader.Result,
+        when action: () -> Void,
         file: StaticString = #file,
         line: UInt = #line
     ){
@@ -143,6 +158,9 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
             }
             exp.fulfill()
         }
+        
+        action()
+        
         wait(for: [exp], timeout: 1)
     }
     

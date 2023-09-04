@@ -47,6 +47,12 @@ class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
 
 class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     
+    func test_init_doesNotStartLoading() {
+        let (_, loader) = makeSUT()
+        
+        XCTAssertTrue(loader.loadedURLs.isEmpty)
+    }
+    
     func test_loadImageData_deliversDataOnLoaderSuccess() {
         let imageData = anyData()
         let (sut, _) = makeSUT(result: .success(imageData))
@@ -99,6 +105,19 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     ) -> (FeedImageDataLoader, ImageLoaderStub) {
         
         let loader = ImageLoaderStub(result: result)
+        let sut = FeedImageDataLoaderCacheDecorator(decoratee: loader, cache: cache)
+        trackForMemoryLeaks(loader, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return (sut, loader)
+    }
+    
+    private func makeSUT (
+        cache: CacheSpy = .init(),
+        file: StaticString = #file,
+        line: UInt = #line
+    ) -> (FeedImageDataLoader, FeedImageDataLoaderSpy) {
+        
+        let loader = FeedImageDataLoaderSpy()
         let sut = FeedImageDataLoaderCacheDecorator(decoratee: loader, cache: cache)
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)

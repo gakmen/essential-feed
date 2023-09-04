@@ -96,10 +96,10 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     private func makeSUT (
         file: StaticString = #file,
         line: UInt = #line
-    ) -> (FeedImageDataLoaderWithFallbackComposite, imageLoaderSpy, imageLoaderSpy) {
+    ) -> (FeedImageDataLoaderWithFallbackComposite, FeedImageDataLoaderSpy, FeedImageDataLoaderSpy) {
         
-        let primaryLoader = imageLoaderSpy()
-        let fallbackLoader = imageLoaderSpy()
+        let primaryLoader = FeedImageDataLoaderSpy()
+        let fallbackLoader = FeedImageDataLoaderSpy()
         let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryLoader, fallback: fallbackLoader)
         trackForMemoryLeaks(primaryLoader, file: file, line: line)
         trackForMemoryLeaks(fallbackLoader, file: file, line: line)
@@ -131,41 +131,5 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         action()
         
         wait(for: [exp], timeout: 1)
-    }
-    
-    private class imageLoaderSpy: FeedImageDataLoader {
-        typealias ImageLoaderSignature = (url: URL, completion: (FeedImageDataLoader.Result) -> Void)
-        
-        private var messages = [ImageLoaderSignature]()
-        private(set) var cancelledURLs = [URL]()
-        var loadedURLs: [URL] {
-            messages.map { $0.url }
-        }
-        
-        init() {
-            
-        }
-        
-        private struct Task: FeedImageDataLoaderTask {
-            let callback: () -> Void
-            func cancel() { callback() }
-        }
-        
-        func complete(with result: FeedImageDataLoader.Result, at index: Int = 0) {
-            messages[index].completion(result)
-        }
-        
-        func loadImageData (
-            from url: URL,
-            completion: @escaping (FeedImageDataLoader.Result) -> Void
-        ) -> FeedImageDataLoaderTask {
-            
-            messages.append((url, completion))
-            
-            let task = Task { [weak self] in
-                self?.cancelledURLs.append(url)
-            }
-            return task
-        }
     }
 }

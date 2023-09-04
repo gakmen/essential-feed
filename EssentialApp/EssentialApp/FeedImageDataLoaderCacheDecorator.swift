@@ -18,22 +18,12 @@ public class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
         self.cache = cache
     }
     
-    private class TaskWrapper: FeedImageDataLoaderTask {
-        var wrapped: FeedImageDataLoaderTask?
-        
-        func cancel() {
-            wrapped?.cancel()
-        }
-    }
-    
     public func loadImageData(from url: URL, completion: @escaping (Result) -> Void) -> FeedImageDataLoaderTask {
-        let task = TaskWrapper()
-        task.wrapped = decoratee.loadImageData(from: url) { [weak self] result in
+        return decoratee.loadImageData(from: url) { [weak self] result in
             if let data = try? result.get() {
                 self?.cache.save(image: data, for: url) { _ in }
             }
             completion(result)
         }
-        return task
     }
 }

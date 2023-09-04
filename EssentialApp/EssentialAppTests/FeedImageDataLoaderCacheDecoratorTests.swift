@@ -71,14 +71,13 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     }
     
     func test_loadImageData_cachesImageDataOnLoaderSuccess() {
+        let data = anyData()
         let cache = CacheSpy()
-        let (sut, _) = makeSUT(result: .success(anyData()), cache: cache)
+        let (sut, _) = makeSUT(result: .success(data), cache: cache)
         
-        _ = sut.loadImageData(from: anyURL()) { result in
-            if let data = try? result.get() {
-                XCTAssertEqual(cache.messages, [.save(data)])
-            }
-        }
+        _ = sut.loadImageData(from: anyURL()) { _ in }
+        
+        XCTAssertEqual(cache.messages, [.save(data)])
     }
     
     //MARK: - Helpers

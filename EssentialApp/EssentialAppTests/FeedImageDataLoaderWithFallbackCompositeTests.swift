@@ -9,7 +9,7 @@ import XCTest
 import EssentialFeed
 import EssentialApp
 
-class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
+class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase, FeedImageDataLoaderTestCase {
     
     func test_init_doesNotLoadImageData() {
         let (_, primary, fallback) = makeSUT()
@@ -96,76 +96,14 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     private func makeSUT (
         file: StaticString = #file,
         line: UInt = #line
-    ) -> (FeedImageDataLoaderWithFallbackComposite, imageLoaderSpy, imageLoaderSpy) {
+    ) -> (FeedImageDataLoaderWithFallbackComposite, FeedImageDataLoaderSpy, FeedImageDataLoaderSpy) {
         
-        let primaryLoader = imageLoaderSpy()
-        let fallbackLoader = imageLoaderSpy()
+        let primaryLoader = FeedImageDataLoaderSpy()
+        let fallbackLoader = FeedImageDataLoaderSpy()
         let sut = FeedImageDataLoaderWithFallbackComposite(primary: primaryLoader, fallback: fallbackLoader)
         trackForMemoryLeaks(primaryLoader, file: file, line: line)
         trackForMemoryLeaks(fallbackLoader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, primaryLoader, fallbackLoader)
-    }
-    
-    private func expect (
-        _ sut: FeedImageDataLoaderWithFallbackComposite,
-        toCompleteWith expectedResult: FeedImageDataLoader.Result,
-        when action: () -> Void,
-        file: StaticString = #file,
-        line: UInt = #line
-    ){
-        let exp = expectation(description: "Wait for image data load completion")
-        
-        _ = sut.loadImageData(from: anyURL()) { receivedResult in
-            switch (expectedResult, receivedResult) {
-            case let (.success(expectedData), .success(receivedData)):
-                XCTAssertEqual(expectedData, receivedData, file: file, line: line)
-            case (.failure, .failure):
-                break
-            default:
-                XCTFail("Expected \(expectedResult), got \(receivedResult) instead")
-            }
-            exp.fulfill()
-        }
-        
-        action()
-        
-        wait(for: [exp], timeout: 1)
-    }
-    
-    private class imageLoaderSpy: FeedImageDataLoader {
-        typealias ImageLoaderSignature = (url: URL, completion: (FeedImageDataLoader.Result) -> Void)
-        
-        private var messages = [ImageLoaderSignature]()
-        private(set) var cancelledURLs = [URL]()
-        var loadedURLs: [URL] {
-            messages.map { $0.url }
-        }
-        
-        init() {
-            
-        }
-        
-        private struct Task: FeedImageDataLoaderTask {
-            let callback: () -> Void
-            func cancel() { callback() }
-        }
-        
-        func complete(with result: FeedImageDataLoader.Result, at index: Int = 0) {
-            messages[index].completion(result)
-        }
-        
-        func loadImageData (
-            from url: URL,
-            completion: @escaping (FeedImageDataLoader.Result) -> Void
-        ) -> FeedImageDataLoaderTask {
-            
-            messages.append((url, completion))
-            
-            let task = Task { [weak self] in
-                self?.cancelledURLs.append(url)
-            }
-            return task
-        }
     }
 }

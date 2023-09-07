@@ -5,8 +5,9 @@
 //  Created by  Gosha Akmen on 27.07.2023.
 //
 
-import EssentialFeed
 import UIKit
+import EssentialFeed
+import EssentialFeediOS
 
 final class WeakRefVirtualProxy<T: AnyObject> {
     private weak var object: T?
@@ -29,9 +30,7 @@ extension WeakRefVirtualProxy: FeedErrorView where T: FeedErrorView {
 }
 
 
-extension WeakRefVirtualProxy: FeedImageView where T: FeedImageCellController {
-    typealias Image = UIImage
-    
+extension WeakRefVirtualProxy: FeedImageView where T: FeedImageView, T.Image == UIImage {
     func display(_ viewModel: FeedImageViewModel<UIImage>) {
         object?.display(viewModel)
     }

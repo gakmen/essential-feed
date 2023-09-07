@@ -15,7 +15,7 @@ class DebuggingSceneDelegate: SceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
         
         if CommandLine.arguments.contains("-reset") {
-            try? FileManager.default.removeItem(at: storeURL)
+            try? FileManager.default.removeItem(at: localStoreURL)
         }
         
         super.scene(scene, willConnectTo: session, options: connectionOptions)

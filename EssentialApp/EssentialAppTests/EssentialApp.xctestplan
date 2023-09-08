@@ -27,9 +27,8 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
-        "containerPath" : "container:EssentialApp.xcodeproj",
+        "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
         "identifier" : "726A203A2A9B03E50024C2CA",
         "name" : "EssentialAppTests"
       }

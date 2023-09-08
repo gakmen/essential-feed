@@ -5,8 +5,6 @@
 //  Created by  Gosha Akmen on 17.02.2023.
 //
 
-import Foundation
-
 public struct FeedImage: Hashable {
     public let id: UUID
     public let description: String?

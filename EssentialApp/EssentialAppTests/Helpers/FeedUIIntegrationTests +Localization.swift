@@ -5,8 +5,9 @@
 //  Created by  Gosha Akmen on 25.07.2023.
 //
 
-import EssentialFeed
 import XCTest
+import EssentialFeed
+import EssentialFeediOS
 
 extension FeedUIIntegrationTests {
     func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {

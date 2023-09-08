@@ -5,8 +5,6 @@
 //  Created by  Gosha Akmen on 25.02.2023.
 //
 
-import Foundation
-
 public protocol HTTPClientTask {
     func cancel()
 }

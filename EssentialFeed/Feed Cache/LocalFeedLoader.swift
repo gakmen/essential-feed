@@ -5,8 +5,6 @@
 //  Created by  Gosha Akmen on 05.04.2023.
 //
 
-import Foundation
-
 public final class LocalFeedLoader {
     private let store: FeedStore
     private let currentDate: () -> Date

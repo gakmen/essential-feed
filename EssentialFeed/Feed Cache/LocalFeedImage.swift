@@ -5,8 +5,6 @@
 //  Created by  Gosha Akmen on 08.04.2023.
 //
 
-import Foundation
-
 public struct LocalFeedImage: Equatable {
     public let id: UUID
     public let description: String?

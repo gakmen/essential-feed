@@ -5,8 +5,6 @@
 //  Created by  Gosha Akmen on 22.04.2023.
 //
 
-import Foundation
-
 internal final class FeedCachePolicy {
     static let calendar = Calendar(identifier: .gregorian)
     static let maxCacheAgeInDays: Int = 7

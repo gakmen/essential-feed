@@ -5,8 +5,6 @@
 //  Created by  Gosha Akmen on 08.04.2023.
 //
 
-import Foundation
-
 internal struct RemoteFeedItem: Decodable {
     internal let id: UUID
     internal let description: String?

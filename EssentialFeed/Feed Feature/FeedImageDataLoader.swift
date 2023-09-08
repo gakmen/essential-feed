@@ -5,8 +5,6 @@
 //  Created by  Gosha Akmen on 08.07.2023.
 //
 
-import Foundation
-
 public protocol FeedImageDataLoader {
     typealias Result = Swift.Result<Data?, Error>
     

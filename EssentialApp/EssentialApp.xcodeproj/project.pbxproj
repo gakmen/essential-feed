@@ -47,6 +47,7 @@
 		72C32EBF2AA350AA0079522D /* XCTestCase+FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C32EBE2AA350AA0079522D /* XCTestCase+FeedLoader.swift */; };
 		72C32EC32AA3889F0079522D /* FeedLoaderCacheDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C32EC22AA3889F0079522D /* FeedLoaderCacheDecorator.swift */; };
 		72C32EC52AA38BE00079522D /* FeedImageDataLoaderCacheDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C32EC42AA38BE00079522D /* FeedImageDataLoaderCacheDecoratorTests.swift */; };
+		72FE32C62AAB373C00C9D764 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,7 @@
 		72C32EBE2AA350AA0079522D /* XCTestCase+FeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FeedLoader.swift"; sourceTree = "<group>"; };
 		72C32EC22AA3889F0079522D /* FeedLoaderCacheDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderCacheDecorator.swift; sourceTree = "<group>"; };
 		72C32EC42AA38BE00079522D /* FeedImageDataLoaderCacheDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoaderCacheDecoratorTests.swift; sourceTree = "<group>"; };
+		72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientStub.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +225,7 @@
 				72C32EBE2AA350AA0079522D /* XCTestCase+FeedLoader.swift */,
 				725C17A32AA592FB00DBE888 /* FeedImageDataLoaderSpy.swift */,
 				7287FE512AA638F1004647A2 /* XCTestCase+FeedImageDataLoader.swift */,
+				72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				72A06D9D2AA9E48D0053AD4C /* FeedUIIntegrationTests +Localization.swift in Sources */,
 				72C32EBF2AA350AA0079522D /* XCTestCase+FeedLoader.swift in Sources */,
 				72A06DA12AA9EF020053AD4C /* FeedUIIntegrationTests.swift in Sources */,
+				72FE32C62AAB373C00C9D764 /* HTTPClientStub.swift in Sources */,
 				7287FE522AA638F1004647A2 /* XCTestCase+FeedImageDataLoader.swift in Sources */,
 				72A06D992AA9E48D0053AD4C /* FeedViewController+TestHelpers.swift in Sources */,
 				72A06D822AA9DA860053AD4C /* SceneDelegateTests.swift in Sources */,

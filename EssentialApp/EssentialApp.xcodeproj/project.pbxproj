@@ -48,6 +48,7 @@
 		72C32EC32AA3889F0079522D /* FeedLoaderCacheDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C32EC22AA3889F0079522D /* FeedLoaderCacheDecorator.swift */; };
 		72C32EC52AA38BE00079522D /* FeedImageDataLoaderCacheDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C32EC42AA38BE00079522D /* FeedImageDataLoaderCacheDecoratorTests.swift */; };
 		72FE32C62AAB373C00C9D764 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */; };
+		72FE32C82AAB384000C9D764 /* InMemoryFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FE32C72AAB384000C9D764 /* InMemoryFeedStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		72C32EC22AA3889F0079522D /* FeedLoaderCacheDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderCacheDecorator.swift; sourceTree = "<group>"; };
 		72C32EC42AA38BE00079522D /* FeedImageDataLoaderCacheDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoaderCacheDecoratorTests.swift; sourceTree = "<group>"; };
 		72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientStub.swift; sourceTree = "<group>"; };
+		72FE32C72AAB384000C9D764 /* InMemoryFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryFeedStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +228,7 @@
 				725C17A32AA592FB00DBE888 /* FeedImageDataLoaderSpy.swift */,
 				7287FE512AA638F1004647A2 /* XCTestCase+FeedImageDataLoader.swift */,
 				72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */,
+				72FE32C72AAB384000C9D764 /* InMemoryFeedStore.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				72A06D992AA9E48D0053AD4C /* FeedViewController+TestHelpers.swift in Sources */,
 				72A06D822AA9DA860053AD4C /* SceneDelegateTests.swift in Sources */,
 				72A9E0CE2AA1E6940076110D /* FeedLoaderCacheDecoratorTests.swift in Sources */,
+				72FE32C82AAB384000C9D764 /* InMemoryFeedStore.swift in Sources */,
 				725C17A42AA592FB00DBE888 /* FeedImageDataLoaderSpy.swift in Sources */,
 				72A06D972AA9E48D0053AD4C /* FeedImageCell+TestHelpers.swift in Sources */,
 				72A06D9C2AA9E48D0053AD4C /* UIImage+TestHelpers.swift in Sources */,

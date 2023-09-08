@@ -24,6 +24,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .appending(component: "feed-store.sqlite"))
     }()
     
+    private lazy var localFeedLoader: LocalFeedLoader = {
+            LocalFeedLoader(store: store, currentDate: Date.init)
+        }()
+    
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
         self.httpClient = httpClient
@@ -41,8 +45,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
         let remoteFeedLoader = RemoteFeedLoader(client: httpClient, url: remoteURL)
         let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
-        
-        let localFeedLoader = LocalFeedLoader(store: store, currentDate: { Date.init() })
         let localImageLoader = LocalFeedImageDataLoader(store: store)
         
         let feedViewController = FeedUIComposer.composeFeedControllerWith (
@@ -58,6 +60,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     cache: localImageLoader)))
         
         window?.rootViewController = UINavigationController(rootViewController: feedViewController) 
+    }
+    
+    func sceneWillResignActive(_ scene: UIScene) {
+        localFeedLoader.validateCache { _ in }
     }
 }
 

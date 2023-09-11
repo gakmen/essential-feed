@@ -24,9 +24,19 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>EssentialFeediOSTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>7226F7E72AAEC45500408EE6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>7260592D2A270E5800A88CA6</key>
 		<dict>
 			<key>primary</key>

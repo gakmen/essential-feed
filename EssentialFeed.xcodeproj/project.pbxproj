@@ -91,6 +91,7 @@
 		72E35C5229C0DAA300719B28 /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE35A8299F9B8500A028E1 /* EssentialFeed.framework */; };
 		72E35C5829C342A700719B28 /* XCTTestCase+MemoryLeakTrcaking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723D122329BBB1AC00A3E035 /* XCTTestCase+MemoryLeakTrcaking.swift */; };
 		72E5CC4D2AB0357200D68895 /* UIViewController+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E5CC4C2AB0357200D68895 /* UIViewController+Snapshot.swift */; };
+		72E5CC4F2AB036A000D68895 /* XCTestCase+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E5CC4E2AB036A000D68895 /* XCTestCase+Snapshot.swift */; };
 		72E7B1982AAF139200E78005 /* UITableView+HeaderSizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E7B1972AAF139200E78005 /* UITableView+HeaderSizing.swift */; };
 		72F4D5F62A55370D00DEF22D /* UIView + Shimmering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F4D5F52A55370D00DEF22D /* UIView + Shimmering.swift */; };
 /* End PBXBuildFile section */
@@ -236,6 +237,7 @@
 		72E35C4E29C0DAA300719B28 /* EssentialFeedAPIEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedAPIEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72E35C5029C0DAA300719B28 /* EssentialFeedAPIEndToEndTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeedAPIEndToEndTests.swift; sourceTree = "<group>"; };
 		72E5CC4C2AB0357200D68895 /* UIViewController+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Snapshot.swift"; sourceTree = "<group>"; };
+		72E5CC4E2AB036A000D68895 /* XCTestCase+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Snapshot.swift"; sourceTree = "<group>"; };
 		72E7B1972AAF139200E78005 /* UITableView+HeaderSizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderSizing.swift"; sourceTree = "<group>"; };
 		72F4D5F52A55370D00DEF22D /* UIView + Shimmering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Shimmering.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -307,6 +309,7 @@
 			children = (
 				7226F7F72AAED96900408EE6 /* UIImage+TestHelpers.swift */,
 				72E5CC4C2AB0357200D68895 /* UIViewController+Snapshot.swift */,
+				72E5CC4E2AB036A000D68895 /* XCTestCase+Snapshot.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -842,6 +845,7 @@
 			files = (
 				7226F7F52AAEC53300408EE6 /* FeedSnapshotTests.swift in Sources */,
 				72E5CC4D2AB0357200D68895 /* UIViewController+Snapshot.swift in Sources */,
+				72E5CC4F2AB036A000D68895 /* XCTestCase+Snapshot.swift in Sources */,
 				7226F7F82AAED96900408EE6 /* UIImage+TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

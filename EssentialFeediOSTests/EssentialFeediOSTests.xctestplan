@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "A5AA701B-9FE9-4924-9CBA-F1691C8B3B2F",
+      "id" : "B4FF65EF-9BA0-4718-8D88-81DBA5109AF9",
       "name" : "Test Scheme Action",
       "options" : {
 
@@ -14,11 +14,10 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
-        "containerPath" : "container:EssentialApp\/EssentialApp.xcodeproj",
-        "identifier" : "720E9E312AA74BC0005FE025",
-        "name" : "EssentialAppUIAcceptanceTests"
+        "containerPath" : "container:EssentialFeed.xcodeproj",
+        "identifier" : "7226F7E72AAEC45500408EE6",
+        "name" : "EssentialFeediOSTests"
       }
     }
   ],

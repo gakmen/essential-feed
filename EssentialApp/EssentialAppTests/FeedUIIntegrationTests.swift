@@ -449,8 +449,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ){
-        sut.tableView.layoutIfNeeded()
-        RunLoop.main.run(until: Date())
+        sut.view.enforceLayoutCycle()
         
         XCTAssertEqual (
             sut.numberOfRenderedFeedImageViews(),

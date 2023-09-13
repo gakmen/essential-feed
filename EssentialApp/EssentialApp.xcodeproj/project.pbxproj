@@ -193,6 +193,7 @@
 				7226F7E32AAEC18B00408EE6 /* EssentialApp.xctestplan */,
 				72A951CC2A9F6AF000E70D16 /* Helpers */,
 				726A20612A9C3F470024C2CA /* FeedLoaderWithFallbackCompositeTests.swift */,
+				72A06DA02AA9EF020053AD4C /* FeedUIIntegrationTests.swift */,
 				72A9E0CD2AA1E6940076110D /* FeedLoaderCacheDecoratorTests.swift */,
 				72AA9F9C2A9CEAED00CA35C9 /* FeedImageDataLoaderWithFallbackCompositeTests.swift */,
 				726A20602A9C3F470024C2CA /* EssentialAppTests-Bridging-Header.h */,
@@ -215,7 +216,6 @@
 		72A951CC2A9F6AF000E70D16 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				72A06DA02AA9EF020053AD4C /* FeedUIIntegrationTests.swift */,
 				72A06D962AA9E48D0053AD4C /* FeedUIIntegrationTests +Localization.swift */,
 				72A06D902AA9E48C0053AD4C /* FeedViewController+TestHelpers.swift */,
 				72A06D942AA9E48D0053AD4C /* UIRefreshControl+TestHelpers.swift */,

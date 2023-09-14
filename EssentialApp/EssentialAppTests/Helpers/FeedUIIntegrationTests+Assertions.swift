@@ -29,8 +29,6 @@ extension FeedUIIntegrationTests {
         feed.enumerated().forEach { index, image in
             assertThat(sut, hasViewConfiguredFor: image, at: index, file: file, line: line)
         }
-        
-        executeRunLoopToCleanUpReferences()
     }
 
     func assertThat (
@@ -74,9 +72,5 @@ extension FeedUIIntegrationTests {
             file: file,
             line: line
         )
-    }
-    
-    private func executeRunLoopToCleanUpReferences() {
-        RunLoop.current.run(until: Date())
     }
 }

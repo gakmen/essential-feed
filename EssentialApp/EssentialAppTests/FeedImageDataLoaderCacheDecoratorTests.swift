@@ -91,7 +91,7 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase, FeedImageDataLoaderTes
         return (sut, loader)
     }
     
-    private class CacheSpy: FeedImageCache {
+    private class CacheSpy: FeedImageDataCache {
         
         private(set) var messages = [Message]()
         
@@ -99,7 +99,7 @@ class FeedImageDataLoaderCacheDecoratorTests: XCTestCase, FeedImageDataLoaderTes
             case save(Data, URL)
         }
         
-        func save(image data: Data, for url: URL, completion: @escaping (FeedImageCache.Result) -> Void) {
+        func save(image data: Data, for url: URL, completion: @escaping (FeedImageDataCache.Result) -> Void) {
             messages.append(.save(data, url))
         }
     }

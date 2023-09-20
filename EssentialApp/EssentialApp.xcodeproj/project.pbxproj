@@ -156,10 +156,10 @@
 				72A06D882AA9E44C0053AD4C /* FeedImageDataLoaderPresentationAdapter.swift */,
 				72A06D892AA9E44C0053AD4C /* FeedLoaderPresentationAdapter.swift */,
 				726A202C2A9B03E20024C2CA /* ViewController.swift */,
+				7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */,
 				726A20312A9B03E50024C2CA /* Assets.xcassets */,
 				726A20332A9B03E50024C2CA /* LaunchScreen.storyboard */,
 				726A20362A9B03E50024C2CA /* Info.plist */,
-				7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */,
 			);
 			path = EssentialApp;
 			sourceTree = "<group>";

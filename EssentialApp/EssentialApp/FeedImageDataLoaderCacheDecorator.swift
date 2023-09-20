@@ -11,9 +11,9 @@ public class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
     public typealias Result = FeedImageDataLoader.Result
     
     let decoratee: FeedImageDataLoader
-    let cache: FeedImageCache
+    let cache: FeedImageDataCache
     
-    public init(decoratee: FeedImageDataLoader, cache: FeedImageCache) {
+    public init(decoratee: FeedImageDataLoader, cache: FeedImageDataCache) {
         self.decoratee = decoratee
         self.cache = cache
     }
@@ -28,7 +28,7 @@ public class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
     }
 }
 
-extension FeedImageCache {
+extension FeedImageDataCache {
     func saveIgnoringResult(image: Data, url: URL) {
         save(image: image, for: url) { _ in }
     }

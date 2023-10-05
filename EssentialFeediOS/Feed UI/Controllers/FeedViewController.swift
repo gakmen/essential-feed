@@ -27,10 +27,21 @@ public final class FeedViewController:
     }
     public var delegate: FeedViewControllerDelegate?
     
+    var onViewIsAppearingForTheFirstTime: ((FeedViewController) -> Void)?
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        refresh()
+        onViewIsAppearingForTheFirstTime = { vc in
+            vc.onViewIsAppearingForTheFirstTime = nil
+            vc.refresh()
+        }
+    }
+    
+    public override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        
+        onViewIsAppearingForTheFirstTime?(self)
     }
     
     public override func viewDidLayoutSubviews() {

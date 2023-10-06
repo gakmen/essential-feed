@@ -56,7 +56,7 @@ public final class FeedViewController:
     
     public func display(_ cellControllers: [FeedImageCellController]) {
         loadingControllers = [:]
-        
+
         tableModel = cellControllers
     }
     

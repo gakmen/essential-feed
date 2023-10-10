@@ -5,7 +5,7 @@
 //  Created by  Gosha Akmen on 08.10.2023.
 //
 
-public final class RemoteImageCommentsLoader: FeedLoader {
+public final class RemoteImageCommentsLoader {
     private let client: HTTPClient
     private let url: URL
     
@@ -14,14 +14,14 @@ public final class RemoteImageCommentsLoader: FeedLoader {
         case invalidData
     }
     
-    public typealias Result = FeedLoader.Result
+    public typealias Result = Swift.Result<[ImageComment], Swift.Error>
     
     public init(client: HTTPClient, url: URL) {
         self.client = client
         self.url = url
     }
     
-    public func load(completion: @escaping (FeedLoader.Result) -> Void) {
+    public func load(completion: @escaping (Result) -> Void) {
         client.get(from: url) { [weak self] result in
             guard self != nil else { return }
              
@@ -37,18 +37,9 @@ public final class RemoteImageCommentsLoader: FeedLoader {
     private static func map(_ data: Data, from response: HTTPURLResponse) -> Result {
         do {
             let items = try ImageCommentsMapper.map(data, from: response)
-            return .success(items.toModels())
+            return .success(items)
         } catch {
             return .failure(error)
         }
     }
 }
-
-private extension Array where Element == RemoteFeedItem {
-    func toModels() -> [FeedImage] {
-        return map {
-            FeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.image)
-        }
-    }
-}
-

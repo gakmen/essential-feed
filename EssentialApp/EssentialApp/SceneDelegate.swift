@@ -60,8 +60,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeFeedLoaderWithLocalFallback() -> FeedLoader.Publisher {
-        remoteFeedLoader
-            .loadPublisher()
+        httpClient
+            .getPublisher(url: remoteURL)
+            .tryMap(FeedItemsMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
     }

@@ -14,7 +14,7 @@ public struct FeedUIComposer {
     private init() {}
     
     public static func composeFeedControllerWith (
-        feedLoader: @escaping () -> FeedLoader.Publisher,
+        feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
         imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher
     
     ) -> FeedViewController {

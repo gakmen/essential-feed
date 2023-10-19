@@ -599,10 +599,10 @@
 		72AE35AA299F9B8500A028E1 /* EssentialFeed */ = {
 			isa = PBXGroup;
 			children = (
-				725F8F062AD65F8200DE1952 /* Image Comments API */,
 				725F8F022AD65DB600DE1952 /* Shared API Infra */,
 				725F8F012AD65D8200DE1952 /* Shared API */,
 				72725E3C2AD3C54500DA62BC /* Image Comments Feature */,
+				725F8F062AD65F8200DE1952 /* Image Comments API */,
 				72AE35C8299FA01500A028E1 /* Feed Feature */,
 				72AE35CB29A11FE600A028E1 /* Feed API */,
 				7238499129DD64B100E50D8F /* Feed Cache */,

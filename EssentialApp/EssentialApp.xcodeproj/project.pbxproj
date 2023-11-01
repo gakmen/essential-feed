@@ -36,7 +36,6 @@
 		72A951CE2A9F6B3700E70D16 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A951CD2A9F6B3700E70D16 /* XCTestCase+MemoryLeakTracking.swift */; };
 		72A951D02A9F6C4C00E70D16 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A951CF2A9F6C4C00E70D16 /* SharedTestHelpers.swift */; };
 		72C32EBD2AA3297D0079522D /* FeedLoaderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C32EBC2AA3297D0079522D /* FeedLoaderStub.swift */; };
-		72C32EBF2AA350AA0079522D /* XCTestCase+FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C32EBE2AA350AA0079522D /* XCTestCase+FeedLoader.swift */; };
 		72EB3F3C2AB1916A0048F401 /* UIView+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EB3F3B2AB1916A0048F401 /* UIView+TestHelpers.swift */; };
 		72FE32C62AAB373C00C9D764 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */; };
 		72FE32C82AAB384000C9D764 /* InMemoryFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FE32C72AAB384000C9D764 /* InMemoryFeedStore.swift */; };
@@ -100,7 +99,6 @@
 		72A951CD2A9F6B3700E70D16 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		72A951CF2A9F6C4C00E70D16 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		72C32EBC2AA3297D0079522D /* FeedLoaderStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderStub.swift; sourceTree = "<group>"; };
-		72C32EBE2AA350AA0079522D /* XCTestCase+FeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FeedLoader.swift"; sourceTree = "<group>"; };
 		72EB3F3B2AB1916A0048F401 /* UIView+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+TestHelpers.swift"; sourceTree = "<group>"; };
 		72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientStub.swift; sourceTree = "<group>"; };
 		72FE32C72AAB384000C9D764 /* InMemoryFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryFeedStore.swift; sourceTree = "<group>"; };
@@ -199,7 +197,6 @@
 				72A951CD2A9F6B3700E70D16 /* XCTestCase+MemoryLeakTracking.swift */,
 				72A951CF2A9F6C4C00E70D16 /* SharedTestHelpers.swift */,
 				72C32EBC2AA3297D0079522D /* FeedLoaderStub.swift */,
-				72C32EBE2AA350AA0079522D /* XCTestCase+FeedLoader.swift */,
 				72FE32C52AAB373C00C9D764 /* HTTPClientStub.swift */,
 				72FE32C72AAB384000C9D764 /* InMemoryFeedStore.swift */,
 				72EB3F3B2AB1916A0048F401 /* UIView+TestHelpers.swift */,
@@ -255,7 +252,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					726A20242A9B03E20024C2CA = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -330,7 +327,6 @@
 				7224C3772AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift in Sources */,
 				72A06DA32AA9F00D0053AD4C /* FeedAcceptanceTests.swift in Sources */,
 				72A06D9D2AA9E48D0053AD4C /* FeedUIIntegrationTests +Localization.swift in Sources */,
-				72C32EBF2AA350AA0079522D /* XCTestCase+FeedLoader.swift in Sources */,
 				72A06DA12AA9EF020053AD4C /* FeedUIIntegrationTests.swift in Sources */,
 				72FE32C62AAB373C00C9D764 /* HTTPClientStub.swift in Sources */,
 				72A06D992AA9E48D0053AD4C /* FeedViewController+TestHelpers.swift in Sources */,
@@ -405,6 +401,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -465,6 +462,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

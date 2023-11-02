@@ -7,4 +7,4 @@
 */
 
 "FEED_VIEW_TITLE" = "Моя лента";
-"FEED_VIEW_CONNECTION_ERROR" = "Нет связи с свервером";
+"GENERIC_CONNECTION_ERROR" = "Нет связи с свервером";

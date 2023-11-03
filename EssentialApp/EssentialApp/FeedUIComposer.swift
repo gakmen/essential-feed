@@ -26,12 +26,13 @@ public struct FeedUIComposer {
             title: FeedPresenter.title
         )
         
-        presentationAdapter.presenter = FeedPresenter (
+        presentationAdapter.presenter = LoadResourcePresenter (
             errorView: WeakRefVirtualProxy(feedController),
             loadingView: WeakRefVirtualProxy(feedController),
-            feedView: FeedViewAdapter(
+            resourceView: FeedViewAdapter(
                 controller: feedController,
-                loader: imageLoader)
+                loader: imageLoader), 
+            mapper: FeedPresenter.map
         )
         
         return feedController

@@ -8,7 +8,6 @@
 import XCTest
 import EssentialFeed
 
-@available(macOS 13.0, *)
 class FeedPresenterTests: XCTestCase {
     
     func test_title_isLocalized() {
@@ -23,11 +22,11 @@ class FeedPresenterTests: XCTestCase {
         XCTAssertEqual(viewModel.feed, feed)
     }
     
-    
-    
     //MARK: - Helpers
     
-    private func localized(_ key: String, table: String = "Feed", file: StaticString = #file, line: UInt = #line) -> String {
+    private func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
+        
+        let table = "Feed"
         let bundle = Bundle(for: FeedPresenter.self)
         let value = bundle.localizedString(forKey: key, value: nil, table: table)
         

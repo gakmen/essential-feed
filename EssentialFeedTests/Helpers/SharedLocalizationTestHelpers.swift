@@ -60,10 +60,10 @@ private func allLocalizedStringKeys (
     return bundles.reduce([]) { (acc, current) in
         guard
             let path = current.bundle.path(forResource: table, ofType: "strings"),
-            let url = URL(string: path),
-            let strings = try? NSDictionary(contentsOf: url, error: ()),
+            let strings = try? NSDictionary(contentsOf: URL(fileURLWithPath: path), error: ()),
             let keys = strings.allKeys as? [String]
         else {
+            XCTFail("Couldn't find strings for localized bundle: \(current)", file: file, line: line)
             return acc
         }
         return acc.union(Set(keys))

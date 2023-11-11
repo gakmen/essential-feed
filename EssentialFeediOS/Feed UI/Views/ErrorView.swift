@@ -46,7 +46,7 @@ public final class ErrorView: UIView {
         UIView.animate (
             withDuration: 0.25,
             animations: { self.alpha = 0 },
-            completion: { if $0 { self.label = nil } }
+            completion: { if $0 { self.label.text = nil } }
         )
     }
 }

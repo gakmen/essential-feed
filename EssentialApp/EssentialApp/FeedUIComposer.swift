@@ -16,10 +16,9 @@ public struct FeedUIComposer {
     public static func composeFeedControllerWith (
         feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
         imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher
-    
     ) -> FeedViewController {
         
-        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
+        let presentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>(loader: feedLoader)
         
         let feedController = FeedViewController.makeWith (
             delegate: presentationAdapter,
@@ -40,7 +39,7 @@ public struct FeedUIComposer {
 }
 
 private extension FeedViewController {
-    static func makeWith(delegate: FeedLoaderPresentationAdapter, title: String) -> FeedViewController {
+    static func makeWith(delegate: FeedViewControllerDelegate, title: String) -> FeedViewController {
         let bundle = Bundle(for: FeedViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
         let feedController = storyboard.instantiateInitialViewController() as! FeedViewController

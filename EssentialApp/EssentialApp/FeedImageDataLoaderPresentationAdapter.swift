@@ -40,7 +40,7 @@ final class FeedImageDataLoaderPresentationAdapter <View: FeedImageView, Image>:
                 }
                 
             }, receiveValue: { [weak self] data in
-                if let data, let model = self?.model {
+                if let model = self?.model {
                     self?.presenter?.didFinishLoadingImageData(with: data, for: model)
                 }
             })

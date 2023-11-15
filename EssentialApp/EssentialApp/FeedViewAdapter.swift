@@ -11,23 +11,40 @@ import EssentialFeediOS
 
 final class FeedViewAdapter: ResourceView {
     private weak var controller: FeedViewController?
-    private let loader: (URL) -> FeedImageDataLoader.Publisher
+    private let imageLoader: (URL) -> FeedImageDataLoader.Publisher
     
     init(controller: FeedViewController, loader: @escaping (URL) -> FeedImageDataLoader.Publisher) {
         self.controller = controller
-        self.loader = loader
+        self.imageLoader = loader
     }
     
     func display(_ viewModel: FeedViewModel) {
         controller?.display(viewModel.feed.map { model in
-            let adapter = FeedImageDataLoaderPresentationAdapter<WeakRefVirtualProxy<FeedImageCellController>, UIImage> (
-                model: model,
-                imageLoader: loader)
-            let cellController = FeedImageCellController(delegate: adapter)
             
-            adapter.presenter = FeedImagePresenter(view: WeakRefVirtualProxy(cellController), imageTransformer: UIImage.init)
+            let adapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>> (
+                    loader: { [imageLoader] in
+                        imageLoader(model.url)
+                    }
+                )
+            
+            let cellController = FeedImageCellController (
+                viewModel: FeedImagePresenter<FeedImageCellController, UIImage>.map(model),
+                delegate: adapter
+            )
+            
+            adapter.presenter = LoadResourcePresenter (
+                errorView: WeakRefVirtualProxy(cellController),
+                loadingView: WeakRefVirtualProxy(cellController),
+                resourceView: WeakRefVirtualProxy(cellController),
+                mapper: { data in
+                    guard let image = UIImage(data: data) else { throw InvalidImageData() }
+                    return image
+                }
+            )
             
             return cellController
         })
     }
 }
+
+struct InvalidImageData: Error {}

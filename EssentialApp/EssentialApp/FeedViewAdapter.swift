@@ -34,10 +34,7 @@ final class FeedViewAdapter: ResourceView {
                 errorView: WeakRefVirtualProxy(cellController),
                 loadingView: WeakRefVirtualProxy(cellController),
                 resourceView: WeakRefVirtualProxy(cellController),
-                mapper: { data in
-                    guard let image = UIImage(data: data) else { throw InvalidImageData() }
-                    return image
-                }
+                mapper: UIImage.tryMake
             )
             
             return cellController
@@ -45,4 +42,11 @@ final class FeedViewAdapter: ResourceView {
     }
 }
 
-struct InvalidImageData: Error {}
+extension UIImage {
+    struct InvalidImageData: Error {}
+    
+    static func tryMake(data: Data) throws -> UIImage {
+        guard let image = UIImage(data: data) else { throw InvalidImageData() }
+        return image
+    }
+}

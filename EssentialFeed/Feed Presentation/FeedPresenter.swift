@@ -5,31 +5,7 @@
 //  Created by  Gosha Akmen on 06.08.2023.
 //
 
-public protocol FeedErrorView {
-    func display(_ viewModel: FeedErrorViewModel)
-}
-
-public protocol FeedLoadingView {
-    func display(_ viewModel: FeedLoadingViewModel)
-}
-
-public protocol FeedView {
-    func display(_ viewModel: FeedViewModel)
-}
-
 public final class FeedPresenter {
-    let errorView: FeedErrorView
-    let loadingView: FeedLoadingView
-    let feedView: FeedView
-    
-    private var feedLoadingErrorMessage: String {
-        return NSLocalizedString (
-            "FEED_VIEW_CONNECTION_ERROR",
-            tableName: "Feed",
-            bundle: Bundle(for: FeedPresenter .self),
-            comment: "Error message displayed, when we can't load image feed from the server"
-        )
-    }
     
     public static var title: String {
         return NSLocalizedString (
@@ -40,24 +16,7 @@ public final class FeedPresenter {
         )
     }
     
-    public init(errorView: FeedErrorView, loadingView: FeedLoadingView, feedView: FeedView) {
-        self.errorView = errorView
-        self.loadingView = loadingView
-        self.feedView = feedView
-    }
-    
-    public func didStartLoadingFeed() {
-        errorView.display(.noError)
-        loadingView.display(FeedLoadingViewModel(isLoading: true))
-    }
-    
-    public func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.display(FeedViewModel(feed: feed))
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
-    }
-    
-    public func didFinishLoadingFeed(with eror: Error) {
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
-        errorView.display(.error(feedLoadingErrorMessage))
+    public static func map(_ feed: [FeedImage]) -> FeedViewModel {
+        FeedViewModel(feed: feed)
     }
 }

@@ -13,25 +13,27 @@ import EssentialFeediOS
 public struct FeedUIComposer {
     private init() {}
     
+    typealias FeedPresentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>
+    
     public static func composeFeedControllerWith (
         feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>,
         imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher
-    
     ) -> FeedViewController {
         
-        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
+        let presentationAdapter = FeedPresentationAdapter(loader: feedLoader)
         
         let feedController = FeedViewController.makeWith (
             delegate: presentationAdapter,
             title: FeedPresenter.title
         )
         
-        presentationAdapter.presenter = FeedPresenter (
+        presentationAdapter.presenter = LoadResourcePresenter (
             errorView: WeakRefVirtualProxy(feedController),
             loadingView: WeakRefVirtualProxy(feedController),
-            feedView: FeedViewAdapter(
+            resourceView: FeedViewAdapter(
                 controller: feedController,
-                loader: imageLoader)
+                loader: imageLoader), 
+            mapper: FeedPresenter.map
         )
         
         return feedController
@@ -39,7 +41,7 @@ public struct FeedUIComposer {
 }
 
 private extension FeedViewController {
-    static func makeWith(delegate: FeedLoaderPresentationAdapter, title: String) -> FeedViewController {
+    static func makeWith(delegate: FeedViewControllerDelegate, title: String) -> FeedViewController {
         let bundle = Bundle(for: FeedViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
         let feedController = storyboard.instantiateInitialViewController() as! FeedViewController

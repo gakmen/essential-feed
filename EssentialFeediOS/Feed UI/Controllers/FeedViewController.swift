@@ -15,8 +15,8 @@ public protocol FeedViewControllerDelegate {
 public final class FeedViewController:
     UITableViewController,
     UITableViewDataSourcePrefetching,
-    FeedLoadingView,
-    FeedErrorView
+    ResourceLoadingView,
+    ResourceErrorView
 {
     @IBOutlet private(set) public var errorView: ErrorView?
     
@@ -60,11 +60,11 @@ public final class FeedViewController:
         tableModel = cellControllers
     }
     
-    public func display(_ viewModel: FeedLoadingViewModel) {
+    public func display(_ viewModel: ResourceLoadingViewModel) {
         refreshControl?.update(viewModel.isLoading)
     }
     
-    public func display(_ viewModel: FeedErrorViewModel) {
+    public func display(_ viewModel: ResourceErrorViewModel) {
         errorView?.message = viewModel.message
     }
     

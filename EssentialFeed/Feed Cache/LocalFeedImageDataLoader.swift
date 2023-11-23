@@ -48,11 +48,7 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
         }
         
         func complete(with result: LoadResult) {
-            completion? (
-                result
-                .mapError { _ in LoadError.failed }
-                .flatMap { data in data.map{ .success($0) } ?? .failure(LoadError.notFound) }
-            )
+            completion?(result)
         }
         
         func cancel() {
@@ -69,7 +65,10 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
         let task = LoadImageDataTask(completion)
         store.retrieve(dataFor: url) { [weak self] result in
             guard self != nil else { return }
-            task.complete(with: result)
+            task.complete(with: result
+                .mapError { _ in LoadError.failed }
+                .flatMap { data in data.map{ .success($0) } ?? .failure(LoadError.notFound) }
+            )
         }
         return task
     }

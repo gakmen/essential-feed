@@ -26,7 +26,7 @@ public extension HTTPClient {
 }
 
 public extension FeedImageDataLoader {
-    typealias Publisher = AnyPublisher<Data?, Error>
+    typealias Publisher = AnyPublisher<Data, Error>
 
     func loadImageDataPublisher(from url: URL) -> Publisher {
         var task: FeedImageDataLoaderTask?
@@ -41,12 +41,10 @@ public extension FeedImageDataLoader {
     }
 }
 
-extension Publisher where Output == Data? {
+extension Publisher where Output == Data {
     func caching(to cache: FeedImageDataCache, using url: URL) -> AnyPublisher<Output, Failure> {
         handleEvents(receiveOutput: { data in
-            if let data {
-                cache.saveIgnoringResult(data, for: url)
-            }
+            cache.saveIgnoringResult(data, for: url)
         }).eraseToAnyPublisher()
     }
 }

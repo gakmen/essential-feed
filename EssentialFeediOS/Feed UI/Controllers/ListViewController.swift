@@ -8,10 +8,6 @@
 import UIKit
 import EssentialFeed
 
-public protocol FeedViewControllerDelegate {
-    func didRequestFeedRefresh()
-}
-
 public protocol CellController {
     func view(in: UITableView) -> UITableViewCell
     func preload()
@@ -31,7 +27,7 @@ public final class ListViewController:
     private var tableModel = [CellController]() {
         didSet { tableView.reloadData() }
     }
-    public var delegate: FeedViewControllerDelegate?
+    public var onRefresh: (() -> Void)?
     
     var onViewIsAppearingForTheFirstTime: ((ListViewController) -> Void)?
     
@@ -57,7 +53,7 @@ public final class ListViewController:
     }
     
     @IBAction private func refresh() {
-        delegate?.didRequestFeedRefresh()
+        onRefresh?()
     }
     
     public func display(_ cellControllers: [CellController]) {

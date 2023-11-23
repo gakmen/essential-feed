@@ -18,7 +18,7 @@ public protocol CellController {
     func cancelLoad()
 }
 
-public final class FeedViewController:
+public final class ListViewController:
     UITableViewController,
     UITableViewDataSourcePrefetching,
     ResourceLoadingView,
@@ -33,7 +33,7 @@ public final class FeedViewController:
     }
     public var delegate: FeedViewControllerDelegate?
     
-    var onViewIsAppearingForTheFirstTime: ((FeedViewController) -> Void)?
+    var onViewIsAppearingForTheFirstTime: ((ListViewController) -> Void)?
     
     public override func viewDidLoad() {
         super.viewDidLoad()

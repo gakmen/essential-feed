@@ -467,8 +467,41 @@
 			isa = PBXGroup;
 			children = (
 				72F4D5F52A55370D00DEF22D /* UIView + Shimmering.swift */,
-				72CA4C152A6A6D83008069AD /* UITableView+Dequeueing.swift */,
 				72CA4C172A6A6FC0008069AD /* UIImageView+Animations.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		725C10822B10276B00AF827B /* Shared UI */ = {
+			isa = PBXGroup;
+			children = (
+				725C10832B10277D00AF827B /* Controllers */,
+				725C10842B1027B200AF827B /* Views */,
+			);
+			path = "Shared UI";
+			sourceTree = "<group>";
+		};
+		725C10832B10277D00AF827B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7269829D2A50A65A00CB9C75 /* ListViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		725C10842B1027B200AF827B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				725C10852B1027FE00AF827B /* Helpers */,
+				724005C62A7A5C54002908F3 /* ErrorView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		725C10852B1027FE00AF827B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				72CA4C152A6A6D83008069AD /* UITableView+Dequeueing.swift */,
 				724005CB2A7A80E5002908F3 /* UIRefreshControl+Helpers.swift */,
 				72E7B1972AAF139200E78005 /* UITableView+HeaderSizing.swift */,
 			);
@@ -559,7 +592,6 @@
 		72672CCD2A5982870057940D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7269829D2A50A65A00CB9C75 /* ListViewController.swift */,
 				7258E90A2A5B0769002A8282 /* FeedImageCellController.swift */,
 			);
 			path = Controllers;
@@ -570,7 +602,6 @@
 			children = (
 				724005C82A7A7D34002908F3 /* Helpers */,
 				7269829F2A52974700CB9C75 /* FeedImageCell.swift */,
-				724005C62A7A5C54002908F3 /* ErrorView.swift */,
 				725557462A68FD9400142609 /* Feed.storyboard */,
 				725557482A68FF6000142609 /* Feed.xcassets */,
 			);
@@ -600,6 +631,7 @@
 		729D51CB2A4E9E7C009CB3F9 /* EssentialFeediOS */ = {
 			isa = PBXGroup;
 			children = (
+				725C10822B10276B00AF827B /* Shared UI */,
 				72672CCC2A5982790057940D /* Feed UI */,
 				729D51CD2A4E9E7C009CB3F9 /* EssentialFeediOS.docc */,
 				729D51E12A4E9F47009CB3F9 /* EssentialFeediOS.xctestplan */,

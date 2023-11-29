@@ -56,6 +56,7 @@
 		725C10B82B1097E600AF827B /* ImageCommentCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725C10B72B1097E600AF827B /* ImageCommentCellController.swift */; };
 		725C10BB2B10999E00AF827B /* ImageComments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 725C10BA2B10999E00AF827B /* ImageComments.storyboard */; };
 		725C10BD2B109D3200AF827B /* ImageCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725C10BC2B109D3100AF827B /* ImageCommentCell.swift */; };
+		725C10BF2B16DF1700AF827B /* CellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725C10BE2B16DF1700AF827B /* CellController.swift */; };
 		726059252A23CAE000A88CA6 /* CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726059242A23CAE000A88CA6 /* CoreDataHelpers.swift */; };
 		726059272A23CC6900A88CA6 /* ManagedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726059262A23CC6900A88CA6 /* ManagedCache.swift */; };
 		726059292A23CCA100A88CA6 /* ManagedFeedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726059282A23CCA100A88CA6 /* ManagedFeedImage.swift */; };
@@ -220,6 +221,7 @@
 		725C10B72B1097E600AF827B /* ImageCommentCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentCellController.swift; sourceTree = "<group>"; };
 		725C10BA2B10999E00AF827B /* ImageComments.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ImageComments.storyboard; sourceTree = "<group>"; };
 		725C10BC2B109D3100AF827B /* ImageCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentCell.swift; sourceTree = "<group>"; };
+		725C10BE2B16DF1700AF827B /* CellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellController.swift; sourceTree = "<group>"; };
 		726059242A23CAE000A88CA6 /* CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelpers.swift; sourceTree = "<group>"; };
 		726059262A23CC6900A88CA6 /* ManagedCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedCache.swift; sourceTree = "<group>"; };
 		726059282A23CCA100A88CA6 /* ManagedFeedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedFeedImage.swift; sourceTree = "<group>"; };
@@ -500,6 +502,7 @@
 			isa = PBXGroup;
 			children = (
 				7269829D2A50A65A00CB9C75 /* ListViewController.swift */,
+				725C10BE2B16DF1700AF827B /* CellController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1091,6 +1094,7 @@
 				729D51CE2A4E9E7C009CB3F9 /* EssentialFeediOS.docc in Sources */,
 				724005C72A7A5C54002908F3 /* ErrorView.swift in Sources */,
 				72F4D5F62A55370D00DEF22D /* UIView + Shimmering.swift in Sources */,
+				725C10BF2B16DF1700AF827B /* CellController.swift in Sources */,
 				725C10BD2B109D3200AF827B /* ImageCommentCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

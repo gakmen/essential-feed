@@ -143,12 +143,14 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual (sut.errorMessage, nil)
     }
     
+    // MARK: - Image View Tests
+    
     func test_feedImageView_loadsImageURLWhenVisible() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (loader, sut) = makeSUT()
-        sut.simulateAppearance()
         
+        sut.simulateAppearance()
         loader.completeFeedLoading(with: [image0, image1])
         
         XCTAssertEqual(loader.loadedImageURLs, [], "Expected no image url request until views become visible")
@@ -196,6 +198,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         let (loader, sut) = makeSUT()
         
         sut.simulateAppearance()
+        sut.tableView.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
         loader.completeFeedLoading(with: [makeImage(), makeImage()])
         
         let view0 = sut.simulateImageViewVisible(at: 0)

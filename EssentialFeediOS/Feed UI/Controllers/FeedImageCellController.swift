@@ -81,6 +81,6 @@ extension FeedImageCellController: ResourceView, ResourceLoadingView, ResourceEr
     }
     
     private func releaseCellForReuse() {
-        cell = nil
+        cell?.onReuse = nil
     }
 }

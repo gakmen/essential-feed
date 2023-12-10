@@ -1,5 +1,5 @@
 //
-//  FeedViewController+TestHelpers.swift
+//  ListViewController+TestHelpers.swift
 //  EssentialFeediOSTests
 //
 //  Created by  Gosha Akmen on 25.07.2023.
@@ -74,6 +74,17 @@ extension ListViewController {
     
     func renderedFeedImageData(at index: Int) -> Data? {
         simulateImageViewVisible(at: index)?.renderedImage
+    }
+    
+    @discardableResult
+    func simulateFeedImageBecomingVisibleAgain(at row: Int) -> FeedImageCell? {
+        let view = simulateImageViewNotVisible(at: row)
+        
+        let delegate = tableView.delegate
+        let index = IndexPath(row: row, section: feedImagesSection)
+        delegate?.tableView?(tableView, willDisplay: view!, forRowAt: index)
+        
+        return view
     }
     
     @discardableResult

@@ -239,6 +239,25 @@ final class FeedUIIntegrationTests: XCTestCase {
         )
     }
     
+    func test_feedReload_withSameData_doesNotReloadVisibleCellsImageData() {
+        let (loader, sut) = makeSUT()
+        sut.simulateAppearance()
+        sut.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
+        
+        let image1 = makeImage(description: "first")
+        let image2 = makeImage(description: "second")
+        let image3 = makeImage(description: "third")
+        
+        loader.completeFeedLoading(with: [image1, image2, image3])
+        sut.view.enforceLayoutCycle()
+        XCTAssertEqual(loader.loadedImageURLs, [image1.url, image2.url, image3.url])
+            
+        sut.simulateUserInitiatedFeedReload()
+        loader.completeFeedLoading(with: [image1, image2, image3], at: 1)
+        sut.view.enforceLayoutCycle()
+        XCTAssertEqual(loader.loadedImageURLs, [image1.url, image2.url, image3.url])
+    }
+    
     func test_feedImageView_rendersImageLoadedFromURL() {
         let (loader, sut) = makeSUT()
         
@@ -455,6 +474,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         
         let loader = LoaderSpy()
         let sut = FeedUIComposer.composeFeedControllerWith(feedLoader: loader.loadPublisher, imageLoader: loader.loadImageDataPublisher)
+        print("??? sut: \(sut)")
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (loader, sut)

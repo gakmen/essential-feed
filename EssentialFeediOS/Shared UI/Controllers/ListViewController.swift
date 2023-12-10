@@ -17,7 +17,7 @@ public final class ListViewController:
     private(set) public var errorView = ErrorView()
     
     private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
-        .init(tableView: tableView) { tableView, index, controller in
+        .init(tableView: tableView) { [weak self] tableView, index, controller in
             controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
     }()

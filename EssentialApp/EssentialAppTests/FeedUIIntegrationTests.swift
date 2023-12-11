@@ -443,26 +443,26 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.cancelledImageURLs, [image0.url, image1.url], "Expected second image URL request to be cancelled when the second image is not near visible")
     }
     
-//    func test_feedImageView_configuresViewCorrectlyWhenTransitioningFromNearVisibleToVisibleWhileStillPreloadingImage() {
-//            let (loader, sut) = makeSUT()
-//            
-//            sut.simulateAppearance()
-//            loader.completeFeedLoading(with: [makeImage()])
-//            
-//            sut.simulateImageViewNearVisible(at: 0)
-//            let view0 = sut.simulateImageViewVisible(at: 0)
-//            
-//            XCTAssertEqual(view0?.renderedImage, nil, "Expected no rendered image when view becomes visible while still preloading image")
-//            XCTAssertEqual(view0?.isShowingRetryButton, false, "Expected no retry action when view becomes visible while still preloading image")
-//            XCTAssertEqual(view0?.isShowingImageLoadingIndicator, true, "Expected loading indicator when view becomes visible while still preloading image")
-//            
-//            let imageData = UIImage.make(withColor: .red).pngData()!
-//            loader.completeImageLoading(with: imageData, at: 0)
-//            
-//            XCTAssertEqual(view0?.renderedImage, imageData, "Expected rendered image after image preloads successfully")
-//            XCTAssertEqual(view0?.isShowingRetryButton, false, "Expected no retry action after image preloads successfully")
-//            XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator after image preloads successfully")
-//        }
+    func test_feedImageView_configuresViewCorrectlyWhenTransitioningFromNearVisibleToVisibleWhileStillPreloadingImage() {
+            let (loader, sut) = makeSUT()
+            
+            sut.simulateAppearance()
+            loader.completeFeedLoading(with: [makeImage()])
+            
+            sut.simulateImageViewNearVisible(at: 0)
+            let view0 = sut.simulateImageViewVisible(at: 0)
+            
+            XCTAssertEqual(view0?.renderedImage, nil, "Expected no rendered image when view becomes visible while still preloading image")
+            XCTAssertEqual(view0?.isShowingRetryButton, false, "Expected no retry action when view becomes visible while still preloading image")
+            XCTAssertEqual(view0?.isShowingImageLoadingIndicator, true, "Expected loading indicator when view becomes visible while still preloading image")
+            
+            let imageData = UIImage.make(withColor: .red).pngData()!
+            loader.completeImageLoading(with: imageData, at: 1)
+            
+            XCTAssertEqual(view0?.renderedImage, imageData, "Expected rendered image after image preloads successfully")
+            XCTAssertEqual(view0?.isShowingRetryButton, false, "Expected no retry action after image preloads successfully")
+            XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator after image preloads successfully")
+        }
 
     func test_feedImageView_configuresViewCorrectlyWhenCellBecomingVisibleAgain() {
         let (loader, sut) = makeSUT()

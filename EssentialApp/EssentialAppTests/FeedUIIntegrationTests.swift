@@ -11,7 +11,7 @@ import EssentialApp
 import EssentialFeed
 import EssentialFeediOS
 
-final class FeedUIIntegrationTests: XCTestCase {
+class FeedUIIntegrationTests: XCTestCase {
     
     func test_feedView_hasTitle() {
         let (_, sut) = makeSUT()
@@ -564,7 +564,6 @@ final class FeedUIIntegrationTests: XCTestCase {
         
         let loader = LoaderSpy()
         let sut = FeedUIComposer.composeFeedControllerWith(feedLoader: loader.loadPublisher, imageLoader: loader.loadImageDataPublisher)
-        print("??? sut: \(sut)")
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (loader, sut)

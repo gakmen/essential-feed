@@ -20,4 +20,10 @@ public final class FeedImageCell: UITableViewCell {
     }
     
     var onRetry: (() -> Void)?
+    var onReuse: (() -> Void)?
+    
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        onReuse?()
+    }
 }

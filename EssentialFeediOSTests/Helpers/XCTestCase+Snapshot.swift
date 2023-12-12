@@ -9,7 +9,7 @@ import XCTest
 
 extension XCTestCase {
     
-    func assert(snapshot: UIImage, named name: String, file: StaticString = #file, line: UInt = #line) {
+    func assert(snapshot: UIImage, named name: String, file: StaticString = #filePath, line: UInt = #line) {
         let snapshotData = makeSnapshotData(from: snapshot)
         let snapshotURL = makeSnapshotURL(named: name)
         
@@ -36,7 +36,7 @@ extension XCTestCase {
         
     }
     
-    func record(snapshot: UIImage, named name: String, file: StaticString = #file, line: UInt = #line) {
+    func record(snapshot: UIImage, named name: String, file: StaticString = #filePath, line: UInt = #line) {
         let snapshotData = makeSnapshotData(from: snapshot)
         let snapshotURL = makeSnapshotURL(named: name)
         
@@ -46,6 +46,7 @@ extension XCTestCase {
                 withIntermediateDirectories: true
             )
             try snapshotData?.write(to: snapshotURL)
+            XCTFail("Record succeeded — change to 'assert' to compare the snapshots from now on.", file: file, line: line)
         } catch {
             XCTFail("Failed to record snapshot with error: \(error)", file: file, line: line)
         }

@@ -49,13 +49,13 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
     }
 
     
-    override func test_loadingIndicator_isVisibleWhileLoadingFeed() {
+    func test_loadingIndicator_isVisibleWhileLoadingComments() {
         let (loader, sut) = makeSUT()
         
         sut.simulateAppearance()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once view is appearing")
         
-        loader.completeFeedLoading(at: 0)
+        loader.completeCommentsLoading(at: 0)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once loader completes successfully")
         
         sut.simulateUserInitiatedReload()
@@ -75,11 +75,11 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         sut.simulateAppearance()
         assertThat(sut, isRendering: [])
         
-        loader.completeFeedLoading(with: [image0], at: 0)
+        loader.completeCommentsLoading(with: [image0], at: 0)
         assertThat(sut, isRendering: [image0])
         
         sut.simulateUserInitiatedReload()
-        loader.completeFeedLoading(with: [image0, image1, image2, image3], at: 1)
+        loader.completeCommentsLoading(with: [image0, image1, image2, image3], at: 1)
         assertThat(sut, isRendering: [image0, image1, image2, image3])
     }
     
@@ -89,11 +89,11 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         let (loader, sut) = makeSUT()
         
         sut.simulateAppearance()
-        loader.completeFeedLoading(with: [image0, image1], at: 0)
+        loader.completeCommentsLoading(with: [image0, image1], at: 0)
         assertThat(sut, isRendering: [image0, image1])
         
         sut.simulateUserInitiatedReload()
-        loader.completeFeedLoading(with: [], at: 1)
+        loader.completeCommentsLoading(with: [], at: 1)
         assertThat(sut, isRendering: [])
     }
     
@@ -102,7 +102,7 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         let (loader, sut) = makeSUT()
         sut.simulateAppearance()
         
-        loader.completeFeedLoading(with: [image0], at: 0)
+        loader.completeCommentsLoading(with: [image0], at: 0)
         assertThat(sut, isRendering: [image0])
         
         sut.simulateUserInitiatedReload()
@@ -177,7 +177,7 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
             return publisher.eraseToAnyPublisher()
         }
         
-        func completeFeedLoading(with feed: [FeedImage] = [], at index: Int = 0) {
+        func completeCommentsLoading(with feed: [FeedImage] = [], at index: Int = 0) {
             commentsRequests[index].send(feed)
         }
         

@@ -12,9 +12,9 @@ import EssentialFeediOS
 extension FeedUIIntegrationTests {
     private class DummyView: ResourceView { func display(_ viewModel: Any) {} }
     
-    var feedViewTitle: String {
-        FeedPresenter.title
-    }
+    var feedViewTitle: String { FeedPresenter.title }
+    
+    var commentsTitle: String { ImageCommentsPresenter.title }
     
     var loadFeedError: String {
         LoadResourcePresenter<Any, DummyView>.loadingErrorMessage

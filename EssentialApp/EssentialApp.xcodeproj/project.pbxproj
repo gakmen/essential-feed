@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7224C3772AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7224C3762AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift */; };
+		723335712B295421003A53E0 /* CommentsViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723335702B295421003A53E0 /* CommentsViewAdapter.swift */; };
 		7245BDBF2ABABB750048CEB8 /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */; };
 		726A20292A9B03E20024C2CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A20282A9B03E20024C2CA /* AppDelegate.swift */; };
 		726A202B2A9B03E20024C2CA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A202A2A9B03E20024C2CA /* SceneDelegate.swift */; };
@@ -69,6 +70,7 @@
 /* Begin PBXFileReference section */
 		7224C3762AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedUIIntegrationTests+Assertions.swift"; sourceTree = "<group>"; };
 		7226F7E32AAEC18B00408EE6 /* EssentialApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = EssentialApp.xctestplan; path = "/Users/gakmen/EssentialDeveloper/essential-feed/EssentialApp/EssentialAppTests/EssentialApp.xctestplan"; sourceTree = "<absolute>"; };
+		723335702B295421003A53E0 /* CommentsViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewAdapter.swift; sourceTree = "<group>"; };
 		7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 		726A20252A9B03E20024C2CA /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		726A20282A9B03E20024C2CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				72C2ECB12B28005E002E07EE /* CommentsUIComposer.swift */,
 				72A06D842AA9E44B0053AD4C /* WeakRefVirtualProxy.swift */,
 				72A06D852AA9E44B0053AD4C /* FeedViewAdapter.swift */,
+				723335702B295421003A53E0 /* CommentsViewAdapter.swift */,
 				72A06D892AA9E44C0053AD4C /* LoadResourcePresentationAdapter.swift */,
 				7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */,
 				726A20312A9B03E50024C2CA /* Assets.xcassets */,
@@ -315,6 +318,7 @@
 				726A20292A9B03E20024C2CA /* AppDelegate.swift in Sources */,
 				7245BDBF2ABABB750048CEB8 /* CombineHelpers.swift in Sources */,
 				72A06D8B2AA9E44C0053AD4C /* WeakRefVirtualProxy.swift in Sources */,
+				723335712B295421003A53E0 /* CommentsViewAdapter.swift in Sources */,
 				72C2ECB22B28005E002E07EE /* CommentsUIComposer.swift in Sources */,
 				72A06D8D2AA9E44C0053AD4C /* FeedViewAdapter.swift in Sources */,
 				726A202B2A9B03E20024C2CA /* SceneDelegate.swift in Sources */,

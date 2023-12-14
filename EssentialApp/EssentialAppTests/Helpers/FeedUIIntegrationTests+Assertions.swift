@@ -18,8 +18,8 @@ extension FeedUIIntegrationTests {
     ){
         sut.view.enforceLayoutCycle()
         
-        guard sut.numberOfRenderedFeedImageViews() == feed.count else {
-            return XCTFail("Expected \(feed.count) images, got \(sut.numberOfRenderedFeedImageViews()) instead.", file: file, line: line)
+        guard sut.numberOfRenderedFeedViews() == feed.count else {
+            return XCTFail("Expected \(feed.count) images, got \(sut.numberOfRenderedFeedViews()) instead.", file: file, line: line)
         }
         
         feed.enumerated().forEach { index, image in
@@ -36,7 +36,7 @@ extension FeedUIIntegrationTests {
         file: StaticString = #file,
         line: UInt = #line
     ){
-        let view = sut.feedImageView(at: index)
+        let view = sut.getView(at: index)
         
         guard let cell = view as? FeedImageCell else {
             return XCTFail (

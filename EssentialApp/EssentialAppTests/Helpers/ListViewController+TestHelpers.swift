@@ -10,6 +10,8 @@ import EssentialFeediOS
 
 extension ListViewController {
     
+    //MARK: - Shared
+    
     func simulateAppearance() {
         if !isViewLoaded {
             loadViewIfNeeded()
@@ -67,9 +69,19 @@ extension ListViewController {
         refreshControl?.simulatePullToRefresh()
     }
     
+    func getView(at row: Int) -> UITableViewCell? {
+        guard numberOfRenderedFeedViews() > row else { return nil }
+        
+        let ds = tableView.dataSource
+        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: feedImagesSection))
+        return cell
+    }
+    
+    //MARK: - Feed
+    
     @discardableResult
     func simulateImageViewVisible(at index: Int) -> FeedImageCell? {
-        feedImageView(at: index) as? FeedImageCell
+        getView(at: index) as? FeedImageCell
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
@@ -111,7 +123,7 @@ extension ListViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: index)
     }
     
-    func numberOfRenderedFeedImageViews() -> Int {
+    func numberOfRenderedFeedViews() -> Int {
         tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
     }
     
@@ -119,11 +131,13 @@ extension ListViewController {
         return 0
     }
     
-    func feedImageView(at row: Int) -> UITableViewCell? {
-        guard numberOfRenderedFeedImageViews() > row else { return nil }
-        
-        let ds = tableView.dataSource
-        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: feedImagesSection))
-        return cell
+    //MARK: - Comments
+    
+    func numberOfRenderedCommentsViews() -> Int {
+        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: commentsSection)
+    }
+    
+    private var commentsSection: Int {
+        return 0
     }
 }

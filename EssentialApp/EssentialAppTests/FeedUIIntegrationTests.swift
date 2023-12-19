@@ -128,7 +128,7 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertNil(sut.errorMessage)
         
         loader.completeFeedLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadFeedError)
+        XCTAssertEqual(sut.errorMessage, loadError)
     }
     
     func test_errorView_hidesErrorMessageOnReload() {

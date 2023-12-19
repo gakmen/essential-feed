@@ -31,3 +31,7 @@ private class DummyView: ResourceView {
 var loadError: String {
     LoadResourcePresenter<Any, DummyView>.loadingErrorMessage
 }
+
+var feedViewTitle: String { FeedPresenter.title }
+
+var commentsTitle: String { ImageCommentsPresenter.title }

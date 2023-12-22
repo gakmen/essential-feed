@@ -16,7 +16,7 @@ public final class ListViewController:
 {
     private(set) public var errorView = ErrorView()
     
-    private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
+    public lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
         .init(tableView: tableView) { [weak self] tableView, index, controller in
             controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
@@ -88,6 +88,14 @@ public final class ListViewController:
     ){
         let dl = getCellController(at: indexPath)?.delegate
         dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
+    }
+    
+    public override func tableView (
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ){
+        let dl = getCellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, didSelectRowAt: indexPath)
     }
     
     public override func tableView (

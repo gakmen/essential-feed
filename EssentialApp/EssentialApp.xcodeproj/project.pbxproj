@@ -171,10 +171,10 @@
 				7226F7E32AAEC18B00408EE6 /* EssentialApp.xctestplan */,
 				72A951CC2A9F6AF000E70D16 /* Helpers */,
 				72A06DA02AA9EF020053AD4C /* FeedUIIntegrationTests.swift */,
-				726A20602A9C3F470024C2CA /* EssentialAppTests-Bridging-Header.h */,
+				72C2ECAF2B27FC66002E07EE /* CommentsUIIntegrationTests.swift */,
 				72A06D812AA9DA860053AD4C /* SceneDelegateTests.swift */,
 				72A06DA22AA9F00D0053AD4C /* FeedAcceptanceTests.swift */,
-				72C2ECAF2B27FC66002E07EE /* CommentsUIIntegrationTests.swift */,
+				726A20602A9C3F470024C2CA /* EssentialAppTests-Bridging-Header.h */,
 			);
 			path = EssentialAppTests;
 			sourceTree = "<group>";

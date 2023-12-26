@@ -28,8 +28,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
     
     private lazy var localFeedLoader: LocalFeedLoader = {
-            LocalFeedLoader(store: store, currentDate: Date.init)
-        }()
+        LocalFeedLoader(store: store, currentDate: Date.init)
+    }()
+    
+    private lazy var navigationController = UINavigationController (
+        rootViewController: FeedUIComposer.composeFeedControllerWith (
+            feedLoader: makeFeedLoaderWithLocalFallback,
+            imageLoader: makeLocalImageLoaderWithRemoteFallback,
+            selection: showComments
+        )
+    )
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
@@ -45,12 +53,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func configureWindow() {
-        
-        let feedViewController = FeedUIComposer.composeFeedControllerWith (
-            feedLoader: makeFeedLoaderWithLocalFallback,
-            imageLoader: makeLocalImageLoaderWithRemoteFallback)
-        
-        window?.rootViewController = UINavigationController(rootViewController: feedViewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     
@@ -77,5 +80,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     .tryMap(FeedImageDataMapper.map)
                     .caching(to: localImageLoader, using: url)
             })
+    }
+    
+    private func showComments(for image: FeedImage) {
+        let url = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/image/\(image.id)/comments")!
+        let commentsVC = CommentsUIComposer.composeCommentsControllerWith(commentsLoader: makeRemoteCommentsLoader(url: url))
+        
+        navigationController.pushViewController(commentsVC, animated: true)
+    }
+    
+    private func makeRemoteCommentsLoader(url: URL) -> () -> AnyPublisher<[ImageComment], Error> {
+        { [httpClient] in
+            httpClient
+                .getPublisher(url: url)
+                .tryMap(ImageCommentsMapper.map)
+                .eraseToAnyPublisher()
+        }
     }
 }

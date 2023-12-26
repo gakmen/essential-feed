@@ -244,7 +244,7 @@ class CommentsUIIntegrationTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ){
-        let view = sut.getView(at: index)
+        let view = sut.getCommentsView(at: index)
         
         guard let cell = view as? ImageCommentCell else {
             return XCTFail (

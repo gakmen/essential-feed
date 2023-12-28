@@ -63,6 +63,4 @@ extension FeedUIIntegrationTests {
             imageRequests[index].completion(.failure(error))
         }
     }
-
-
 }

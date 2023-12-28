@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import EssentialFeed
 import EssentialFeediOS
 
 extension ListViewController {
+    
+    //MARK: - Shared
     
     func simulateAppearance() {
         if !isViewLoaded {
@@ -63,13 +66,31 @@ extension ListViewController {
         refreshControl?.isRefreshing == true
     }
     
-    func simulateUserInitiatedFeedReload() {
+    func simulateUserInitiatedReload() {
         refreshControl?.simulatePullToRefresh()
+    }
+    
+    func getView(at row: Int, section: Int) -> UITableViewCell? {
+        guard numberOfRenderedFeedViews() > row else { return nil }
+        
+        let ds = tableView.dataSource
+        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: feedImagesSection))
+        return cell
+    }
+    
+    func numberOfRenderedViews(in section: Int) -> Int {
+        tableView.numberOfSections > section ? tableView.numberOfRows(inSection: section) : 0
+    }
+    
+    //MARK: - Feed
+    
+    func getFeedImageView(at index: Int) -> UITableViewCell? {
+        getView(at: index, section: feedImagesSection)
     }
     
     @discardableResult
     func simulateImageViewVisible(at index: Int) -> FeedImageCell? {
-        feedImageView(at: index) as? FeedImageCell
+        getView(at: index, section: feedImagesSection) as? FeedImageCell
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
@@ -111,19 +132,47 @@ extension ListViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: index)
     }
     
-    func numberOfRenderedFeedImageViews() -> Int {
-        tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImagesSection)
+    func numberOfRenderedFeedViews() -> Int {
+        numberOfRenderedViews(in: feedImagesSection)
     }
     
     private var feedImagesSection: Int {
         return 0
     }
     
-    func feedImageView(at row: Int) -> UITableViewCell? {
-        guard numberOfRenderedFeedImageViews() > row else { return nil }
-        
-        let ds = tableView.dataSource
-        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: feedImagesSection))
-        return cell
+    func simulateTapOnFeedImage(at row: Int) {
+        let delegate = tableView.delegate
+        let index = IndexPath(row: row, section: feedImagesSection)
+        delegate?.tableView?(tableView, didSelectRowAt: index)
+    }
+    
+    //MARK: - Comments
+    
+    func getCommentsView(at index: Int) -> UITableViewCell? {
+        getView(at: index, section: commentsSection)
+    }
+    
+    func numberOfRenderedCommentsViews() -> Int {
+        numberOfRenderedViews(in: commentsSection)
+    }
+    
+    func commentMessage(at row: Int) -> String? {
+        commentView(at: row)?.messageLabel.text
+    }
+    
+    func commentDate(at row: Int) -> String? {
+        commentView(at: row)?.dateLabel.text
+    }
+    
+    func commentUsername(at row: Int) -> String? {
+        commentView(at: row)?.usernameLabel.text
+    }
+    
+    private func commentView(at row: Int) -> ImageCommentCell? {
+        getView(at: row, section: commentsSection) as? ImageCommentCell
+    }
+    
+    private var commentsSection: Int {
+        return 0
     }
 }

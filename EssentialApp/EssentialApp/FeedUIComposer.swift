@@ -33,8 +33,7 @@ public struct FeedUIComposer {
                 controller: feedController,
                 loader: imageLoader,
                 selection: selection
-            ),
-            mapper: { $0 }
+            )
         )
         
         return feedController

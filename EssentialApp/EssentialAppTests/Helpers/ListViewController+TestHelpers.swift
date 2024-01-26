@@ -71,10 +71,10 @@ extension ListViewController {
     }
     
     func getView(at row: Int, section: Int) -> UITableViewCell? {
-        guard numberOfRenderedFeedViews() > row else { return nil }
+        guard numberOfRenderedViews(in: section) > row else { return nil }
         
         let ds = tableView.dataSource
-        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: feedImagesSection))
+        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: section))
         return cell
     }
     
@@ -118,7 +118,6 @@ extension ListViewController {
         return cell
     }
     
-    
     func simulateImageViewNearVisible(at row: Int) {
         let ds = tableView.prefetchDataSource
         let index = [IndexPath(row: row, section: feedImagesSection)]
@@ -132,13 +131,20 @@ extension ListViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: index)
     }
     
+    func simulateLoadMoreFeedAction() {
+        guard let view = getView(at: 0, section: loadMoreSection) else { return }
+        
+        let delegate = tableView.delegate
+        let index = IndexPath(row: 0, section: loadMoreSection)
+        delegate?.tableView?(tableView, willDisplay: view, forRowAt: index)
+    }
+    
     func numberOfRenderedFeedViews() -> Int {
         numberOfRenderedViews(in: feedImagesSection)
     }
     
-    private var feedImagesSection: Int {
-        return 0
-    }
+    private var feedImagesSection: Int { 0 }
+    private var loadMoreSection: Int { 1 }
     
     func simulateTapOnFeedImage(at row: Int) {
         let delegate = tableView.delegate
@@ -172,7 +178,5 @@ extension ListViewController {
         getView(at: row, section: commentsSection) as? ImageCommentCell
     }
     
-    private var commentsSection: Int {
-        return 0
-    }
+    private var commentsSection: Int { 0 }
 }

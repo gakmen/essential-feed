@@ -61,10 +61,14 @@ public final class ListViewController:
         onRefresh?()
     }
     
-    public func display(_ cellControllers: [CellController]) {
+    public func display(_ sections: [CellController]...) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(cellControllers)
+        
+        sections.enumerated().forEach { section, cellControllers in
+            snapshot.appendSections([section])
+            snapshot.appendItems(cellControllers)
+        }
+        
         if firstLoad {
             dataSource.applySnapshotUsingReloadData(snapshot)
         } else {

@@ -41,6 +41,18 @@ public extension FeedImageDataLoader {
     }
 }
 
+public extension Paginated {
+    var loadMorePublisher: (() -> AnyPublisher<Self, Error>)? {
+        guard let loadMore = loadMore else { return nil }
+        
+        return {
+            Deferred {
+                Future(loadMore)
+            }.eraseToAnyPublisher()
+        }
+    }
+}
+
 extension Publisher where Output == Data {
     func caching(to cache: FeedImageDataCache, using url: URL) -> AnyPublisher<Output, Failure> {
         handleEvents(receiveOutput: { data in

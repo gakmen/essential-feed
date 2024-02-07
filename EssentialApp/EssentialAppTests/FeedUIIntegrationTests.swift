@@ -107,6 +107,35 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user initiated loading completes with error")
     }
     
+    func test_loadMoreIndicator_isVisibleWhileLoadingMore() {
+        let (loader, sut) = makeSUT()
+        
+        sut.simulateAppearance()
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no load more indicator once view is appearing")
+        
+        loader.completeFeedLoading(with: [makeImage()], at: 0)
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no load more indicator once loader completes successfully")
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected load more indicator on load more action")
+        
+        loader.completeLoadMore(with: [makeImage()], at: 0)
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no load more indicator once second page loads successfully")
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected load more indicator on second load more action")
+        
+        loader.completeLoadMoreWithError(at: 1)
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no load more indicator once page fails to load")
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertTrue(sut.isShowingLoadMoreFeedIndicator, "Expected load more indicator on load more action after previous load more error")
+        
+        loader.completeLoadMore(lastPage: true, at: 2)
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no load more indicator on the last page")
+    }
+    
     func test_loadFeedCompletion_rendersSuccessfullyLoadedFeed() {
         let image0 = makeImage(description: "a description", location: "a location")
         let image1 = makeImage(description: nil, location: "another location")

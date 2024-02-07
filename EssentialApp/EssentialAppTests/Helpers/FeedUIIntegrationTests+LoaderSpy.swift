@@ -39,7 +39,7 @@ extension FeedUIIntegrationTests {
             feedRequests[index].send(completion: .failure(error))
         }
         
-        func completeLoadMore(with feed: [FeedImage] = [], lastPage: Bool, at index: Int = 0) {
+        func completeLoadMore(with feed: [FeedImage] = [], lastPage: Bool = false, at index: Int = 0) {
             loadMoreRequests[index].send(Paginated (
                 items: feed,
                 loadMorePublisher: lastPage ? nil : { [weak self] in

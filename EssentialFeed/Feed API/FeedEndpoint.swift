@@ -11,7 +11,12 @@ public enum FeedEndpoint {
     public func url(from base: URL) -> URL {
         switch self {
         case .get:
-            return base.appendingPathComponent("/v1/feed")
+            var components = URLComponents()
+            components.scheme = base.scheme
+            components.host = base.host
+            components.path = base.path + "/v1/feed"
+            components.queryItems = [URLQueryItem(name: "limit", value: "10")]
+            return components.url!
         }
     }
 }

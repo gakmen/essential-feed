@@ -65,13 +65,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         httpClient
             .getPublisher(url: FeedEndpoint.get().url(from: baseURL))
             .tryMap(FeedItemsMapper.map)
-            .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
             .map { [self] items in
                 Paginated(items: items, loadMorePublisher: {
                     self.makeRemoteLoadMoreLoader(with: items)
                 })
             }
+            .caching(to: localFeedLoader)
             .eraseToAnyPublisher()
     }
     
@@ -85,6 +85,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     self.makeRemoteLoadMoreLoader(with: allItems)
                 })
             }
+            .caching(to: localFeedLoader)
             .eraseToAnyPublisher()
     }
     

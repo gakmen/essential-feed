@@ -264,6 +264,26 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.loadMoreCallCount, 2)
     }
     
+    private class AlwaysDraggingTableView: UITableView {
+        override var isDragging: Bool { true }
+    }
+    
+    func test_userPullAtTableViewBottom_loadsMore() {
+        let (loader, sut) = makeSUT()
+        let tableView = AlwaysDraggingTableView()
+        
+        sut.simulateAppearance()
+        loader.completeFeedLoading(with: [makeImage()])
+        XCTAssertEqual(loader.loadMoreCallCount, 0)
+        
+        sut.simulateLoadMoreFeedAction(for: tableView)
+        XCTAssertEqual(loader.loadMoreCallCount, 1)
+        
+        loader.completeLoadMoreWithError(at: 0)
+        sut.simulateUserPull(for: tableView)
+        XCTAssertEqual(loader.loadMoreCallCount, 2)
+    }
+    
     func test_loadMoreActions_requestMoreFromLoader() {
         let (loader, sut) = makeSUT()
         sut.simulateAppearance()

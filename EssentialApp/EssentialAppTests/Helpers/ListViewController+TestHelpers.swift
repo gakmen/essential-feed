@@ -131,18 +131,22 @@ extension ListViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: index)
     }
     
-    func simulateLoadMoreFeedAction() {
+    func simulateLoadMoreFeedAction(for tableView: UITableView? = nil) {
         guard let view = getLoadMoreCell() else { return }
         
-        let delegate = tableView.delegate
+        let delegate = self.tableView.delegate
         let index = IndexPath(row: 0, section: loadMoreSection)
-        delegate?.tableView?(tableView, willDisplay: view, forRowAt: index)
+        delegate?.tableView?(tableView ?? self.tableView, willDisplay: view, forRowAt: index)
     }
     
     func simulateLoadMoreCellTap() {
         let delegate = tableView.delegate
         let index = IndexPath(row: 0, section: loadMoreSection)
         delegate?.tableView?(tableView, didSelectRowAt: index)
+    }
+    
+    func simulateUserPull(for tableView: UITableView) {
+        tableView.setContentOffset(CGPoint(x: 0, y: 100), animated: false)
     }
     
     func numberOfRenderedFeedViews() -> Int {

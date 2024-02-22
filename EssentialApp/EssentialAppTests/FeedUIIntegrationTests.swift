@@ -264,6 +264,10 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.loadMoreCallCount, 2)
     }
     
+    private class AlwaysDraggingTableView: UITableView {
+        override var isDragging: Bool { true }
+    }
+    
     func test_userPullAtTableViewBottom_loadsMore() {
         let (loader, sut) = makeSUT()
         let tableView = AlwaysDraggingTableView()

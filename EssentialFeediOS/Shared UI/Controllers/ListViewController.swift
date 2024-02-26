@@ -63,7 +63,6 @@ public final class ListViewController:
     
     public func display(_ sections: [CellController]...) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
-        
         sections.enumerated().forEach { section, cellControllers in
             snapshot.appendSections([section])
             snapshot.appendItems(cellControllers)

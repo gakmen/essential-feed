@@ -71,10 +71,10 @@ extension ListViewController {
     }
     
     func getView(at row: Int, section: Int) -> UITableViewCell? {
-        guard numberOfRenderedFeedViews() > row else { return nil }
+        guard numberOfRenderedViews(in: section) > row else { return nil }
         
         let ds = tableView.dataSource
-        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: feedImagesSection))
+        let cell = ds?.tableView(tableView, cellForRowAt: IndexPath(row: row, section: section))
         return cell
     }
     
@@ -118,7 +118,6 @@ extension ListViewController {
         return cell
     }
     
-    
     func simulateImageViewNearVisible(at row: Int) {
         let ds = tableView.prefetchDataSource
         let index = [IndexPath(row: row, section: feedImagesSection)]
@@ -132,18 +131,51 @@ extension ListViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: index)
     }
     
+    func simulateLoadMoreFeedAction(for tableView: UITableView? = nil) {
+        guard let view = getLoadMoreCell() else { return }
+        
+        let delegate = self.tableView.delegate
+        let index = IndexPath(row: 0, section: loadMoreSection)
+        delegate?.tableView?(tableView ?? self.tableView, willDisplay: view, forRowAt: index)
+    }
+    
+    func simulateLoadMoreCellTap() {
+        let delegate = tableView.delegate
+        let index = IndexPath(row: 0, section: loadMoreSection)
+        delegate?.tableView?(tableView, didSelectRowAt: index)
+    }
+    
+    func simulateUserPull(for tableView: UITableView) {
+        tableView.setContentOffset(CGPoint(x: 0, y: 100), animated: false)
+    }
+    
     func numberOfRenderedFeedViews() -> Int {
         numberOfRenderedViews(in: feedImagesSection)
     }
     
-    private var feedImagesSection: Int {
-        return 0
-    }
+    private var feedImagesSection: Int { 0 }
+    private var loadMoreSection: Int { 1 }
     
     func simulateTapOnFeedImage(at row: Int) {
         let delegate = tableView.delegate
         let index = IndexPath(row: row, section: feedImagesSection)
         delegate?.tableView?(tableView, didSelectRowAt: index)
+    }
+    
+    var canLoadMoreFeed: Bool {
+        getLoadMoreCell() != nil
+    }
+    
+    var isShowingLoadMoreFeedIndicator: Bool {
+        return getLoadMoreCell()?.isLoading == true
+    }
+    
+    private func getLoadMoreCell() -> LoadMoreCell? {
+        getView(at: 0, section: loadMoreSection) as? LoadMoreCell
+    }
+    
+    var loadMoreFeedErrorMessage: String? {
+        getLoadMoreCell()?.message
     }
     
     //MARK: - Comments
@@ -172,7 +204,5 @@ extension ListViewController {
         getView(at: row, section: commentsSection) as? ImageCommentCell
     }
     
-    private var commentsSection: Int {
-        return 0
-    }
+    private var commentsSection: Int { 0 }
 }

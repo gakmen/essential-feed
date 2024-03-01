@@ -10,6 +10,7 @@
 		7224C3772AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7224C3762AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift */; };
 		723335712B295421003A53E0 /* CommentsViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723335702B295421003A53E0 /* CommentsViewAdapter.swift */; };
 		7245BDBF2ABABB750048CEB8 /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */; };
+		7267DC652B8738A200B2A58D /* AlwaysDraggingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7267DC642B8738A200B2A58D /* AlwaysDraggingTableView.swift */; };
 		726A20292A9B03E20024C2CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A20282A9B03E20024C2CA /* AppDelegate.swift */; };
 		726A202B2A9B03E20024C2CA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A202A2A9B03E20024C2CA /* SceneDelegate.swift */; };
 		726A20322A9B03E50024C2CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 726A20312A9B03E50024C2CA /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 		7226F7E32AAEC18B00408EE6 /* EssentialApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = EssentialApp.xctestplan; path = "/Users/gakmen/EssentialDeveloper/essential-feed/EssentialApp/EssentialAppTests/EssentialApp.xctestplan"; sourceTree = "<absolute>"; };
 		723335702B295421003A53E0 /* CommentsViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewAdapter.swift; sourceTree = "<group>"; };
 		7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
+		7267DC642B8738A200B2A58D /* AlwaysDraggingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysDraggingTableView.swift; sourceTree = "<group>"; };
 		726A20252A9B03E20024C2CA /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		726A20282A9B03E20024C2CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		726A202A2A9B03E20024C2CA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				72FE32C72AAB384000C9D764 /* InMemoryFeedStore.swift */,
 				72EB3F3B2AB1916A0048F401 /* UIView+TestHelpers.swift */,
 				7224C3762AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift */,
+				7267DC642B8738A200B2A58D /* AlwaysDraggingTableView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -255,7 +258,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					726A20242A9B03E20024C2CA = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -335,6 +338,7 @@
 				72A06DA12AA9EF020053AD4C /* FeedUIIntegrationTests.swift in Sources */,
 				72FE32C62AAB373C00C9D764 /* HTTPClientStub.swift in Sources */,
 				72A06D992AA9E48D0053AD4C /* ListViewController+TestHelpers.swift in Sources */,
+				7267DC652B8738A200B2A58D /* AlwaysDraggingTableView.swift in Sources */,
 				72A06D822AA9DA860053AD4C /* SceneDelegateTests.swift in Sources */,
 				72FE32C82AAB384000C9D764 /* InMemoryFeedStore.swift in Sources */,
 				72A06D972AA9E48D0053AD4C /* FeedImageCell+TestHelpers.swift in Sources */,
@@ -377,6 +381,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -439,6 +444,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

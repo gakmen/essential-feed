@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7224C3772AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7224C3762AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift */; };
+		72258A292BA693BD00539EDB /* NullStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72258A282BA693BD00539EDB /* NullStore.swift */; };
 		723335712B295421003A53E0 /* CommentsViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723335702B295421003A53E0 /* CommentsViewAdapter.swift */; };
 		7245BDBF2ABABB750048CEB8 /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */; };
 		7267DC652B8738A200B2A58D /* AlwaysDraggingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7267DC642B8738A200B2A58D /* AlwaysDraggingTableView.swift */; };
@@ -69,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		7224C3762AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedUIIntegrationTests+Assertions.swift"; sourceTree = "<group>"; };
+		72258A282BA693BD00539EDB /* NullStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStore.swift; sourceTree = "<group>"; };
 		7226F7E32AAEC18B00408EE6 /* EssentialApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = EssentialApp.xctestplan; path = "/Users/gakmen/EssentialDeveloper/essential-feed/EssentialApp/EssentialAppTests/EssentialApp.xctestplan"; sourceTree = "<absolute>"; };
 		723335702B295421003A53E0 /* CommentsViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewAdapter.swift; sourceTree = "<group>"; };
 		7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				726A20312A9B03E50024C2CA /* Assets.xcassets */,
 				726A20332A9B03E50024C2CA /* LaunchScreen.storyboard */,
 				726A20362A9B03E50024C2CA /* Info.plist */,
+				72258A282BA693BD00539EDB /* NullStore.swift */,
 			);
 			path = EssentialApp;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 			files = (
 				726A20292A9B03E20024C2CA /* AppDelegate.swift in Sources */,
 				7245BDBF2ABABB750048CEB8 /* CombineHelpers.swift in Sources */,
+				72258A292BA693BD00539EDB /* NullStore.swift in Sources */,
 				72A06D8B2AA9E44C0053AD4C /* WeakRefVirtualProxy.swift in Sources */,
 				723335712B295421003A53E0 /* CommentsViewAdapter.swift in Sources */,
 				72C2ECB22B28005E002E07EE /* CommentsUIComposer.swift in Sources */,

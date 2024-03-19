@@ -5,6 +5,7 @@
 //  Created by  Gosha Akmen on 27.08.2023.
 //
 
+import os
 import UIKit
 import Combine
 import CoreData
@@ -14,6 +15,8 @@ import EssentialFeediOS
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    
+    private lazy var logger = Logger(subsystem: "ru.gakmen.essentialFeed", category: "main")
     
     private lazy var httpClient: HTTPClient = {
         URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
@@ -29,6 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
         } catch {
             assertionFailure("Couldn't instantiate a FeedStore, got error instead: \(error.localizedDescription)")
+            logger.fault("Couldn't instantiate a FeedStore, got error instead: \(error.localizedDescription)")
             return NullStore()
         }
     }()

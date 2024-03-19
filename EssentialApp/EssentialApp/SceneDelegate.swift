@@ -28,6 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 .appending(component: "feed-store.sqlite"))
             
         } catch {
+            assertionFailure("Couldn't instantiate a FeedStore, got error instead: \(error.localizedDescription)")
             return NullStore()
         }
     }()

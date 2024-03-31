@@ -628,6 +628,11 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.simulateImageViewNotVisible(at: 0)
         sut.simulateImageViewVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url, image.url, image.url], "Expected a third request when visible after cancelling previos one")
+        
+        sut.simulateLoadMoreFeedAction()
+        loader.completeFeedLoading(with: [image, makeImage()])
+        sut.simulateImageViewVisible(at: 0 )
+        XCTAssertEqual(loader.loadedImageURLs, [image.url, image.url, image.url], "Expected to keep already loaded feed when loading a new page")
     }
     
     func test_feedImageView_configuresViewCorrectlyWhenTransitioningFromNearVisibleToVisibleWhileStillPreloadingImage() {

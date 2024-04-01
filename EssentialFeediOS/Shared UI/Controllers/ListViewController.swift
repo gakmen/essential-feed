@@ -68,12 +68,7 @@ public final class ListViewController:
             snapshot.appendItems(cellControllers)
         }
         
-        if firstLoad {
-            dataSource.applySnapshotUsingReloadData(snapshot)
-        } else {
-            dataSource.apply(snapshot)
-        }
-        firstLoad = false
+        dataSource.apply(snapshot)
     }
     
     public func display(_ viewModel: ResourceLoadingViewModel) {

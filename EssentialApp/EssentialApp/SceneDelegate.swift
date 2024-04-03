@@ -5,6 +5,7 @@
 //  Created by  Gosha Akmen on 27.08.2023.
 //
 
+import os
 import UIKit
 import Combine
 import CoreData
@@ -15,6 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
+    private lazy var logger = Logger(subsystem: "ru.gakmen.essentialFeed", category: "main")
+    
     private lazy var httpClient: HTTPClient = {
         URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     }()
@@ -22,9 +25,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
     
     private lazy var store: FeedStore & FeedImageDataStore = {
-        try! CoreDataFeedStore(storeURL: NSPersistentContainer
-            .defaultDirectoryURL()
-            .appending(component: "feed-store.sqlite"))
+        do {
+            return try CoreDataFeedStore(storeURL: NSPersistentContainer
+                .defaultDirectoryURL()
+                .appending(component: "feed-store.sqlite"))
+            
+        } catch {
+            assertionFailure("Couldn't instantiate a FeedStore, got error instead: \(error.localizedDescription)")
+            logger.fault("Couldn't instantiate a FeedStore, got error instead: \(error.localizedDescription)")
+            return NullStore()
+        }
     }()
     
     private lazy var localFeedLoader: LocalFeedLoader = {

@@ -205,20 +205,11 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
     file: StaticString = #file,
     line: UInt = #line
   ){
-    let exp = expectation(description: "Wait for load completion")
-    _ = loader.loadImageData(from: url) { result in
-      switch result {
-
-      case let .success(receivedData):
-        XCTAssertEqual(expectedData, receivedData, file: file, line: line)
-
-      case let .failure(error):
-        XCTFail("Expected successfull result, got \(error) instead", file: file, line: line)
-      }
-
-      exp.fulfill()
+    do {
+      let loadedData = try loader.loadImageData(from: url)
+      XCTAssertEqual(loadedData, expectedData, file: file, line: line)
+    } catch {
+      XCTFail("Expected successfull image data result, got error \(error) instead", file: file, line: line)
     }
-
-    wait(for: [exp], timeout: 1.0)
   }
 }

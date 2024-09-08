@@ -34,7 +34,7 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
 
   public typealias LoadResult = FeedImageDataLoader.Result
 
-  public enum LoadError: Swift.Error {
+  public enum LoadError: Error {
     case failed
     case notFound
   }
@@ -63,13 +63,15 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
   ) -> FeedImageDataLoaderTask {
 
     let task = LoadImageDataTask(completion)
-    store.retrieve(dataFor: url) { [weak self] result in
-      guard self != nil else { return }
-      task.complete(with: result
-        .mapError { _ in LoadError.failed }
-        .flatMap { data in data.map{ .success($0) } ?? .failure(LoadError.notFound) }
-      )
-    }
+    task.complete(
+      with: Swift.Result {
+        try store.retrieve(dataFor: url)
+      }
+        .mapError { _ in LoadError.failed}
+        .flatMap { data in
+          data.map { .success($0) } ?? .failure(LoadError.notFound)
+        }
+    )
     return task
   }
 }

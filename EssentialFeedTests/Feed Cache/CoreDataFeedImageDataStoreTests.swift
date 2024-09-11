@@ -58,7 +58,7 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
 
   private func expect (
     _ sut: CoreDataFeedStore,
-    toCompleteRetrievalWith expectedResult: FeedImageDataStore.RetrievalResult,
+    toCompleteRetrievalWith expectedResult: Result<Data?, Error>,
     for url: URL,
     file: StaticString = #file,
     line: UInt = #line

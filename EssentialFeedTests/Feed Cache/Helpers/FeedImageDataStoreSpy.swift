@@ -8,8 +8,6 @@
 import EssentialFeed
 
 class FeedImageDataStoreSpy: FeedImageDataStore {
-  typealias RetrievalCompletion = (RetrievalResult) -> Void
-  typealias InsertionCompletion = (InsertionResult) -> Void
 
   enum Message: Equatable {
     case retrieve(dataFor: URL)

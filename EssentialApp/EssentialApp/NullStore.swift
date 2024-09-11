@@ -7,7 +7,7 @@
 
 import EssentialFeed
 
-struct NullStore: FeedStore & FeedImageDataStore {
+struct NullStore: FeedStore {
     
     func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         completion(.success(()))
@@ -20,12 +20,10 @@ struct NullStore: FeedStore & FeedImageDataStore {
     func retrieve(completion: @escaping RetrievalCompletion) {
         completion(.success(.none))
     }
-    
-    func retrieve(dataFor url: URL, completion: @escaping (FeedImageDataStore.RetrievalResult) -> Void) {
-        completion(.success(.none))
-    }
-    
-    func insert(image data: Data, for url: URL, completion: @escaping (InsertionResult) -> Void) {
-        completion(.success(()))
-    }
+}
+
+extension NullStore: FeedImageDataStore {
+  func retrieve(dataFor url: URL) throws -> Data? { nil }
+
+  func insert(image data: Data, for url: URL) throws {}
 }

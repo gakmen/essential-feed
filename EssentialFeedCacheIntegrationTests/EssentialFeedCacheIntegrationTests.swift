@@ -122,16 +122,12 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
     }
   }
 
-  private func validateCache(with loader: LocalFeedLoader, file: StaticString = #file, line: UInt = #line) {
-    let exp = expectation(description: "Wait for validation completion")
-
-    loader.validateCache() { result in
-      if case let Result.failure(error) = result {
-        XCTFail("Expected successful validation, got error: \(error) instead", file: file, line: line)
-      }
-      exp.fulfill()
+  private func validateCache(with loader: LocalFeedLoader, file: StaticString = #filePath, line: UInt = #line) {
+    do {
+      try loader.validateCache()
+    } catch {
+      XCTFail("Expected to validate feed successfully, got error: \(error)", file: file, line: line)
     }
-    wait(for: [exp], timeout: 1.0)
   }
 
   private func expect(_ sut: LocalFeedLoader, toLoad expectedFeed: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {

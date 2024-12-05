@@ -176,7 +176,7 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
     line: UInt = #line
   ){
     do {
-      try loader.save(image: data, for: url)
+      try loader.save(data, for: url)
     } catch {
       XCTFail("Expected to save image data successfully, got error \(error) instead", file: file, line: line)
     }

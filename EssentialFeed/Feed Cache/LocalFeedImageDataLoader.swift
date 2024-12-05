@@ -5,8 +5,9 @@
 //  Created by Георгий Акмен on 18.08.2023.
 //
 
-public final class LocalFeedImageDataLoader {
+import Foundation
 
+public final class LocalFeedImageDataLoader {
   private let store: FeedImageDataStore
 
   public init(store: FeedImageDataStore) {
@@ -19,10 +20,12 @@ extension LocalFeedImageDataLoader: FeedImageDataCache {
     case failed
   }
 
-  public func save(image data: Data, for url: URL) throws {
+  public func save(_ data: Data, for url: URL) throws {
     do {
-      try store.insert(image: data, for: url)
-    } catch { throw SaveError.failed }
+      try store.insert(data, for: url)
+    } catch {
+      throw SaveError.failed
+    }
   }
 }
 
@@ -32,12 +35,15 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
     case notFound
   }
 
-  public func loadImageData (from url: URL) throws -> Data {
+  public func loadImageData(from url: URL) throws -> Data {
     do {
-      if let imageData = try store.retrieve(dataFor: url) { return imageData }
+      if let imageData = try store.retrieve(dataForURL: url) {
+        return imageData
+      }
     } catch {
       throw LoadError.failed
     }
+
     throw LoadError.notFound
   }
 }

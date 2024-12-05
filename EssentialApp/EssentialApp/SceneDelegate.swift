@@ -7,16 +7,12 @@
 
 import os
 import UIKit
-import Combine
 import CoreData
+import Combine
 import EssentialFeed
-import EssentialFeediOS
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
   var window: UIWindow?
-
-  private lazy var logger = Logger(subsystem: "ru.gakmen.essentialFeed", category: "main")
 
   private lazy var scheduler: AnyDispatchQueueScheduler = DispatchQueue(
     label: "com.essentialdeveloper.infra.queue",
@@ -28,17 +24,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
   }()
 
-  private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
+  private lazy var logger = Logger(subsystem: "com.essentialdeveloper.EssentialAppCaseStudy", category: "main")
 
   private lazy var store: FeedStore & FeedImageDataStore = {
     do {
-      return try CoreDataFeedStore(storeURL: NSPersistentContainer
-        .defaultDirectoryURL()
-        .appending(component: "feed-store.sqlite"))
-
+      return try CoreDataFeedStore(
+        storeURL: NSPersistentContainer
+          .defaultDirectoryURL()
+          .appendingPathComponent("feed-store.sqlite"))
     } catch {
-      assertionFailure("Couldn't instantiate a FeedStore, got error instead: \(error.localizedDescription)")
-      logger.fault("Couldn't instantiate a FeedStore, got error instead: \(error.localizedDescription)")
+      assertionFailure("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
+      logger.fault("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
       return NullStore()
     }
   }()
@@ -47,13 +43,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     LocalFeedLoader(store: store, currentDate: Date.init)
   }()
 
-  private lazy var navigationController = UINavigationController (
-    rootViewController: FeedUIComposer.composeFeedControllerWith (
+  private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
+
+  private lazy var navigationController = UINavigationController(
+    rootViewController: FeedUIComposer.composeFeedControllerWith(
       feedLoader: makeRemoteFeedLoaderWithLocalFallback,
       imageLoader: makeLocalImageLoaderWithRemoteFallback,
-      selection: showComments
-    )
-  )
+      selection: showComments))
 
   convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore, scheduler: AnyDispatchQueueScheduler) {
     self.init()
@@ -82,36 +78,58 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
 
+  private func showComments(for image: FeedImage) {
+    let url = ImageCommentsEndpoint.get(image.id).url(from: baseURL)
+    let comments = CommentsUIComposer.composeCommentsControllerWith(commentsLoader: makeRemoteCommentsLoader(url: url))
+    navigationController.pushViewController(comments, animated: true)
+  }
+
+  private func makeRemoteCommentsLoader(url: URL) -> () -> AnyPublisher<[ImageComment], Error> {
+    return { [httpClient] in
+      return httpClient
+        .getPublisher(url: url)
+        .tryMap(ImageCommentsMapper.map)
+        .eraseToAnyPublisher()
+    }
+  }
+
   private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error> {
     makeRemoteFeedLoader()
       .caching(to: localFeedLoader)
       .fallback(to: localFeedLoader.loadPublisher)
       .map(makeFirstPage)
+      .subscribe(on: scheduler)
       .eraseToAnyPublisher()
   }
 
-  private func makeRemoteLoadMoreFeedLoader(with last: FeedImage?) -> AnyPublisher<Paginated<FeedImage>, Error> {
+  private func makeRemoteLoadMoreLoader(last: FeedImage?) -> AnyPublisher<Paginated<FeedImage>, Error> {
     localFeedLoader.loadPublisher()
-      .zip(makeRemoteFeedLoader(with: last))
-      .map { (cachedItems, newItems) in (cachedItems + newItems, newItems.last) }
+      .zip(makeRemoteFeedLoader(after: last))
+      .map { (cachedItems, newItems) in
+        (cachedItems + newItems, newItems.last)
+      }
       .map(makePage)
       .caching(to: localFeedLoader)
+      .subscribe(on: scheduler)
+      .eraseToAnyPublisher()
   }
 
-  private func makeRemoteFeedLoader(with lastItem: FeedImage? = nil) -> AnyPublisher<[FeedImage], Error> {
-    httpClient
-      .getPublisher(url: FeedEndpoint.get(after: lastItem).url(from: baseURL))
+  private func makeRemoteFeedLoader(after: FeedImage? = nil) -> AnyPublisher<[FeedImage], Error> {
+    let url = FeedEndpoint.get(after: after).url(from: baseURL)
+
+    return httpClient
+      .getPublisher(url: url)
       .tryMap(FeedItemsMapper.map)
       .eraseToAnyPublisher()
   }
 
-  private func makeFirstPage(_ items: [FeedImage]) -> Paginated<FeedImage> {
-    makePage(items, items.last)
+  private func makeFirstPage(items: [FeedImage]) -> Paginated<FeedImage> {
+    makePage(items: items, last: items.last)
   }
 
-  private func makePage(_ items: [FeedImage], _ last: FeedImage?) -> Paginated<FeedImage> {
+  private func makePage(items: [FeedImage], last: FeedImage?) -> Paginated<FeedImage> {
     Paginated(items: items, loadMorePublisher: last.map { last in
-      { self.makeRemoteLoadMoreFeedLoader(with: last) }
+      { self.makeRemoteLoadMoreLoader(last: last) }
     })
   }
 
@@ -130,21 +148,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       })
       .subscribe(on: scheduler)
       .eraseToAnyPublisher()
-  }
-
-  private func showComments(for image: FeedImage) {
-    let remoteURL = ImageCommentsEndpoint.get(image.id).url(from: baseURL)
-    let commentsVC = CommentsUIComposer.composeCommentsControllerWith(commentsLoader: makeRemoteCommentsLoader(url: remoteURL))
-
-    navigationController.pushViewController(commentsVC, animated: true)
-  }
-
-  private func makeRemoteCommentsLoader(url: URL) -> () -> AnyPublisher<[ImageComment], Error> {
-    { [httpClient] in
-      httpClient
-        .getPublisher(url: url)
-        .tryMap(ImageCommentsMapper.map)
-        .eraseToAnyPublisher()
-    }
   }
 }

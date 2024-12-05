@@ -5,47 +5,43 @@
 //  Created by Георгий Акмен on 08.09.2023.
 //
 
+import Foundation
 import EssentialFeed
 
 class InMemoryFeedStore {
-
   private(set) var feedCache: CachedFeed?
   private var feedImageDataCache: [URL: Data] = [:]
 
-  init(feedCache: CachedFeed? = nil) {
+  private init(feedCache: CachedFeed? = nil) {
     self.feedCache = feedCache
   }
 }
 
 extension InMemoryFeedStore: FeedStore {
-
-  func deleteCachedFeed(completion: @escaping FeedStore.DeletionCompletion) {
+  func deleteCachedFeed() throws {
     feedCache = nil
-    completion(.success(()))
   }
 
-  func insert(_ feed: [LocalFeedImage], _ timestamp: Date, completion: @escaping FeedStore.InsertionCompletion) {
+  func insert(_ feed: [LocalFeedImage], timestamp: Date) throws {
     feedCache = CachedFeed(feed: feed, timestamp: timestamp)
-    completion(.success(()))
   }
 
-  func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
-    completion(.success(feedCache))
+  func retrieve() throws -> CachedFeed? {
+    feedCache
   }
 }
 
 extension InMemoryFeedStore: FeedImageDataStore {
-  func insert(image data: Data, for url: URL) throws {
+  func insert(_ data: Data, for url: URL) throws {
     feedImageDataCache[url] = data
   }
 
-  func retrieve(dataFor url: URL) throws -> Data? {
+  func retrieve(dataForURL url: URL) throws -> Data? {
     feedImageDataCache[url]
   }
 }
 
-extension FeedImageDataStore {
-
+extension InMemoryFeedStore {
   static var empty: InMemoryFeedStore {
     InMemoryFeedStore()
   }

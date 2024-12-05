@@ -90,7 +90,7 @@ public extension LocalFeedLoader {
 
 extension FeedCache {
   func saveIgnoringResult(_ feed: [FeedImage]) {
-    save(feed) { _ in }
+    try? save(feed)
   }
 }
 

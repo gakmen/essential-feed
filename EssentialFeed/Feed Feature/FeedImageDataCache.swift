@@ -5,8 +5,8 @@
 //  Created by  Gosha Akmen on 04.09.2023.
 //
 
+import Foundation
+
 public protocol FeedImageDataCache {
-    typealias Result = Swift.Result<Void, LocalFeedImageDataLoader.SaveError>
-    
-    func save(image data: Data, for url: URL, completion: @escaping (Result) -> Void)
+  func save(_ data: Data, for url: URL) throws
 }

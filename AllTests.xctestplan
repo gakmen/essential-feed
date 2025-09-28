@@ -1,0 +1,64 @@
+{
+  "configurations" : [
+    {
+      "id" : "1FB1FF6D-C90F-40B4-BBA5-11735F2D8BA3",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:EssentialApp.xcodeproj",
+      "identifier" : "726A20242A9B03E20024C2CA",
+      "name" : "EssentialApp"
+    },
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/EssentialFeed.xcodeproj",
+        "identifier" : "7260592D2A270E5800A88CA6",
+        "name" : "EssentialFeedCacheIntegrationTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/EssentialFeed.xcodeproj",
+        "identifier" : "72AE35B1299F9B8500A028E1",
+        "name" : "EssentialFeedTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/EssentialFeed.xcodeproj",
+        "identifier" : "72E35C4D29C0DAA300719B28",
+        "name" : "EssentialFeedAPIEndToEndTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:EssentialApp.xcodeproj",
+        "identifier" : "726A203A2A9B03E50024C2CA",
+        "name" : "EssentialAppTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/EssentialFeed.xcodeproj",
+        "identifier" : "7226F7E72AAEC45500408EE6",
+        "name" : "EssentialFeediOSTests"
+      }
+    }
+  ],
+  "version" : 1
+}

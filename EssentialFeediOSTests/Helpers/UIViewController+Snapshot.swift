@@ -19,27 +19,27 @@ struct SnapshotConfiguration {
     let layoutMargins: UIEdgeInsets
     let traitCollection: UITraitCollection
     
-    static func iPhone14(style: UIUserInterfaceStyle, contentSize: UIContentSizeCategory = .medium) -> SnapshotConfiguration {
-        return SnapshotConfiguration(
-            size: CGSize(width: 390, height: 844),
-            safeAreaInsets: UIEdgeInsets(top: 47, left: 0, bottom: 34, right: 0),
-            layoutMargins: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16),
-            traitCollection: UITraitCollection(traitsFrom: [
-                .init(forceTouchCapability: .unavailable),
-                .init(layoutDirection: .leftToRight),
-                .init(preferredContentSizeCategory: contentSize),
-                .init(userInterfaceIdiom: .phone),
-                .init(horizontalSizeClass: .compact),
-                .init(verticalSizeClass: .regular),
-                .init(displayScale: 3),
-                .init(displayGamut: .P3),
-                .init(userInterfaceStyle: style)
-            ]))
-    }
+  static func iPhone17(style: UIUserInterfaceStyle, contentSize: UIContentSizeCategory = .medium) -> SnapshotConfiguration {
+      return SnapshotConfiguration(
+          size: CGSize(width: 393, height: 852),
+          safeAreaInsets: UIEdgeInsets(top: 59, left: 0, bottom: 34, right: 0),
+          layoutMargins: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16),
+          traitCollection: UITraitCollection(traitsFrom: [
+              .init(forceTouchCapability: .unavailable),
+              .init(layoutDirection: .leftToRight),
+              .init(preferredContentSizeCategory: contentSize),
+              .init(userInterfaceIdiom: .phone),
+              .init(horizontalSizeClass: .compact),
+              .init(verticalSizeClass: .regular),
+              .init(displayScale: 3),
+              .init(displayGamut: .P3),
+              .init(userInterfaceStyle: style)
+          ]))
+  }
 }
 
 private final class SnapshotWindow: UIWindow {
-    private var configuration: SnapshotConfiguration = .iPhone14(style: .light)
+    private var configuration: SnapshotConfiguration = .iPhone17(style: .light)
     
     convenience init(configuration: SnapshotConfiguration, root: UIViewController) {
         self.init(frame: CGRect(origin: .zero, size: configuration.size))

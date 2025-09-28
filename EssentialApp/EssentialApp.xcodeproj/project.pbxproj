@@ -71,7 +71,6 @@
 /* Begin PBXFileReference section */
 		7224C3762AB214C100A6FA69 /* FeedUIIntegrationTests+Assertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedUIIntegrationTests+Assertions.swift"; sourceTree = "<group>"; };
 		72258A282BA693BD00539EDB /* NullStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStore.swift; sourceTree = "<group>"; };
-		7226F7E32AAEC18B00408EE6 /* EssentialApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = EssentialApp.xctestplan; path = "/Users/gakmen/EssentialDeveloper/essential-feed/EssentialApp/EssentialAppTests/EssentialApp.xctestplan"; sourceTree = "<absolute>"; };
 		723335702B295421003A53E0 /* CommentsViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewAdapter.swift; sourceTree = "<group>"; };
 		7245BDBE2ABABB750048CEB8 /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 		7267DC642B8738A200B2A58D /* AlwaysDraggingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysDraggingTableView.swift; sourceTree = "<group>"; };
@@ -173,7 +172,6 @@
 		726A203E2A9B03E50024C2CA /* EssentialAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				7226F7E32AAEC18B00408EE6 /* EssentialApp.xctestplan */,
 				72A951CC2A9F6AF000E70D16 /* Helpers */,
 				72A06DA02AA9EF020053AD4C /* FeedUIIntegrationTests.swift */,
 				72C2ECAF2B27FC66002E07EE /* CommentsUIIntegrationTests.swift */,
@@ -441,6 +439,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -497,6 +496,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
